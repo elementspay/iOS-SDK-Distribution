@@ -671,7 +671,6 @@ public protocol APIClientProtocol {
   func perform<R>(_ request: R, completionHandler: @escaping Self.CompletionHandler<R.ResponseType>) where R : Elements.Request
 }
 final public class APIClient : Elements.APIClientProtocol {
-  public typealias CompletionHandler<T> = (Swift.Result<T, Swift.Error>) -> Swift.Void
   final public let environment: Elements.APIEnvironment
   public init(environment: Elements.APIEnvironment)
   final public func perform<R>(_ request: R, completionHandler: @escaping Elements.APIClient.CompletionHandler<R.ResponseType>) where R : Elements.Request
