@@ -619,6 +619,52 @@ public protocol APIEnvironment {
   var headers: [Swift.String : Swift.String] { get }
   var queryParameters: [Foundation.URLQueryItem] { get }
 }
+public struct PspToken : Swift.Codable {
+  public let pspAccount: Elements.PspAccount
+  public let customerId: Swift.String?
+  public let token: Swift.String
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct PspCustomer : Swift.Codable {
+  public let pspAccount: Elements.PspAccount
+  public let customerId: Swift.String
+  public init(pspAccount: Elements.PspAccount, customerId: Swift.String)
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public enum SupportedPspType : Swift.String {
+  case stripe
+  case adyen
+  case braintree
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct PspAccount : Swift.Codable {
+  public let pspType: Swift.String
+  public let accountId: Swift.String?
+  public init(pspType: Elements.SupportedPspType, accountId: Swift.String?)
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct ElementsCard : Swift.Codable {
+  public let id: Swift.String
+  public let last4: Swift.String?
+  public let expiryMonth: Swift.UInt?
+  public let expiryYear: Swift.UInt?
+  public let brand: Swift.String?
+  public let fingerprint: Swift.String?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct ElementsToken : Elements.Response {
+  public let pspTokens: [Elements.PspToken]
+  public let card: Elements.ElementsCard
+  public init(from decoder: Swift.Decoder) throws
+}
 public protocol Validator {
   func isValid(_ value: Swift.String) -> Swift.Bool
   func maximumLength(for value: Swift.String) -> Swift.Int
@@ -1226,7 +1272,7 @@ final public class PresentableComponentWrapper : Elements.PresentableComponent, 
   @objc deinit
 }
 public struct TokenizationRequest : Elements.Request {
-  public typealias ResponseType = Elements.TokenizationResponse
+  public typealias ResponseType = Elements.ElementsToken
   public let path: Swift.String
   public var counter: Swift.UInt
   public var method: Elements.HTTPMethod
@@ -1747,18 +1793,19 @@ public protocol TintableStyle : Elements.ViewStyle {
   @objc var additionalAPIParameters: [Swift.AnyHashable : Any] { get set }
 }
 public protocol ElementsAPIClientType : AnyObject {
-  func tokenizeCard(data: Elements.ElementsCardParams, completion: @escaping (Swift.Result<Elements.VaultToken, Swift.Error>) -> Swift.Void)
+  func tokenizeCard(data: Elements.ElementsCardParams, completion: @escaping (Swift.Result<Elements.VaultTokens, Swift.Error>) -> Swift.Void)
   func performPaymentsSetup(data: Elements.PaymentComponentData, token: Swift.String?, completion: @escaping (Swift.Result<Elements.PaymentsResponse, Swift.Error>) -> Swift.Void)
 }
 public class ElementsAPIClientConfiguration {
   final public let environment: Elements.Environment
+  final public let pspCustomers: [Elements.PspCustomer]?
   final public let stripePublishableKey: Swift.String?
-  public init(environment: Elements.Environment, stripePublishableKey: Swift.String? = nil)
+  public init(environment: Elements.Environment, pspCustomers: [Elements.PspCustomer]? = nil, stripePublishableKey: Swift.String? = nil)
   @objc deinit
 }
 public class ElementsAPIClient : Elements.ElementsAPIClientType {
   public init(config: Elements.ElementsAPIClientConfiguration)
-  public func tokenizeCard(data: Elements.ElementsCardParams, completion: @escaping (Swift.Result<Elements.VaultToken, Swift.Error>) -> Swift.Void)
+  public func tokenizeCard(data: Elements.ElementsCardParams, completion: @escaping (Swift.Result<Elements.VaultTokens, Swift.Error>) -> Swift.Void)
   public func performPaymentsSetup(data: Elements.PaymentComponentData, token: Swift.String?, completion: @escaping (Swift.Result<Elements.PaymentsResponse, Swift.Error>) -> Swift.Void)
   @objc deinit
 }
@@ -1776,16 +1823,12 @@ public struct APIError : Swift.Decodable, Swift.Error, Foundation.LocalizedError
   public var errorDescription: Swift.String? {
     get
   }
+  public init(status: Swift.Int?, errorCode: Swift.String, errorMessage: Swift.String, type: Elements.APIErrorType)
   public init(from decoder: Swift.Decoder) throws
 }
 public enum APIErrorType : Swift.String, Swift.Decodable {
-  case `internal`
-  case validation
-  case security
-  case configuration
-  case urlError
-  case noInternet
-  case sessionExpired
+  case cardError
+  case apiError
   public typealias RawValue = Swift.String
   public init?(rawValue: Swift.String)
   public var rawValue: Swift.String {
@@ -1875,9 +1918,9 @@ public struct IssuerListPaymentMethod : Elements.PaymentMethod {
   public init(from decoder: Swift.Decoder) throws
   public func buildComponent(using builder: Elements.PaymentComponentBuilder) -> Elements.PaymentComponent?
 }
-public enum VaultToken {
-  case elements(token: Swift.String)
-  case stripe(token: Elements.StripeVaultToken)
+public struct VaultTokens {
+  public let elementsToken: Elements.ElementsToken?
+  public let fallbackStripeToken: Elements.StripeVaultToken?
 }
 public struct TokenizationResponse : Elements.Response {
   public let token: Swift.String
@@ -2092,6 +2135,7 @@ public struct SupportedCardData : Swift.Decodable {
     }
     public init?(intValue: Swift.Int)
   }
+  public init(brand: Swift.String)
   public init(from decoder: Swift.Decoder) throws
 }
 extension String : Elements.ElementsCompatible {
@@ -2181,6 +2225,9 @@ extension Elements.BillingAddressFields : Swift.Hashable {}
 extension Elements.BillingAddressFields : Swift.RawRepresentable {}
 extension Elements.PhoneNumberPaymentMethod : Swift.Equatable {}
 extension Elements.PhoneNumberPaymentMethod : Swift.Hashable {}
+extension Elements.SupportedPspType : Swift.Equatable {}
+extension Elements.SupportedPspType : Swift.Hashable {}
+extension Elements.SupportedPspType : Swift.RawRepresentable {}
 extension Elements.CardFundingSource : Swift.Equatable {}
 extension Elements.CardFundingSource : Swift.Hashable {}
 extension Elements.CardFundingSource : Swift.RawRepresentable {}

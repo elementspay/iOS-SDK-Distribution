@@ -2,7 +2,7 @@ Pod::Spec.new do |spec|
   framework_filename = "Elements.xcframework"
 
   spec.name = "Elements"
-  spec.version = "0.0.2"
+  spec.version = "0.0.3"
   spec.summary = "Elements iOS SDK"
   spec.description = <<-DESC
     Elements official SDK
@@ -15,10 +15,10 @@ Pod::Spec.new do |spec|
   spec.swift_version = '5.1'
 
   spec.source = { :git => "https://github.com/elementspay/ios-sdk-distribution.git", :tag => spec.version }
-  spec.vendored_frameworks = "Elements.xcframework"
 
   spec.frameworks = 'Foundation'
   # spec.default_subspecs = 'Core', 'Components', 'Actions', 'Card', 'DropIn' 
+  spec.default_subspecs = 'Core'
   spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64', 'SWIFT_SUPPRESS_WARNINGS' => 'YES' }
   spec.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
@@ -30,26 +30,14 @@ Pod::Spec.new do |spec|
   #   plugin.dependency 'Elements/Components'
   # end
   
-  # spec.subspec 'Core' do |plugin|
-  #   plugin.source_files = 'Elements/**/*.swift'
-  #   plugin.resource_bundles = {
-  #       'Elements' => [
-  #           'Elements/Assets/**/*.strings',
-  #           'Elements/Assets/**/*.xcassets'
-  #       ]
-  #   }
-  # end
+  spec.subspec 'Core' do |plugin|
+    plugin.vendored_frameworks = 'Elements.xcframework'
+  end
 
-  # spec.subspec 'Card' do |plugin|
-  #   plugin.dependency 'Elements/Core'
-  #   plugin.source_files = 'ElementsCard/**/*.swift'
-  #   plugin.resource_bundles = {
-  #       'ElementsCard' => [
-  #           'ElementsCard/Assets/**/*.strings',
-  #           'ElementsCard/Assets/**/*.xcassets'
-  #       ]
-  #   }
-  # end
+  spec.subspec 'Card' do |plugin|
+    plugin.dependency 'Elements/Core'
+    plugin.vendored_frameworks = 'ElementsCard.xcframework'
+  end
 
   # spec.subspec 'Components' do |plugin|
   #   plugin.dependency 'Elements/Core'

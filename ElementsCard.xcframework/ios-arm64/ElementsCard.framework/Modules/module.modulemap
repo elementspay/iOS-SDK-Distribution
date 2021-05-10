@@ -1,0 +1,11 @@
+framework module ElementsCard {
+  umbrella header "ElementsCard.h"
+
+  export *
+  module * { export * }
+}
+
+module ElementsCard.Swift {
+    header "ElementsCard-Swift.h"
+    requires objc
+}
