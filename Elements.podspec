@@ -2,7 +2,7 @@ Pod::Spec.new do |spec|
   framework_filename = "Elements.xcframework"
 
   spec.name = "Elements"
-  spec.version = "0.0.3"
+  spec.version = "0.0.4"
   spec.summary = "Elements iOS SDK"
   spec.description = <<-DESC
     Elements official SDK

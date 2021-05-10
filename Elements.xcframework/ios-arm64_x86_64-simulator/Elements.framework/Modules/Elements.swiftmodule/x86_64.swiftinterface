@@ -650,7 +650,7 @@ public struct PspAccount : Swift.Codable {
   public init(from decoder: Swift.Decoder) throws
   public func encode(to encoder: Swift.Encoder) throws
 }
-public struct ElementsCard : Swift.Codable {
+public struct ElementsCardResponse : Swift.Codable {
   public let id: Swift.String
   public let last4: Swift.String?
   public let expiryMonth: Swift.UInt?
@@ -662,7 +662,7 @@ public struct ElementsCard : Swift.Codable {
 }
 public struct ElementsToken : Elements.Response {
   public let pspTokens: [Elements.PspToken]
-  public let card: Elements.ElementsCard
+  public let card: Elements.ElementsCardResponse
   public init(from decoder: Swift.Decoder) throws
 }
 public protocol Validator {
