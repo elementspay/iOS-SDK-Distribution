@@ -2,12 +2,12 @@ Pod::Spec.new do |spec|
   framework_filename = "Elements.xcframework"
 
   spec.name = "Elements"
-  spec.version = "0.0.5"
+  spec.version = "1.0.0"
   spec.summary = "Elements iOS SDK"
   spec.description = <<-DESC
     Elements official SDK
                    DESC
-  spec.homepage = "https://elements.io"
+  spec.homepage = "https://github.com/elementspay/Elements-iOS-Demo"
   spec.license = { :type => 'MIT', :file => 'LICENSE' }
   spec.author = { "Marvin Zhan" => "marvin@elements.io" }
   spec.platform = :ios
