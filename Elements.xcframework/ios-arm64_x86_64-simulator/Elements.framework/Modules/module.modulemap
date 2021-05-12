@@ -1,0 +1,11 @@
+framework module Elements {
+  umbrella header "Elements.h"
+
+  export *
+  module * { export * }
+}
+
+module Elements.Swift {
+    header "Elements-Swift.h"
+    requires objc
+}
