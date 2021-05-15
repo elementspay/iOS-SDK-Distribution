@@ -660,9 +660,21 @@ public struct ElementsCardResponse : Swift.Codable {
   public init(from decoder: Swift.Decoder) throws
   public func encode(to encoder: Swift.Encoder) throws
 }
+public enum ElementsTokenizationStatus : Swift.String, Swift.Codable {
+  case success
+  case partiallySucceeded
+  case unknown
+  public init(from decoder: Swift.Decoder) throws
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+}
 public struct ElementsToken : Elements.Response {
+  public let status: Elements.ElementsTokenizationStatus
   public let pspTokens: [Elements.PspToken]
-  public let card: Elements.ElementsCardResponse
+  public let card: Elements.ElementsCardResponse?
   public init(from decoder: Swift.Decoder) throws
 }
 public protocol Validator {
@@ -1835,6 +1847,7 @@ public struct ElementsAPIError : Swift.Decodable, Swift.Error, Foundation.Locali
 public enum APIErrorType : Swift.String, Swift.Decodable {
   case cardError
   case apiError
+  case authenticationError
   public typealias RawValue = Swift.String
   public init?(rawValue: Swift.String)
   public var rawValue: Swift.String {
@@ -2232,6 +2245,9 @@ extension Elements.PhoneNumberPaymentMethod : Swift.Hashable {}
 extension Elements.SupportedPspType : Swift.Equatable {}
 extension Elements.SupportedPspType : Swift.Hashable {}
 extension Elements.SupportedPspType : Swift.RawRepresentable {}
+extension Elements.ElementsTokenizationStatus : Swift.Equatable {}
+extension Elements.ElementsTokenizationStatus : Swift.Hashable {}
+extension Elements.ElementsTokenizationStatus : Swift.RawRepresentable {}
 extension Elements.CardFundingSource : Swift.Equatable {}
 extension Elements.CardFundingSource : Swift.Hashable {}
 extension Elements.CardFundingSource : Swift.RawRepresentable {}
