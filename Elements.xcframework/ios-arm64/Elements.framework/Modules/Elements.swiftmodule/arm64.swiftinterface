@@ -2076,7 +2076,7 @@ final public class StripeAPIClient {
   final public func perform<R>(_ request: R, parameters: [Swift.String : Any], completionHandler: @escaping Elements.StripeAPIClient.CompletionHandler<R.ResponseType>) where R : Elements.Request
   @objc deinit
 }
-@objc public class STPAppInfo : ObjectiveC.NSObject {
+@objc public class StripeAppInfo : ObjectiveC.NSObject {
   public init(name: Swift.String, partnerId: Swift.String?, version: Swift.String?, url: Swift.String?)
   public var name: Swift.String {
     get
@@ -2131,6 +2131,7 @@ public struct Environment : Elements.APIEnvironment {
   public var queryParameters: [Foundation.URLQueryItem]
   public let clientToken: Swift.String
   public static func sandbox(clientToken: Swift.String) -> Elements.Environment
+  public static func production(clientToken: Swift.String) -> Elements.Environment
   public static let unknown: Elements.Environment
   public init(baseURL: Foundation.URL? = nil, clientToken: Swift.String)
 }

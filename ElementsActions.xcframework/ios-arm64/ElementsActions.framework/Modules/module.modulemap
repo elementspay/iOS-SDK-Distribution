@@ -1,0 +1,11 @@
+framework module ElementsActions {
+  umbrella header "ElementsActions.h"
+
+  export *
+  module * { export * }
+}
+
+module ElementsActions.Swift {
+    header "ElementsActions-Swift.h"
+    requires objc
+}

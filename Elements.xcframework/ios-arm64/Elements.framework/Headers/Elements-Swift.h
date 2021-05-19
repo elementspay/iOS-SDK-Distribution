@@ -335,17 +335,6 @@ SWIFT_CLASS("_TtC8Elements16NetworkImageView")
 @end
 
 
-/// Libraries wrapping the Stripe SDK should use this object to provide information about the library, and set it
-/// in on <code>STPAPIClient</code>.  This information is passed to Stripe so that we can contact you about future issues or critical updates.
-/// seealso:
-/// https://stripe.com/docs/building-plugins#setappinfo
-SWIFT_CLASS("_TtC8Elements10STPAppInfo")
-@interface STPAppInfo : NSObject
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-+ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
-@end
-
-
 /// Objects conforming to STPFormEncodable can be automatically converted to a form-encoded string, which can then be used when making requests to the Stripe API.
 SWIFT_PROTOCOL("_TtP8Elements16STPFormEncodable_")
 @protocol STPFormEncodable <NSObject>
@@ -398,6 +387,17 @@ SWIFT_CLASS_NAMED("SessionDelegate")
 - (void)URLSession:(NSURLSession * _Nonnull)session didReceiveChallenge:(NSURLAuthenticationChallenge * _Nonnull)challenge completionHandler:(void (^ _Nonnull)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler;
 - (void)URLSession:(NSURLSession * _Nonnull)session task:(NSURLSessionTask * _Nonnull)task didReceiveChallenge:(NSURLAuthenticationChallenge * _Nonnull)challenge completionHandler:(void (^ _Nonnull)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler;
 - (void)URLSession:(NSURLSession * _Nonnull)session task:(NSURLSessionTask * _Nonnull)task willPerformHTTPRedirection:(NSHTTPURLResponse * _Nonnull)response newRequest:(NSURLRequest * _Nonnull)request completionHandler:(void (^ _Nonnull)(NSURLRequest * _Nullable))completionHandler;
+@end
+
+
+/// Libraries wrapping the Stripe SDK should use this object to provide information about the library, and set it
+/// in on <code>STPAPIClient</code>.  This information is passed to Stripe so that we can contact you about future issues or critical updates.
+/// seealso:
+/// https://stripe.com/docs/building-plugins#setappinfo
+SWIFT_CLASS("_TtC8Elements13StripeAppInfo")
+@interface StripeAppInfo : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
 
