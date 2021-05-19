@@ -47,6 +47,30 @@ public struct AwaitComponentStyle : Elements.ViewStyle {
   public var backgroundColor: UIKit.UIColor
   public init()
 }
+public protocol ElementsViewControllerPresentingDelegate : AnyObject {
+  func requestToShow(viewController: UIKit.UIViewController)
+  func requestToDismiss()
+}
+public protocol ElementsActionCompletionDelegate : AnyObject {
+  func didFail(with error: Swift.Error, driver: ElementsActions.ElementsActionDriver)
+  func didSuccess(with token: Swift.String?, driver: ElementsActions.ElementsActionDriver)
+}
+final public class ElementsActionDriver : Elements.Component {
+  weak final public var presentingDelegate: ElementsActions.ElementsViewControllerPresentingDelegate?
+  weak final public var completionDelegate: ElementsActions.ElementsActionCompletionDelegate?
+  public init(environment: Elements.Environment, completionDelegate: ElementsActions.ElementsActionCompletionDelegate? = nil, presentingDelegate: ElementsActions.ElementsViewControllerPresentingDelegate? = nil, style: ElementsActions.RedirectComponentStyle? = nil)
+  final public func requestPaypalSetup()
+  final public func requestKakaoPaySetup()
+  @objc deinit
+}
+extension ElementsActionDriver : ElementsActions.ActionComponentDelegate {
+  final public func didProvide(_ data: ElementsActions.ActionComponentData, from component: ElementsActions.ActionComponent)
+  final public func didComplete(from component: ElementsActions.ActionComponent)
+  final public func didFail(with error: Swift.Error, from component: ElementsActions.ActionComponent)
+}
+extension ElementsActionDriver : Elements.PresentationDelegate {
+  final public func present(component: Elements.PresentableComponent)
+}
 public struct RedirectDetails : Elements.AdditionalDetails {
   public let returnURL: Foundation.URL
   public init(returnURL: Foundation.URL)
