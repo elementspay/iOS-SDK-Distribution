@@ -1812,7 +1812,7 @@ public enum TokenizationVaultOption : Swift.String, Swift.Codable {
 }
 public protocol ElementsAPIClientType : AnyObject {
   func tokenizeCard(data: Elements.ElementsCardParams, idempotencyKey: Swift.String, vaultOption: Elements.TokenizationVaultOption, completion: @escaping (Swift.Result<Elements.VaultTokens, Swift.Error>) -> Swift.Void)
-  func performPaymentsSetup(data: Elements.PaymentComponentData, token: Swift.String?, completion: @escaping (Swift.Result<Elements.PaymentsResponse, Swift.Error>) -> Swift.Void)
+  func performPaymentsSetup(data: Elements.PaymentComponentData, token: Swift.String?, config: Elements.PaymentSetupModel, completion: @escaping (Swift.Result<Elements.PaymentsResponse, Swift.Error>) -> Swift.Void)
 }
 public class ElementsAPIClientConfiguration {
   final public let environment: Elements.Environment
@@ -1824,7 +1824,7 @@ public class ElementsAPIClientConfiguration {
 public class ElementsAPIClient : Elements.ElementsAPIClientType {
   public init(config: Elements.ElementsAPIClientConfiguration)
   public func tokenizeCard(data: Elements.ElementsCardParams, idempotencyKey: Swift.String = UUID().uuidString, vaultOption: Elements.TokenizationVaultOption = .reusable, completion: @escaping (Swift.Result<Elements.VaultTokens, Swift.Error>) -> Swift.Void)
-  public func performPaymentsSetup(data: Elements.PaymentComponentData, token: Swift.String?, completion: @escaping (Swift.Result<Elements.PaymentsResponse, Swift.Error>) -> Swift.Void)
+  public func performPaymentsSetup(data: Elements.PaymentComponentData, token: Swift.String?, config: Elements.PaymentSetupModel, completion: @escaping (Swift.Result<Elements.PaymentsResponse, Swift.Error>) -> Swift.Void)
   @objc deinit
 }
 extension ElementsScope where Base : UIKit.UIView {
@@ -2096,6 +2096,7 @@ final public class StripeAPIClient {
 public struct PaymentSetupModel : Swift.Codable {
   public let returnURL: Swift.String
   public let cancelURL: Swift.String
+  public init(returnURLScheme: Swift.String)
   public init(from decoder: Swift.Decoder) throws
   public func encode(to encoder: Swift.Encoder) throws
 }
@@ -2107,7 +2108,7 @@ public struct PaymentsSetupRequest : Elements.Request {
   public var queryParameters: [Foundation.URLQueryItem]
   public var headers: [Swift.String : Swift.String]
   public func encode(to encoder: Swift.Encoder) throws
-  public init(data: Elements.PaymentComponentData, encodedToken: Swift.String?)
+  public init(data: Elements.PaymentComponentData, encodedToken: Swift.String?, config: Elements.PaymentSetupModel)
 }
 public struct BrowserInfo : Swift.Encodable {
   public var userAgent: Swift.String? {
@@ -2131,6 +2132,7 @@ public struct Environment : Elements.APIEnvironment {
   public var queryParameters: [Foundation.URLQueryItem]
   public let clientToken: Swift.String
   public static func sandbox(clientToken: Swift.String) -> Elements.Environment
+  public static func portForward(clientToken: Swift.String) -> Elements.Environment
   public static func production(clientToken: Swift.String) -> Elements.Environment
   public static let unknown: Elements.Environment
   public init(baseURL: Foundation.URL? = nil, clientToken: Swift.String)

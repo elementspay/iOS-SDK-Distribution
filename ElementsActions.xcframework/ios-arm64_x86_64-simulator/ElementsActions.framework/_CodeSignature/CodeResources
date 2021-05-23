@@ -6,7 +6,7 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		Subt20Po34Ln7ub+r+EZR9FGmyE=
+		YuEgOmX264PDn0P8tD9MhgDDBiE=
 		</data>
 		<key>Headers/ElementsActions-Swift.h</key>
 		<data>
@@ -18,7 +18,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		/23AT3EvtMk4u6uAYZ3hQEbsLks=
+		KN3nMPG1oQi/31rGtJukTq/bcp8=
 		</data>
 		<key>Modules/ElementsActions.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -26,11 +26,11 @@
 		</data>
 		<key>Modules/ElementsActions.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		UEWOh3uF7zixpD9YDULWvH62Jl8=
+		WyjDkCIoKCFGUG6ZYPxOnpRcKtw=
 		</data>
 		<key>Modules/ElementsActions.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		Xoty2eP6l7mqpMIjXlexpmo9Fkw=
+		4Fv3C7NXI745zVAZOR2WDoRVrIs=
 		</data>
 		<key>Modules/ElementsActions.swiftmodule/arm64.swiftdoc</key>
 		<data>
@@ -38,11 +38,11 @@
 		</data>
 		<key>Modules/ElementsActions.swiftmodule/arm64.swiftinterface</key>
 		<data>
-		UEWOh3uF7zixpD9YDULWvH62Jl8=
+		WyjDkCIoKCFGUG6ZYPxOnpRcKtw=
 		</data>
 		<key>Modules/ElementsActions.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		Xoty2eP6l7mqpMIjXlexpmo9Fkw=
+		4Fv3C7NXI745zVAZOR2WDoRVrIs=
 		</data>
 		<key>Modules/ElementsActions.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -50,11 +50,11 @@
 		</data>
 		<key>Modules/ElementsActions.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		Z+w5RkFcgj8htmVymJvU7yvi3wc=
+		c3BfNVzAkjNipYZi9nTDv80YUvc=
 		</data>
 		<key>Modules/ElementsActions.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		KIou9RGv912B1MObmI2XOksmCS8=
+		u+PoBRKh4FHNZNSpHHz3hfbpU38=
 		</data>
 		<key>Modules/ElementsActions.swiftmodule/x86_64.swiftdoc</key>
 		<data>
@@ -62,11 +62,11 @@
 		</data>
 		<key>Modules/ElementsActions.swiftmodule/x86_64.swiftinterface</key>
 		<data>
-		Z+w5RkFcgj8htmVymJvU7yvi3wc=
+		c3BfNVzAkjNipYZi9nTDv80YUvc=
 		</data>
 		<key>Modules/ElementsActions.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		KIou9RGv912B1MObmI2XOksmCS8=
+		u+PoBRKh4FHNZNSpHHz3hfbpU38=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -79,7 +79,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			erJq9gW5IVmqquJ7CDKRGNwwt/uL+wCkF9BJZZIY51o=
+			L5k3MVJObGwegFV+dooWVizVlQ7LGF9OEfAa3cVSQEA=
 			</data>
 		</dict>
 		<key>Headers/ElementsActions-Swift.h</key>
@@ -107,14 +107,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			6mVxc6Vn68yzX3CJMhjPPzmzv79JPCR9rl/HcEKpIIg=
+			DDAEkJbAE9Y7NiXbYje0U56jjs/LLlccMm61lBMA84o=
 			</data>
 		</dict>
 		<key>Modules/ElementsActions.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			wiyanQqGbd2QQIF7iyF+VyoBnxyUjn9rzPNDsQ6NCQc=
+			i9J590lDtKpDWtTP50Ch/WocHCyOAXWQPtjnuAicVVE=
 			</data>
 		</dict>
 		<key>Modules/ElementsActions.swiftmodule/arm64.swiftdoc</key>
@@ -128,14 +128,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			6mVxc6Vn68yzX3CJMhjPPzmzv79JPCR9rl/HcEKpIIg=
+			DDAEkJbAE9Y7NiXbYje0U56jjs/LLlccMm61lBMA84o=
 			</data>
 		</dict>
 		<key>Modules/ElementsActions.swiftmodule/arm64.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			wiyanQqGbd2QQIF7iyF+VyoBnxyUjn9rzPNDsQ6NCQc=
+			i9J590lDtKpDWtTP50Ch/WocHCyOAXWQPtjnuAicVVE=
 			</data>
 		</dict>
 		<key>Modules/ElementsActions.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
@@ -149,14 +149,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			8f007+Ylbiv+h9W5r5KzdtY5WvIw+BhfBC51BUf7lO0=
+			i5VI/pxIxlK6sKOrps9CcEQxR062bYmfEJdcv97Yuc0=
 			</data>
 		</dict>
 		<key>Modules/ElementsActions.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Fp4BSqVbG8RotwYXSDtu8aN/zCuEr8AzskigGLbGmak=
+			GWjsK9F6KzmSe0+CtPNqT8mWZjShiCt8PZMmeQaT2NQ=
 			</data>
 		</dict>
 		<key>Modules/ElementsActions.swiftmodule/x86_64.swiftdoc</key>
@@ -170,14 +170,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			8f007+Ylbiv+h9W5r5KzdtY5WvIw+BhfBC51BUf7lO0=
+			i5VI/pxIxlK6sKOrps9CcEQxR062bYmfEJdcv97Yuc0=
 			</data>
 		</dict>
 		<key>Modules/ElementsActions.swiftmodule/x86_64.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Fp4BSqVbG8RotwYXSDtu8aN/zCuEr8AzskigGLbGmak=
+			GWjsK9F6KzmSe0+CtPNqT8mWZjShiCt8PZMmeQaT2NQ=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

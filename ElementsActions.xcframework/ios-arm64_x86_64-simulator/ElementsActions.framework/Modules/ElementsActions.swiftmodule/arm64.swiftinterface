@@ -56,9 +56,16 @@ public protocol ElementsActionCompletionDelegate : AnyObject {
   func didSuccess(with token: Swift.String?, driver: ElementsActions.ElementsActionDriver)
 }
 final public class ElementsActionDriver : Elements.Component {
+  final public class Configuration {
+    final public let environment: Elements.Environment
+    final public let returnURLScheme: Swift.String
+    final public let style: ElementsActions.RedirectComponentStyle?
+    public init(environment: Elements.Environment, returnURLScheme: Swift.String, style: ElementsActions.RedirectComponentStyle? = nil)
+    @objc deinit
+  }
   weak final public var presentingDelegate: ElementsActions.ElementsViewControllerPresentingDelegate?
   weak final public var completionDelegate: ElementsActions.ElementsActionCompletionDelegate?
-  public init(environment: Elements.Environment, completionDelegate: ElementsActions.ElementsActionCompletionDelegate? = nil, presentingDelegate: ElementsActions.ElementsViewControllerPresentingDelegate? = nil, style: ElementsActions.RedirectComponentStyle? = nil)
+  public init(configuration: ElementsActions.ElementsActionDriver.Configuration, completionDelegate: ElementsActions.ElementsActionCompletionDelegate? = nil, presentingDelegate: ElementsActions.ElementsViewControllerPresentingDelegate? = nil)
   final public func requestPaypalSetup()
   final public func requestKakaoPaySetup()
   @objc deinit
