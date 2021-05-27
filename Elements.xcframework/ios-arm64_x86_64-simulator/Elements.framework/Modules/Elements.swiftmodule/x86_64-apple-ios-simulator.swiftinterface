@@ -1693,6 +1693,7 @@ final public class FormErrorItem : Elements.FormItem, Elements.Hidable {
 }
 public enum ComponentError : Swift.Error {
   case cancelled
+  case redirectTokenDoesNotExsits
   case paymentMethodNotSupported
   public static func == (a: Elements.ComponentError, b: Elements.ComponentError) -> Swift.Bool
   public var hashValue: Swift.Int {
