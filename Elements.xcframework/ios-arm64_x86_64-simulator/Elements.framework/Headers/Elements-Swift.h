@@ -337,22 +337,6 @@ SWIFT_CLASS("_TtC8Elements16NetworkImageView")
 @end
 
 
-/// Objects conforming to STPFormEncodable can be automatically converted to a form-encoded string, which can then be used when making requests to the Stripe API.
-SWIFT_PROTOCOL("_TtP8Elements16STPFormEncodable_")
-@protocol STPFormEncodable <NSObject>
-/// The root object name to be used when converting this object to a form-encoded string. For example, if this returns “card”, then the form-encoded output will resemble “card[foo]=bar” (where ‘foo’ and ‘bar’ are specified by <code>propertyNamesToFormFieldNamesMapping</code> below.
-+ (NSString * _Nullable)rootObjectName SWIFT_WARN_UNUSED_RESULT;
-/// This maps properties on an object that is being form-encoded into parameter names in the Stripe API. For example, STPCardParams has a field called <code>expMonth</code>, but the Stripe API expects a field called <code>exp_month</code>. This dictionary represents a mapping from the former to the latter (in other words, STPCardParams.propertyNamesToFormFieldNamesMapping()[“expMonth”] == “exp_month”.)
-+ (NSDictionary<NSString *, NSString *> * _Nonnull)propertyNamesToFormFieldNamesMapping SWIFT_WARN_UNUSED_RESULT;
-/// You can use this property to add additional fields to an API request that are not explicitly defined by the object’s interface. This can be useful when using beta features that haven’t been added to the Stripe SDK yet. For example, if the /v1/tokens API began to accept a beta field called “test_field”, you might do the following:
-/// var cardParams = STPCardParams()
-/// // add card values
-/// cardParams.additionalAPIParameters = [“test_field”: “example_value”]
-/// STPAPIClient.shared.createToken(withParameters: cardParams completion:…);
-@property (nonatomic, copy) NSDictionary * _Nonnull additionalAPIParameters;
-@end
-
-
 /// A View Controller wrapper to blur its content when going into the background.
 /// Used to wrap view controllers that contain sensitive user info.
 SWIFT_CLASS("_TtC8Elements21SecuredViewController")
@@ -403,8 +387,24 @@ SWIFT_CLASS("_TtC8Elements13StripeAppInfo")
 @end
 
 
+/// Objects conforming to StripeFormEncodable can be automatically converted to a form-encoded string, which can then be used when making requests to the Stripe API.
+SWIFT_PROTOCOL("_TtP8Elements19StripeFormEncodable_")
+@protocol StripeFormEncodable <NSObject>
+/// The root object name to be used when converting this object to a form-encoded string. For example, if this returns “card”, then the form-encoded output will resemble “card[foo]=bar” (where ‘foo’ and ‘bar’ are specified by <code>propertyNamesToFormFieldNamesMapping</code> below.
++ (NSString * _Nullable)rootObjectName SWIFT_WARN_UNUSED_RESULT;
+/// This maps properties on an object that is being form-encoded into parameter names in the Stripe API. For example, STPCardParams has a field called <code>expMonth</code>, but the Stripe API expects a field called <code>exp_month</code>. This dictionary represents a mapping from the former to the latter (in other words, STPCardParams.propertyNamesToFormFieldNamesMapping()[“expMonth”] == “exp_month”.)
++ (NSDictionary<NSString *, NSString *> * _Nonnull)propertyNamesToFormFieldNamesMapping SWIFT_WARN_UNUSED_RESULT;
+/// You can use this property to add additional fields to an API request that are not explicitly defined by the object’s interface. This can be useful when using beta features that haven’t been added to the Stripe SDK yet. For example, if the /v1/tokens API began to accept a beta field called “test_field”, you might do the following:
+/// var cardParams = STPCardParams()
+/// // add card values
+/// cardParams.additionalAPIParameters = [“test_field”: “example_value”]
+/// STPAPIClient.shared.createToken(withParameters: cardParams completion:…);
+@property (nonatomic, copy) NSDictionary * _Nonnull additionalAPIParameters;
+@end
+
+
 SWIFT_CLASS("_TtC8Elements15StripeCardParam")
-@interface StripeCardParam : NSObject <STPFormEncodable>
+@interface StripeCardParam : NSObject <StripeFormEncodable>
 @property (nonatomic, copy) NSString * _Nonnull number;
 @property (nonatomic) NSUInteger expMonth;
 @property (nonatomic) NSUInteger expYear;
@@ -429,6 +429,7 @@ SWIFT_CLASS("_TtC8Elements15StripeCardParam")
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
+
 
 
 /// A rounded submit button used to submit details.
@@ -806,22 +807,6 @@ SWIFT_CLASS("_TtC8Elements16NetworkImageView")
 @end
 
 
-/// Objects conforming to STPFormEncodable can be automatically converted to a form-encoded string, which can then be used when making requests to the Stripe API.
-SWIFT_PROTOCOL("_TtP8Elements16STPFormEncodable_")
-@protocol STPFormEncodable <NSObject>
-/// The root object name to be used when converting this object to a form-encoded string. For example, if this returns “card”, then the form-encoded output will resemble “card[foo]=bar” (where ‘foo’ and ‘bar’ are specified by <code>propertyNamesToFormFieldNamesMapping</code> below.
-+ (NSString * _Nullable)rootObjectName SWIFT_WARN_UNUSED_RESULT;
-/// This maps properties on an object that is being form-encoded into parameter names in the Stripe API. For example, STPCardParams has a field called <code>expMonth</code>, but the Stripe API expects a field called <code>exp_month</code>. This dictionary represents a mapping from the former to the latter (in other words, STPCardParams.propertyNamesToFormFieldNamesMapping()[“expMonth”] == “exp_month”.)
-+ (NSDictionary<NSString *, NSString *> * _Nonnull)propertyNamesToFormFieldNamesMapping SWIFT_WARN_UNUSED_RESULT;
-/// You can use this property to add additional fields to an API request that are not explicitly defined by the object’s interface. This can be useful when using beta features that haven’t been added to the Stripe SDK yet. For example, if the /v1/tokens API began to accept a beta field called “test_field”, you might do the following:
-/// var cardParams = STPCardParams()
-/// // add card values
-/// cardParams.additionalAPIParameters = [“test_field”: “example_value”]
-/// STPAPIClient.shared.createToken(withParameters: cardParams completion:…);
-@property (nonatomic, copy) NSDictionary * _Nonnull additionalAPIParameters;
-@end
-
-
 /// A View Controller wrapper to blur its content when going into the background.
 /// Used to wrap view controllers that contain sensitive user info.
 SWIFT_CLASS("_TtC8Elements21SecuredViewController")
@@ -872,8 +857,24 @@ SWIFT_CLASS("_TtC8Elements13StripeAppInfo")
 @end
 
 
+/// Objects conforming to StripeFormEncodable can be automatically converted to a form-encoded string, which can then be used when making requests to the Stripe API.
+SWIFT_PROTOCOL("_TtP8Elements19StripeFormEncodable_")
+@protocol StripeFormEncodable <NSObject>
+/// The root object name to be used when converting this object to a form-encoded string. For example, if this returns “card”, then the form-encoded output will resemble “card[foo]=bar” (where ‘foo’ and ‘bar’ are specified by <code>propertyNamesToFormFieldNamesMapping</code> below.
++ (NSString * _Nullable)rootObjectName SWIFT_WARN_UNUSED_RESULT;
+/// This maps properties on an object that is being form-encoded into parameter names in the Stripe API. For example, STPCardParams has a field called <code>expMonth</code>, but the Stripe API expects a field called <code>exp_month</code>. This dictionary represents a mapping from the former to the latter (in other words, STPCardParams.propertyNamesToFormFieldNamesMapping()[“expMonth”] == “exp_month”.)
++ (NSDictionary<NSString *, NSString *> * _Nonnull)propertyNamesToFormFieldNamesMapping SWIFT_WARN_UNUSED_RESULT;
+/// You can use this property to add additional fields to an API request that are not explicitly defined by the object’s interface. This can be useful when using beta features that haven’t been added to the Stripe SDK yet. For example, if the /v1/tokens API began to accept a beta field called “test_field”, you might do the following:
+/// var cardParams = STPCardParams()
+/// // add card values
+/// cardParams.additionalAPIParameters = [“test_field”: “example_value”]
+/// STPAPIClient.shared.createToken(withParameters: cardParams completion:…);
+@property (nonatomic, copy) NSDictionary * _Nonnull additionalAPIParameters;
+@end
+
+
 SWIFT_CLASS("_TtC8Elements15StripeCardParam")
-@interface StripeCardParam : NSObject <STPFormEncodable>
+@interface StripeCardParam : NSObject <StripeFormEncodable>
 @property (nonatomic, copy) NSString * _Nonnull number;
 @property (nonatomic) NSUInteger expMonth;
 @property (nonatomic) NSUInteger expYear;
@@ -898,6 +899,7 @@ SWIFT_CLASS("_TtC8Elements15StripeCardParam")
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
+
 
 
 /// A rounded submit button used to submit details.

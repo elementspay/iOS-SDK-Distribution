@@ -1356,7 +1356,7 @@ public protocol FormValueItemStyle : Elements.TintableStyle {
   @objc override dynamic public init(frame: CoreGraphics.CGRect)
   @objc deinit
 }
-@objc public class StripeCardParam : ObjectiveC.NSObject, Elements.STPFormEncodable {
+@objc public class StripeCardParam : ObjectiveC.NSObject, Elements.StripeFormEncodable {
   @objc public var number: Swift.String
   @objc public var expMonth: Swift.UInt
   @objc public var expYear: Swift.UInt
@@ -1797,7 +1797,7 @@ public protocol TintableStyle : Elements.ViewStyle {
   required public init(item: Elements.FormTextInputItem)
   @objc deinit
 }
-@objc public protocol STPFormEncodable : ObjectiveC.NSObjectProtocol {
+@objc public protocol StripeFormEncodable : ObjectiveC.NSObjectProtocol {
   @objc static func rootObjectName() -> Swift.String?
   @objc static func propertyNamesToFormFieldNamesMapping() -> [Swift.String : Swift.String]
   @objc var additionalAPIParameters: [Swift.AnyHashable : Any] { get set }
