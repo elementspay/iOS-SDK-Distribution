@@ -128,7 +128,7 @@ extension Element {
 public protocol DismissableElement : Elements.Element {
   func dismiss(_ animated: Swift.Bool, completion: (() -> Swift.Void)?)
 }
-final public class Elements {
+final public class ElementsPay {
   final public let configuration: Elements.DropInElement.PaymentMethodsConfiguration
   required public init(configuration: Elements.DropInElement.PaymentMethodsConfiguration)
   @_hasMissingDesignatedInitializers final public class DropIn {
