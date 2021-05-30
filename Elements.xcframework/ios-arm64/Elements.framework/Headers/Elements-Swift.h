@@ -191,6 +191,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 @import CoreGraphics;
 @import Foundation;
 @import ObjectiveC;
+@import PassKit;
 @import UIKit;
 #endif
 
@@ -208,6 +209,27 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 # pragma clang attribute push(__attribute__((external_source_symbol(language="Swift", defined_in="Elements",generated_declaration))), apply_to=any(function,enum,objc_interface,objc_category,objc_protocol))
 # pragma pop_macro("any")
 #endif
+
+
+/// A element that handles Apple Pay payments.
+SWIFT_CLASS("_TtC8Elements15ApplePayElement")
+@interface ApplePayElement : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@class PKPaymentAuthorizationViewController;
+@class PKPayment;
+
+@interface ApplePayElement (SWIFT_EXTENSION(Elements)) <PKPaymentAuthorizationViewControllerDelegate>
+/// :nodoc:
+- (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController * _Nonnull)controller;
+/// :nodoc:
+- (void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController * _Nonnull)controller didAuthorizePayment:(PKPayment * _Nonnull)payment completion:(void (^ _Nonnull)(PKPaymentAuthorizationStatus))completion;
+@end
+
+
 
 
 
@@ -228,6 +250,23 @@ SWIFT_CLASS("_TtC8Elements13CopyLabelView")
 - (BOOL)becomeFirstResponder;
 - (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
 @end
+
+
+
+/// A element that handles the entire flow of payment selection and payment details entry.
+SWIFT_CLASS("_TtC8Elements13DropInElement")
+@interface DropInElement : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+
+
+
+
 
 
 @class NSBundle;

@@ -2,7 +2,7 @@ Pod::Spec.new do |spec|
   framework_filename = "Elements.xcframework"
 
   spec.name = "Elements"
-  spec.version = "1.0.6"
+  spec.version = "1.0.7"
   spec.summary = "Elements iOS SDK"
   spec.description = <<-DESC
     Elements official SDK
@@ -23,15 +23,5 @@ Pod::Spec.new do |spec|
   
   spec.subspec 'Core' do |plugin|
     plugin.vendored_frameworks = 'Elements.xcframework'
-  end
-
-  spec.subspec 'Card' do |plugin|
-    plugin.dependency 'Elements/Core'
-    plugin.vendored_frameworks = 'ElementsCard.xcframework'
-  end
-
-  spec.subspec 'Actions' do |plugin|
-    plugin.dependency 'Elements/Core'
-    plugin.vendored_frameworks = 'ElementsActions.xcframework'
   end
 end

@@ -12,6 +12,7 @@ import Foundation
 import ImageIO
 import MobileCoreServices
 import PassKit
+import SafariServices
 import Swift
 import UIKit
 import WebKit
@@ -23,7 +24,7 @@ public struct PaymentsResponse : Elements.Response {
 public protocol BillingAddressInformation {
   var billingAddress: Elements.AddressInfo? { get }
 }
-public struct PaymentComponentData {
+public struct PaymentElementData {
   public let paymentMethod: Elements.PaymentMethodDetails?
   public let storePaymentMethod: Swift.Bool
   public let browserInfo: Elements.BrowserInfo?
@@ -31,7 +32,7 @@ public struct PaymentComponentData {
     get
   }
   public init(paymentMethodDetails: Elements.PaymentMethodDetails?, storePaymentMethod: Swift.Bool = false, browserInfo: Elements.BrowserInfo? = nil)
-  public func dataByAddingBrowserInfo(completion: @escaping ((Elements.PaymentComponentData) -> Swift.Void))
+  public func dataByAddingBrowserInfo(completion: @escaping ((Elements.PaymentElementData) -> Swift.Void))
 }
 public struct CurrencyCodeValidator : Elements.Validator {
   public init()
@@ -50,24 +51,71 @@ public struct AddressStyle : Elements.FormValueItemStyle {
     get
   }
 }
-public protocol ComponentLoader : Elements.LoadingComponent {
-  func startLoading(for component: Elements.PaymentComponent)
+@objc public class ApplePayElement : ObjectiveC.NSObject, Elements.PresentableElement, Elements.PaymentElement, Elements.Localizable, Elements.FinalizableElement {
+  public var paymentMethod: Elements.PaymentMethod {
+    get
+  }
+  weak public var delegate: Elements.PaymentElementDelegate?
+  public init(configuration: Elements.ApplePayElement.Configuration) throws
+  public var viewController: UIKit.UIViewController {
+    get
+  }
+  public var localizationParameters: Elements.LocalizationParameters?
+  public func didFinalize(with success: Swift.Bool)
+  @objc deinit
+  @objc override dynamic public init()
 }
-public protocol LoadingComponent {
+extension ApplePayElement {
+  public enum Error : Swift.Error, Foundation.LocalizedError {
+    case userCannotMakePayment
+    case deviceDoesNotSupportApplyPay
+    case emptySummaryItems
+    case negativeGrandTotal
+    case invalidSummaryItem
+    case invalidCountryCode
+    case invalidCurrencyCode
+    public var errorDescription: Swift.String? {
+      get
+    }
+    public static func == (a: Elements.ApplePayElement.Error, b: Elements.ApplePayElement.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+}
+extension DropInElement {
+  public struct Style {
+    public var navigation: Elements.NavigationStyle
+    public var listElement: Elements.ListElementStyle
+    public var formElement: Elements.FormElementStyle
+    public var redirectElement: Elements.RedirectElementStyle?
+    public var separatorColor: UIKit.UIColor? {
+      get
+      set
+    }
+    public init()
+    public init(tintColor: UIKit.UIColor)
+  }
+}
+public protocol ElementLoader : Elements.LoadingElement {
+  func startLoading(for element: Elements.PaymentElement)
+}
+public protocol LoadingElement {
   func stopLoading()
 }
-public protocol Component : AnyObject {
+public protocol Element : AnyObject {
   var environment: Elements.Environment { get set }
 }
-extension Component {
+extension Element {
   public func finalizeIfNeeded(with success: Swift.Bool)
   public func cancelIfNeeded()
   public func stopLoadingIfNeeded()
 }
-public protocol FinalizableComponent : Elements.Component {
+public protocol FinalizableElement : Elements.Element {
   func didFinalize(with success: Swift.Bool)
 }
-extension Component {
+extension Element {
   public var environment: Elements.Environment {
     get
     set
@@ -77,8 +125,40 @@ extension Component {
     set
   }
 }
-public protocol DismissableComponent : Elements.Component {
+public protocol DismissableElement : Elements.Element {
   func dismiss(_ animated: Swift.Bool, completion: (() -> Swift.Void)?)
+}
+final public class Elements {
+  final public let configuration: Elements.DropInElement.PaymentMethodsConfiguration
+  required public init(configuration: Elements.DropInElement.PaymentMethodsConfiguration)
+  @_hasMissingDesignatedInitializers final public class DropIn {
+    public static func create(configuration: Elements.DropInElement.PaymentMethodsConfiguration, completion: @escaping (Swift.Result<Elements.DropInElement, Swift.Error>) -> Swift.Void)
+    @objc deinit
+  }
+  @objc deinit
+}
+final public class RedirectElement : Elements.ActionElement {
+  public enum Error : Swift.Error {
+    case appNotFound
+    public static func == (a: Elements.RedirectElement.Error, b: Elements.RedirectElement.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  weak final public var delegate: Elements.ActionElementDelegate?
+  weak final public var presentationDelegate: Elements.PresentationDelegate?
+  public init(style: Elements.RedirectElementStyle? = nil)
+  final public func handle(_ action: Elements.RedirectAction)
+  @discardableResult
+  public static func applicationDidOpen(from url: Foundation.URL) -> Swift.Bool
+  @objc deinit
+}
+extension RedirectElement : Elements.ActionElementDelegate {
+  final public func didProvide(_ data: Elements.ActionElementData, from element: Elements.ActionElement)
+  final public func didComplete(from element: Elements.ActionElement)
+  final public func didFail(with error: Swift.Error, from element: Elements.ActionElement)
+  final public func didOpenExternalApplication(_ element: Elements.ActionElement)
 }
 public enum BillingAddressFields : Swift.UInt {
   case none
@@ -108,6 +188,10 @@ public class AddressParams : Swift.Codable {
   @objc deinit
   required public init(from decoder: Swift.Decoder) throws
   public func encode(to encoder: Swift.Encoder) throws
+}
+public struct CreatePaymentMethodResponse : Elements.Response {
+  public let token: Swift.String
+  public init(from decoder: Swift.Decoder) throws
 }
 @_hasMissingDesignatedInitializers public class FontPlate {
   @objc deinit
@@ -237,6 +321,10 @@ public protocol ViewControllerDelegate : AnyObject {
   func viewDidLoad(viewController: UIKit.UIViewController)
   func viewDidAppear(viewController: UIKit.UIViewController)
 }
+public struct ChargeData : Swift.Codable {
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
 public protocol Theme : Swift.Equatable {
   var identifier: Swift.String { get }
   static var variants: [Self] { get }
@@ -292,7 +380,28 @@ public class RegularExpressionValidator : Elements.LengthValidator {
   @objc deinit
   @objc override dynamic public init(frame: CoreGraphics.CGRect)
 }
-extension AbstractPersonalInformationComponent : Elements.LoadingComponent, Elements.TrackableComponent {
+extension CardElement {
+  public enum AddressFormType {
+    case full
+    case postalCode
+    case none
+    public static func == (a: Elements.CardElement.AddressFormType, b: Elements.CardElement.AddressFormType) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public struct Configuration {
+    public var showsHolderNameField: Swift.Bool
+    public var showsStorePaymentMethodField: Swift.Bool
+    public var showsSecurityCodeField: Swift.Bool
+    public var billingAddressMode: Elements.CardElement.AddressFormType
+    public var stored: Elements.StoredCardConfiguration
+    public var allowedCardTypes: [Elements.CardType]?
+    public init(showsHolderNameField: Swift.Bool = false, showsStorePaymentMethodField: Swift.Bool = true, showsSecurityCodeField: Swift.Bool = true, billingAddressMode: Elements.CardElement.AddressFormType = .none, storedCardConfiguration: Elements.StoredCardConfiguration = StoredCardConfiguration(), allowedCardTypes: [Elements.CardType]? = nil)
+  }
+}
+extension AbstractPersonalInformationElement : Elements.LoadingElement, Elements.TrackableElement {
   public func stopLoading()
 }
 public enum PersonalInformation : Swift.Equatable {
@@ -303,7 +412,7 @@ public enum PersonalInformation : Swift.Equatable {
   case custom(Elements.FormItemInjector)
   public static func == (lhs: Elements.PersonalInformation, rhs: Elements.PersonalInformation) -> Swift.Bool
 }
-extension AbstractPersonalInformationComponent {
+extension AbstractPersonalInformationElement {
   public struct Configuration {
     public let fields: [Elements.PersonalInformation]
     public init(fields: [Elements.PersonalInformation])
@@ -320,6 +429,9 @@ public struct EmptyPaymentDetails : Elements.PaymentMethodDetails {
   public let type: Swift.String
   public init(type: Swift.String)
   public func encode(to encoder: Swift.Encoder) throws
+}
+public struct ListPaymentMethodsResponse : Elements.Response {
+  public init(from decoder: Swift.Decoder) throws
 }
 final public class FormButtonItem : Elements.FormItem {
   final public var subitems: [Elements.FormItem]
@@ -355,7 +467,7 @@ public struct WalletsPaymentMethod : Elements.PaymentMethod {
     get
   }
   public init(from decoder: Swift.Decoder) throws
-  public func buildComponent(using builder: Elements.PaymentComponentBuilder) -> Elements.PaymentComponent?
+  public func buildElement(using builder: Elements.PaymentElementBuilder) -> Elements.PaymentElement?
   public init(type: Swift.String, name: Swift.String, supportedPaymentMethods: [Elements.PaymentMethod])
 }
 public class ListItem : Elements.FormItem {
@@ -505,6 +617,12 @@ public struct LocalizationKey {
   public static let fieldTitleOptional: Elements.LocalizationKey
   public init(key: Swift.String)
 }
+final public class CardNumberValidator : Elements.Validator {
+  public init()
+  final public func isValid(_ value: Swift.String) -> Swift.Bool
+  final public func maximumLength(for value: Swift.String) -> Swift.Int
+  @objc deinit
+}
 public struct ThreeDS2FingerprintAction : Swift.Decodable {
   public let fingerprintToken: Swift.String
   public let authorisationToken: Swift.String?
@@ -562,6 +680,42 @@ public struct RedirectAction : Swift.Decodable {
   }
   @objc deinit
 }
+public struct ListStoredPaymentMethodsResponse : Elements.Response {
+  public init(from decoder: Swift.Decoder) throws
+}
+public typealias URLHandler = (Foundation.URL) -> Swift.Void
+public enum RedirectListener {
+  public static func registerForURL(using handler: @escaping Elements.URLHandler)
+}
+extension DropInElement {
+  final public class PaymentMethodsConfiguration {
+    final public var card: Elements.DropInElement.CardConfiguration
+    final public var applePay: Elements.DropInElement.ApplePayConfiguration?
+    final public let environment: Elements.Environment
+    final public var localizationParameters: Elements.LocalizationParameters?
+    final public var payment: Elements.Payment?
+    public init(environment: Elements.Environment)
+    @objc deinit
+  }
+  @_hasMissingDesignatedInitializers final public class CardConfiguration {
+    final public var showsHolderNameField: Swift.Bool
+    final public var showsStorePaymentMethodField: Swift.Bool
+    final public var showsSecurityCodeField: Swift.Bool
+    final public var billingAddress: Elements.CardElement.AddressFormType
+    final public var stored: Elements.StoredCardConfiguration
+    @objc deinit
+  }
+  final public class ApplePayConfiguration {
+    final public var summaryItems: [PassKit.PKPaymentSummaryItem]
+    final public var merchantIdentifier: Swift.String
+    final public var merchantName: Swift.String
+    final public var requiredBillingContactFields: Swift.Set<PassKit.PKContactField>
+    final public var requiredShippingContactFields: Swift.Set<PassKit.PKContactField>
+    final public var excludedCardNetworks: [PassKit.PKPaymentNetwork]
+    public init(summaryItems: [PassKit.PKPaymentSummaryItem], merchantIdentifier: Swift.String, requiredBillingContactFields: Swift.Set<PassKit.PKContactField> = [], requiredShippingContactFields: Swift.Set<PassKit.PKContactField> = [])
+    @objc deinit
+  }
+}
 public struct PhoneExtension : Swift.Decodable, Swift.Equatable {
   public let value: Swift.String
   public let countryCode: Swift.String
@@ -613,6 +767,16 @@ public struct ListItemStyle : Elements.ViewStyle {
 }
 extension ListItemStyle : Swift.Equatable {
   public static func == (lhs: Elements.ListItemStyle, rhs: Elements.ListItemStyle) -> Swift.Bool
+}
+public protocol DropInElementDelegate : AnyObject {
+  func didSubmit(_ data: Elements.PaymentElementData, for paymentMethod: Elements.PaymentMethod, from element: Elements.DropInElement)
+  func didProvide(_ data: Elements.ActionElementData, from element: Elements.DropInElement)
+  func didComplete(from element: Elements.DropInElement)
+  func didFail(with error: Swift.Error, from element: Elements.DropInElement)
+  func didCancel(element: Elements.PaymentElement, from dropInElement: Elements.DropInElement)
+}
+extension DropInElementDelegate {
+  public func didCancel(element: Elements.PaymentElement, from dropInElement: Elements.DropInElement)
 }
 public protocol APIEnvironment {
   var baseURL: Foundation.URL { get }
@@ -681,6 +845,51 @@ public protocol Validator {
   func isValid(_ value: Swift.String) -> Swift.Bool
   func maximumLength(for value: Swift.String) -> Swift.Int
 }
+public protocol CardElementDelegate : AnyObject {
+  func didChangeBIN(_ value: Swift.String, element: Elements.CardElement)
+  func didChangeCardBrand(_ value: [Elements.CardBrand]?, element: Elements.CardElement)
+}
+public class CardElement : Elements.PaymentElement, Elements.PresentableElement, Elements.Localizable, Elements.Observer, Elements.LoadingElement {
+  final public let style: Elements.FormElementStyle
+  public var paymentMethod: Elements.PaymentMethod {
+    get
+  }
+  weak public var cardElementDelegate: Elements.CardElementDelegate?
+  final public let supportedCardTypes: [Elements.CardType]
+  final public let configuration: Elements.CardElement.Configuration
+  weak public var delegate: Elements.PaymentElementDelegate? {
+    get
+    set
+  }
+  public var payment: Elements.Payment? {
+    get
+    set
+  }
+  public var environment: Elements.Environment {
+    get
+    set
+  }
+  public init(paymentMethod: Elements.AnyCardPaymentMethod, configuration: Elements.CardElement.Configuration = Configuration(), style: Elements.FormElementStyle = FormElementStyle())
+  public var viewController: UIKit.UIViewController {
+    get
+  }
+  public var requiresModalPresentation: Swift.Bool {
+    get
+  }
+  public var localizationParameters: Elements.LocalizationParameters?
+  public func stopLoading()
+  @objc deinit
+}
+public struct CardDetails : Elements.PaymentMethodDetails, Elements.BillingAddressInformation {
+  public let type: Swift.String
+  public let storedPaymentMethodIdentifier: Swift.String?
+  public let card: Elements.ElementsCardParams?
+  public let fundingSource: Elements.CardFundingSource?
+  public var billingAddress: Elements.AddressInfo?
+  public init(paymentMethod: Elements.AnyCardPaymentMethod, card: Elements.ElementsCardParams, holderName: Swift.String? = nil, billingAddress: Elements.AddressInfo? = nil)
+  public init(paymentMethod: Elements.StoredCardPaymentMethod, securityCode: Swift.String)
+  public func encode(to encoder: Swift.Encoder) throws
+}
 public struct PaymentMethods : Swift.Decodable {
   public let regular: [Elements.PaymentMethod]
   public let stored: [Elements.StoredPaymentMethod]
@@ -721,8 +930,26 @@ final public class FormSeparatorItem : Elements.FormItem {
   final public func build(with builder: Elements.FormItemViewBuilder) -> Elements.AnyFormItemView
   @objc deinit
 }
+public protocol ActionElement : Elements.Element {
+  var delegate: Elements.ActionElementDelegate? { get set }
+}
+public protocol ActionElementDelegate : AnyObject {
+  func didOpenExternalApplication(_ element: Elements.ActionElement)
+  func didProvide(_ data: Elements.ActionElementData, from element: Elements.ActionElement)
+  func didComplete(from element: Elements.ActionElement)
+  func didFail(with error: Swift.Error, from element: Elements.ActionElement)
+}
+extension ActionElementDelegate {
+  public func didOpenExternalApplication(_: Elements.ActionElement)
+}
 public protocol PresentationDelegate : AnyObject {
-  func present(component: Elements.PresentableComponent)
+  func present(element: Elements.PresentableElement)
+}
+@_inheritsConvenienceInitializers final public class CardSecurityCodeFormatter : Elements.NumericFormatter, Elements.Observer {
+  override public init()
+  public init(publisher: Elements.Observable<Elements.CardType?>)
+  override final public func formattedValue(for value: Swift.String) -> Swift.String
+  @objc deinit
 }
 public protocol APIClientProtocol {
   typealias CompletionHandler<T> = (Swift.Result<T, Swift.Error>) -> Swift.Void
@@ -759,6 +986,13 @@ public enum CardFundingSource : Swift.String, Swift.Codable {
     get
   }
 }
+public struct AwaitElementStyle : Elements.ViewStyle {
+  public var image: Elements.ImageStyle
+  public var message: Elements.TextStyle
+  public var spinnerTitle: Elements.TextStyle
+  public var backgroundColor: UIKit.UIColor
+  public init()
+}
 public protocol AnyAppLauncher {
   func openCustomSchemeUrl(_ url: Foundation.URL, completion: ((Swift.Bool) -> Swift.Void)?)
   func openUniversalAppUrl(_ url: Foundation.URL, completion: ((Swift.Bool) -> Swift.Void)?)
@@ -786,6 +1020,19 @@ public enum ThreeDS2Action : Swift.Decodable {
 extension UIButton {
   convenience public init(style: Elements.ButtonStyle)
 }
+extension CardElement {
+  public enum Error : Swift.Error {
+    case missingClientKey
+    public static func == (a: Elements.CardElement.Error, b: Elements.CardElement.Error) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+}
+extension CardElement : Elements.TrackableElement {
+  public func viewDidLoad(viewController: UIKit.UIViewController)
+}
 public func localizedString(_ key: Elements.LocalizationKey, _ parameters: Elements.LocalizationParameters?, _ arguments: Swift.CVarArg...) -> Swift.String
 public enum PaymentStyle {
   case needsRedirectToThirdParty(Swift.String)
@@ -793,9 +1040,9 @@ public enum PaymentStyle {
 }
 public func localizedSubmitButtonTitle(with amount: Elements.Payment.Amount?, style: Elements.PaymentStyle, _ parameters: Elements.LocalizationParameters?) -> Swift.String
 @objc final public class ListViewController : UIKit.UITableViewController {
-  final public let style: Elements.ListComponentStyle
+  final public let style: Elements.ListElementStyle
   weak final public var delegate: Elements.ViewControllerDelegate?
-  public init(style: Elements.ListComponentStyle = ListComponentStyle())
+  public init(style: Elements.ListElementStyle = ListElementStyle())
   @available(*, unavailable)
   @objc required dynamic public init?(coder _: Foundation.NSCoder)
   @objc override final public var preferredContentSize: CoreGraphics.CGSize {
@@ -911,7 +1158,12 @@ public typealias RegionPickerItem = Elements.BasePickerElement<Elements.Region>
   override final public func build(with builder: Elements.FormItemViewBuilder) -> Elements.AnyFormItemView
   @objc deinit
 }
-public struct ListComponentStyle : Elements.ViewStyle {
+public struct RedirectDetails : Elements.AdditionalDetails {
+  public let returnURL: Foundation.URL
+  public init(returnURL: Foundation.URL)
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct ListElementStyle : Elements.ViewStyle {
   public var listItem: Elements.ListItemStyle
   public var sectionHeader: Elements.ListSectionHeaderStyle
   public var backgroundColor: UIKit.UIColor
@@ -938,6 +1190,17 @@ public class RegionRepository {
   public func getCountries(locale: Swift.String, callback: @escaping (([Elements.Region]) -> Swift.Void))
   public func getSubRegions(for countryCode: Swift.String, locale: Swift.String, callback: @escaping (([Elements.Region]) -> Swift.Void))
   @objc deinit
+}
+public struct ApplePayDetails : Elements.PaymentMethodDetails {
+  public let type: Swift.String
+  public let token: Swift.String
+  public let network: Swift.String
+  public let billingContact: PassKit.PKContact?
+  public let shippingContact: PassKit.PKContact?
+  public let transactionIdentifier: Swift.String?
+  public let instrumentName: Swift.String?
+  public init(paymentMethod: Elements.ApplePayPaymentMethod, token: Swift.String, network: Swift.String, billingContact: PassKit.PKContact?, shippingContact: PassKit.PKContact?, transactionIdentifier: Swift.String?, instrumentName: Swift.String?)
+  public func encode(to encoder: Swift.Encoder) throws
 }
 public enum AppImageName : Swift.String {
   case applePayIcon
@@ -979,19 +1242,19 @@ public protocol Request : Swift.Encodable {
 }
 public protocol Response : Swift.Decodable {
 }
-public protocol PaymentComponentBuilder {
-  func build(paymentMethod: Elements.StoredCardPaymentMethod) -> Elements.PaymentComponent?
-  func build(paymentMethod: Elements.StoredPaymentMethod) -> Elements.PaymentComponent?
-  func build(paymentMethod: Elements.CardPaymentMethod) -> Elements.PaymentComponent?
-  func build(paymentMethod: Elements.ApplePayPaymentMethod) -> Elements.PaymentComponent?
-  func build(paymentMethod: Elements.WalletsPaymentMethod) -> Elements.PaymentComponent?
-  func build(paymentMethod: Elements.PaymentMethod) -> Elements.PaymentComponent?
+public protocol PaymentElementBuilder {
+  func build(paymentMethod: Elements.StoredCardPaymentMethod) -> Elements.PaymentElement?
+  func build(paymentMethod: Elements.StoredPaymentMethod) -> Elements.PaymentElement?
+  func build(paymentMethod: Elements.CardPaymentMethod) -> Elements.PaymentElement?
+  func build(paymentMethod: Elements.ApplePayPaymentMethod) -> Elements.PaymentElement?
+  func build(paymentMethod: Elements.WalletsPaymentMethod) -> Elements.PaymentElement?
+  func build(paymentMethod: Elements.PaymentMethod) -> Elements.PaymentElement?
 }
-final public class StoredPaymentMethodComponent : Elements.PaymentComponent, Elements.PresentableComponent, Elements.Localizable {
+final public class StoredPaymentMethodElement : Elements.PaymentElement, Elements.PresentableElement, Elements.Localizable {
   final public var paymentMethod: Elements.PaymentMethod {
     get
   }
-  weak final public var delegate: Elements.PaymentComponentDelegate?
+  weak final public var delegate: Elements.PaymentElementDelegate?
   public init(paymentMethod: Elements.StoredPaymentMethod)
   final public var viewController: UIKit.UIViewController {
     get
@@ -1003,6 +1266,12 @@ final public class StoredPaymentMethodComponent : Elements.PaymentComponent, Ele
 public struct StoredPaymentDetails : Elements.PaymentMethodDetails {
   public init(paymentMethod: Elements.StoredPaymentMethod)
   public func encode(to encoder: Swift.Encoder) throws
+}
+final public class CardSecurityCodeValidator : Elements.NumericStringValidator, Elements.Observer {
+  public init()
+  public init(publisher: Elements.Observable<Elements.CardType?>)
+  override public init(minimumLength: Swift.Int? = super, maximumLength: Swift.Int? = super)
+  @objc deinit
 }
 public struct LocalizationParameters : Swift.Equatable {
   public let locale: Swift.String?
@@ -1016,7 +1285,7 @@ public struct ApplePayPaymentMethod : Elements.PaymentMethod {
   public let type: Swift.String
   public let name: Swift.String
   public let brands: [Swift.String]?
-  public func buildComponent(using builder: Elements.PaymentComponentBuilder) -> Elements.PaymentComponent?
+  public func buildElement(using builder: Elements.PaymentElementBuilder) -> Elements.PaymentElement?
   public init(type: Swift.String, name: Swift.String, brands: [Swift.String]?)
   public init(from decoder: Swift.Decoder) throws
 }
@@ -1077,8 +1346,8 @@ public class ElementsCardParams : Swift.Codable {
   final public let holderName: Swift.String?
   public var address: Elements.AddressParams?
   public init(cardNumber: Swift.String, expiryMonth: Swift.UInt?, expiryYear: Swift.UInt?, securityCode: Swift.String?, holderName: Swift.String?)
-  @objc deinit
   required public init(from decoder: Swift.Decoder) throws
+  @objc deinit
   public func encode(to encoder: Swift.Encoder) throws
 }
 public typealias AssertionListner = (Swift.String) -> Swift.Void
@@ -1091,6 +1360,35 @@ public struct Observation : Swift.Hashable {
   public var hashValue: Swift.Int {
     get
   }
+}
+@objc final public class DropInElement : ObjectiveC.NSObject, Elements.PresentableElement {
+  final public let paymentMethods: Elements.PaymentMethods
+  weak final public var delegate: Elements.DropInElementDelegate?
+  final public let style: Elements.DropInElement.Style
+  final public let title: Swift.String
+  public init(paymentMethods: Elements.PaymentMethods, paymentMethodsConfiguration: Elements.DropInElement.PaymentMethodsConfiguration, style: Elements.DropInElement.Style = Style(), title: Swift.String? = nil)
+  final public var viewController: UIKit.UIViewController {
+    get
+  }
+  final public func handle(_ action: Elements.Action)
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension DropInElement : Elements.PaymentElementDelegate {
+  final public func didSubmit(_ data: Elements.PaymentElementData, from element: Elements.PaymentElement)
+  final public func didFail(with error: Swift.Error, from element: Elements.PaymentElement)
+}
+extension DropInElement : Elements.ActionElementDelegate {
+  final public func didOpenExternalApplication(_ element: Elements.ActionElement)
+  final public func didComplete(from element: Elements.ActionElement)
+  final public func didFail(with error: Swift.Error, from element: Elements.ActionElement)
+  final public func didProvide(_ data: Elements.ActionElementData, from element: Elements.ActionElement)
+}
+extension DropInElement : Elements.PresentationDelegate {
+  final public func present(element: Elements.PresentableElement)
+}
+extension DropInElement : Elements.FinalizableElement {
+  final public func didFinalize(with success: Swift.Bool)
 }
 public protocol Formatter {
   func formattedValue(for value: Swift.String) -> Swift.String
@@ -1216,20 +1514,20 @@ extension LogoURLProvider {
 public protocol PaymentMethodAware {
   var paymentMethod: Elements.PaymentMethod { get }
 }
-public protocol PaymentComponent : Elements.PaymentAwareComponent, Elements.PaymentMethodAware {
-  var delegate: Elements.PaymentComponentDelegate? { get set }
+public protocol PaymentElement : Elements.PaymentAwareElement, Elements.PaymentMethodAware {
+  var delegate: Elements.PaymentElementDelegate? { get set }
 }
-extension PaymentComponent {
-  public func submit(data: Elements.PaymentComponentData, component: Elements.PaymentComponent? = nil)
+extension PaymentElement {
+  public func submit(data: Elements.PaymentElementData, element: Elements.PaymentElement? = nil)
 }
-public protocol PaymentComponentDelegate : AnyObject {
-  func didSubmit(_ data: Elements.PaymentComponentData, from component: Elements.PaymentComponent)
-  func didFail(with error: Swift.Error, from component: Elements.PaymentComponent)
+public protocol PaymentElementDelegate : AnyObject {
+  func didSubmit(_ data: Elements.PaymentElementData, from element: Elements.PaymentElement)
+  func didFail(with error: Swift.Error, from element: Elements.PaymentElement)
 }
-public protocol PaymentAwareComponent : Elements.Component {
+public protocol PaymentAwareElement : Elements.Element {
   var payment: Elements.Payment? { get set }
 }
-extension PaymentAwareComponent {
+extension PaymentAwareElement {
   public var payment: Elements.Payment? {
     get
     set
@@ -1241,6 +1539,9 @@ extension URLSession : Elements.ElementsCompatible {
 extension ElementsScope where Base : Foundation.URLSession {
   public func dataTask(with url: Foundation.URL, completion: @escaping ((Swift.Result<Foundation.Data, Swift.Error>) -> Swift.Void)) -> Foundation.URLSessionDataTask
   public func dataTask(with urlRequest: Foundation.URLRequest, completion: @escaping ((Swift.Result<Foundation.Data, Swift.Error>) -> Swift.Void)) -> Foundation.URLSessionDataTask
+}
+public struct ChargeAPIResponse : Elements.Response {
+  public init(from decoder: Swift.Decoder) throws
 }
 extension ElementsScope where Base : UIKit.UIViewController {
   public var topPresenter: UIKit.UIViewController {
@@ -1268,11 +1569,11 @@ public struct FormTextItemStyle : Elements.FormValueItemStyle {
   public init(tintColor: UIKit.UIColor)
   public init()
 }
-final public class PresentableComponentWrapper : Elements.PresentableComponent, Elements.Cancellable, Elements.FinalizableComponent, Elements.LoadingComponent {
+final public class PresentableElementWrapper : Elements.PresentableElement, Elements.Cancellable, Elements.FinalizableElement, Elements.LoadingElement {
   final public let viewController: UIKit.UIViewController
-  final public let component: Elements.Component
+  final public let element: Elements.Element
   final public var requiresModalPresentation: Swift.Bool
-  public init(component: Elements.Component, viewController: UIKit.UIViewController)
+  public init(element: Elements.Element, viewController: UIKit.UIViewController)
   final public func didCancel()
   final public func didFinalize(with success: Swift.Bool)
   final public func stopLoading()
@@ -1356,6 +1657,10 @@ public protocol FormValueItemStyle : Elements.TintableStyle {
   @objc override dynamic public init(frame: CoreGraphics.CGRect)
   @objc deinit
 }
+public struct StoredCardConfiguration {
+  public var showsSecurityCodeField: Swift.Bool
+  public init()
+}
 @objc public class StripeCardParam : ObjectiveC.NSObject, Elements.StripeFormEncodable {
   @objc public var number: Swift.String
   @objc public var expMonth: Swift.UInt
@@ -1395,6 +1700,37 @@ public protocol FormValueItemStyle : Elements.TintableStyle {
   @objc deinit
   @objc override dynamic public init()
 }
+public protocol ElementsViewControllerPresentingDelegate : AnyObject {
+  func requestToShow(viewController: UIKit.UIViewController)
+  func requestToDismiss()
+}
+public protocol ElementsActionCompletionDelegate : AnyObject {
+  func didFail(with error: Swift.Error, driver: Elements.ElementsActionDriver)
+  func didSuccess(with token: Swift.String?, driver: Elements.ElementsActionDriver)
+}
+final public class ElementsActionDriver : Elements.Element {
+  final public class Configuration {
+    final public let environment: Elements.Environment
+    final public let returnURLScheme: Swift.String
+    final public let style: Elements.RedirectElementStyle?
+    public init(environment: Elements.Environment, returnURLScheme: Swift.String, style: Elements.RedirectElementStyle? = nil)
+    @objc deinit
+  }
+  weak final public var presentingDelegate: Elements.ElementsViewControllerPresentingDelegate?
+  weak final public var completionDelegate: Elements.ElementsActionCompletionDelegate?
+  public init(configuration: Elements.ElementsActionDriver.Configuration, completionDelegate: Elements.ElementsActionCompletionDelegate? = nil, presentingDelegate: Elements.ElementsViewControllerPresentingDelegate? = nil)
+  final public func requestPaypalSetup()
+  final public func requestKakaoPaySetup()
+  @objc deinit
+}
+extension ElementsActionDriver : Elements.ActionElementDelegate {
+  final public func didProvide(_ data: Elements.ActionElementData, from element: Elements.ActionElement)
+  final public func didComplete(from element: Elements.ActionElement)
+  final public func didFail(with error: Swift.Error, from element: Elements.ActionElement)
+}
+extension ElementsActionDriver : Elements.PresentationDelegate {
+  final public func present(element: Elements.PresentableElement)
+}
 @objc @_hasMissingDesignatedInitializers final public class ELEViewController : UIKit.UIViewController {
   public init(view: UIKit.UIView, title: Swift.String? = nil)
   @objc override final public func loadView()
@@ -1424,7 +1760,7 @@ public protocol ValidatableFormItem : Elements.FormItem {
 }
 public protocol InputViewRequiringFormItem : Elements.FormItem {
 }
-public struct FormComponentStyle : Elements.TintableStyle {
+public struct FormElementStyle : Elements.TintableStyle {
   public var backgroundColor: UIKit.UIColor
   public var sectionHeader: Elements.TextStyle
   public var textField: Elements.FormTextItemStyle
@@ -1469,10 +1805,10 @@ public enum AwaitPaymentMethod : Swift.String, Swift.Decodable {
   case mbway
   case blik
   public typealias RawValue = Swift.String
-  public init?(rawValue: Swift.String)
   public var rawValue: Swift.String {
     get
   }
+  public init?(rawValue: Swift.String)
 }
 public struct AwaitAction : Swift.Decodable {
   public let paymentMethodType: Elements.AwaitPaymentMethod
@@ -1520,18 +1856,25 @@ public protocol AnyFormValueItemView : Elements.AnyFormItemView {
   var isEditing: Swift.Bool { get set }
   func validate()
 }
-open class AbstractPersonalInformationComponent : Elements.PaymentComponent, Elements.PresentableComponent, Elements.Localizable {
+extension Array : Elements.ElementsCompatible {
+  public typealias ElementsBase = Swift.Array<Element>
+}
+extension ElementsScope where Base == [Elements.CardType] {
+  public func types(forCardNumber cardNumber: Swift.String) -> [Elements.CardType]
+  public func type(forCardNumber cardNumber: Swift.String) -> Elements.CardType?
+}
+open class AbstractPersonalInformationElement : Elements.PaymentElement, Elements.PresentableElement, Elements.Localizable {
   final public let paymentMethod: Elements.PaymentMethod
-  weak public var delegate: Elements.PaymentComponentDelegate?
+  weak public var delegate: Elements.PaymentElementDelegate?
   public var viewController: UIKit.UIViewController {
     get
     set
   }
   public var localizationParameters: Elements.LocalizationParameters?
-  final public let style: Elements.FormComponentStyle
+  final public let style: Elements.FormElementStyle
   final public let requiresModalPresentation: Swift.Bool
-  final public let configuration: Elements.AbstractPersonalInformationComponent.Configuration
-  public init(paymentMethod: Elements.PaymentMethod, configuration: Elements.AbstractPersonalInformationComponent.Configuration, style: Elements.FormComponentStyle = FormComponentStyle())
+  final public let configuration: Elements.AbstractPersonalInformationElement.Configuration
+  public init(paymentMethod: Elements.PaymentMethod, configuration: Elements.AbstractPersonalInformationElement.Configuration, style: Elements.FormElementStyle = FormElementStyle())
   public var firstNameItem: Elements.FormTextInputItem? {
     get
   }
@@ -1558,7 +1901,7 @@ public struct CardPaymentMethod : Elements.AnyCardPaymentMethod {
   }
   public let cardData: [Elements.SupportedCardData]
   public init(from decoder: Swift.Decoder) throws
-  public func buildComponent(using builder: Elements.PaymentComponentBuilder) -> Elements.PaymentComponent?
+  public func buildElement(using builder: Elements.PaymentElementBuilder) -> Elements.PaymentElement?
   public init(type: Swift.String, name: Swift.String, fundingSource: Elements.CardFundingSource?, cardData: [Elements.SupportedCardData])
 }
 public struct StoredCardPaymentMethod : Elements.StoredPaymentMethod, Elements.AnyCardPaymentMethod {
@@ -1573,7 +1916,7 @@ public struct StoredCardPaymentMethod : Elements.StoredPaymentMethod, Elements.A
     get
   }
   public func localizedDisplayInformation(using parameters: Elements.LocalizationParameters?) -> Elements.DisplayInformation
-  public func buildComponent(using builder: Elements.PaymentComponentBuilder) -> Elements.PaymentComponent?
+  public func buildElement(using builder: Elements.PaymentElementBuilder) -> Elements.PaymentElement?
   public let supportedShopperInteractions: [Elements.ShopperInteraction]
   public let brand: Swift.String
   public let lastFour: Swift.String
@@ -1620,6 +1963,22 @@ extension UIProgressView {
 public protocol DeviceDependant {
   static func isDeviceSupported() -> Swift.Bool
 }
+extension ApplePayElement : PassKit.PKPaymentAuthorizationViewControllerDelegate {
+  @objc dynamic public func paymentAuthorizationViewControllerDidFinish(_ controller: PassKit.PKPaymentAuthorizationViewController)
+  @objc dynamic public func paymentAuthorizationViewController(_ controller: PassKit.PKPaymentAuthorizationViewController, didAuthorizePayment payment: PassKit.PKPayment, completion: @escaping (PassKit.PKPaymentAuthorizationStatus) -> Swift.Void)
+}
+extension ApplePayElement {
+  public struct Configuration {
+    public var payment: Elements.Payment
+    public let paymentMethod: Elements.ApplePayPaymentMethod
+    public var summaryItems: [PassKit.PKPaymentSummaryItem]
+    public var merchantIdentifier: Swift.String
+    public var merchantName: Swift.String
+    public var requiredBillingContactFields: Swift.Set<PassKit.PKContactField>
+    public var requiredShippingContactFields: Swift.Set<PassKit.PKContactField>
+    public init(payment: Elements.Payment, paymentMethod: Elements.ApplePayPaymentMethod, summaryItems: [PassKit.PKPaymentSummaryItem], merchantIdentifier: Swift.String, merchantName: Swift.String, requiredBillingContactFields: Swift.Set<PassKit.PKContactField> = [], requiredShippingContactFields: Swift.Set<PassKit.PKContactField> = [])
+  }
+}
 public protocol Details : Swift.Encodable {
 }
 extension Details {
@@ -1646,6 +2005,22 @@ public struct ProgressViewStyle : Elements.ViewStyle {
   public let trackTintColor: UIKit.UIColor
   public var backgroundColor: UIKit.UIColor
   public init(progressTintColor: UIKit.UIColor, trackTintColor: UIKit.UIColor)
+}
+public protocol AnyAPIServiceProvider : Elements.Element {
+  func chargeTransaction(data: Elements.ChargeData, completion: @escaping (Swift.Result<Elements.ChargeAPIResponse, Swift.Error>) -> Swift.Void)
+  func handleCreatePayment(data: Elements.PaymentElementData, completion: @escaping (Swift.Result<Elements.CreatePaymentMethodResponse, Swift.Error>) -> Swift.Void)
+  func handleTokenizeCard(data: Elements.PaymentElementData, completion: @escaping (Swift.Result<Elements.VaultTokens, Swift.Error>) -> Swift.Void)
+  func handlePaymentsSetup(data: Elements.PaymentElementData, token: Swift.String?, completion: @escaping (Swift.Result<Elements.PaymentsResponse, Swift.Error>) -> Swift.Void)
+  func fetchPaymentMethods(completion: @escaping (Swift.Result<Elements.PaymentMethods, Swift.Error>) -> Swift.Void)
+}
+public class APIServiceProvider : Elements.AnyAPIServiceProvider {
+  public init(environment: Elements.Environment)
+  public func chargeTransaction(data: Elements.ChargeData, completion: @escaping (Swift.Result<Elements.ChargeAPIResponse, Swift.Error>) -> Swift.Void)
+  public func handleCreatePayment(data: Elements.PaymentElementData, completion: @escaping (Swift.Result<Elements.CreatePaymentMethodResponse, Swift.Error>) -> Swift.Void)
+  public func handleTokenizeCard(data: Elements.PaymentElementData, completion: @escaping (Swift.Result<Elements.VaultTokens, Swift.Error>) -> Swift.Void)
+  public func handlePaymentsSetup(data: Elements.PaymentElementData, token: Swift.String?, completion: @escaping (Swift.Result<Elements.PaymentsResponse, Swift.Error>) -> Swift.Void)
+  public func fetchPaymentMethods(completion: @escaping (Swift.Result<Elements.PaymentMethods, Swift.Error>) -> Swift.Void)
+  @objc deinit
 }
 public protocol AnyRetryAPIClient : Elements.APIClientProtocol {
   typealias ShouldRetryHandler<T> = (Swift.Result<T, Swift.Error>) -> Swift.Bool
@@ -1686,24 +2061,44 @@ final public class FormErrorItem : Elements.FormItem, Elements.Hidable {
   @objc override dynamic open func becomeFirstResponder() -> Swift.Bool
   @objc override dynamic open func resignFirstResponder() -> Swift.Bool
   @objc public func numberOfComponents(in pickerView: UIKit.UIPickerView) -> Swift.Int
-  @objc public func pickerView(_ pickerView: UIKit.UIPickerView, numberOfRowsInComponent component: Swift.Int) -> Swift.Int
-  @objc public func pickerView(_ pickerView: UIKit.UIPickerView, titleForRow row: Swift.Int, forComponent component: Swift.Int) -> Swift.String?
-  @objc public func pickerView(_ pickerView: UIKit.UIPickerView, didSelectRow row: Swift.Int, inComponent component: Swift.Int)
+  @objc public func pickerView(_ pickerView: UIKit.UIPickerView, numberOfRowsInComponent element: Swift.Int) -> Swift.Int
+  @objc public func pickerView(_ pickerView: UIKit.UIPickerView, titleForRow row: Swift.Int, forComponent element: Swift.Int) -> Swift.String?
+  @objc public func pickerView(_ pickerView: UIKit.UIPickerView, didSelectRow row: Swift.Int, inComponent element: Swift.Int)
   @objc deinit
 }
-public enum ComponentError : Swift.Error {
+public enum ElementError : Swift.Error {
   case cancelled
   case redirectTokenDoesNotExsits
   case paymentMethodNotSupported
-  public static func == (a: Elements.ComponentError, b: Elements.ComponentError) -> Swift.Bool
+  public static func == (a: Elements.ElementError, b: Elements.ElementError) -> Swift.Bool
   public var hashValue: Swift.Int {
     get
   }
   public func hash(into hasher: inout Swift.Hasher)
 }
+final public class WalletsElement : Elements.PaymentElement, Elements.PresentableElement, Elements.LoadingElement {
+  final public var paymentMethod: Elements.PaymentMethod {
+    get
+  }
+  weak final public var walletsDelegate: Elements.WalletsElementDelegate?
+  weak final public var delegate: Elements.PaymentElementDelegate?
+  final public let style: Elements.ListElementStyle
+  public init(paymentMethod: Elements.WalletsPaymentMethod, style: Elements.ListElementStyle = ListElementStyle())
+  final public var viewController: UIKit.UIViewController {
+    get
+  }
+  final public func stopLoading()
+  final public var requiresModalPresentation: Swift.Bool
+  @objc deinit
+}
+extension WalletsElement : Elements.TrackableElement {
+}
+public protocol WalletsElementDelegate : AnyObject {
+  func didSelect(_ paymentMethod: Elements.PaymentMethod, in walletsElement: Elements.WalletsElement)
+}
 @_hasMissingDesignatedInitializers public class Analytics {
   public enum Flavor : Swift.String {
-    case components, dropin
+    case elements, dropin
     public typealias RawValue = Swift.String
     public init?(rawValue: Swift.String)
     public var rawValue: Swift.String {
@@ -1711,13 +2106,13 @@ public enum ComponentError : Swift.Error {
     }
   }
   public struct Event {
-    public var component: Swift.String
+    public var element: Swift.String
     public var flavor: Elements.Analytics.Flavor
     public var environment: Elements.Environment
-    public init(component: Swift.String, flavor: Elements.Analytics.Flavor, environment: Elements.Environment)
+    public init(element: Swift.String, flavor: Elements.Analytics.Flavor, environment: Elements.Environment)
   }
   public static var isEnabled: Swift.Bool
-  public static func sendEvent(component: Swift.String, flavor: Elements.Analytics.Flavor, environment: Elements.Environment)
+  public static func sendEvent(element: Swift.String, flavor: Elements.Analytics.Flavor, environment: Elements.Environment)
   @objc deinit
 }
 final public class ThemeManager<T> where T : Elements.Theme {
@@ -1797,6 +2192,12 @@ public protocol TintableStyle : Elements.ViewStyle {
   required public init(item: Elements.FormTextInputItem)
   @objc deinit
 }
+@_inheritsConvenienceInitializers final public class CardNumberFormatter : Elements.NumericFormatter {
+  final public var cardType: Elements.CardType?
+  override final public func formattedValue(for value: Swift.String) -> Swift.String
+  override public init()
+  @objc deinit
+}
 @objc public protocol StripeFormEncodable : ObjectiveC.NSObjectProtocol {
   @objc static func rootObjectName() -> Swift.String?
   @objc static func propertyNamesToFormFieldNamesMapping() -> [Swift.String : Swift.String]
@@ -1813,7 +2214,7 @@ public enum TokenizationVaultOption : Swift.String, Swift.Codable {
 }
 public protocol ElementsAPIClientType : AnyObject {
   func tokenizeCard(data: Elements.ElementsCardParams, idempotencyKey: Swift.String, vaultOption: Elements.TokenizationVaultOption, completion: @escaping (Swift.Result<Elements.VaultTokens, Swift.Error>) -> Swift.Void)
-  func performPaymentsSetup(data: Elements.PaymentComponentData, token: Swift.String?, config: Elements.PaymentSetupModel, completion: @escaping (Swift.Result<Elements.PaymentsResponse, Swift.Error>) -> Swift.Void)
+  func performPaymentsSetup(data: Elements.PaymentElementData, token: Swift.String?, config: Elements.PaymentSetupModel, completion: @escaping (Swift.Result<Elements.PaymentsResponse, Swift.Error>) -> Swift.Void)
 }
 public class ElementsAPIClientConfiguration {
   final public let environment: Elements.Environment
@@ -1825,7 +2226,7 @@ public class ElementsAPIClientConfiguration {
 public class ElementsAPIClient : Elements.ElementsAPIClientType {
   public init(config: Elements.ElementsAPIClientConfiguration)
   public func tokenizeCard(data: Elements.ElementsCardParams, idempotencyKey: Swift.String = UUID().uuidString, vaultOption: Elements.TokenizationVaultOption = .reusable, completion: @escaping (Swift.Result<Elements.VaultTokens, Swift.Error>) -> Swift.Void)
-  public func performPaymentsSetup(data: Elements.PaymentComponentData, token: Swift.String?, config: Elements.PaymentSetupModel, completion: @escaping (Swift.Result<Elements.PaymentsResponse, Swift.Error>) -> Swift.Void)
+  public func performPaymentsSetup(data: Elements.PaymentElementData, token: Swift.String?, config: Elements.PaymentSetupModel, completion: @escaping (Swift.Result<Elements.PaymentsResponse, Swift.Error>) -> Swift.Void)
   @objc deinit
 }
 extension ElementsScope where Base : UIKit.UIView {
@@ -1857,6 +2258,12 @@ public enum APIErrorType : Swift.String, Swift.Decodable {
 }
 extension UILabel {
   convenience public init(style: Elements.TextStyle)
+}
+public struct RedirectElementStyle {
+  public let preferredBarTintColor: UIKit.UIColor?
+  public let preferredControlTintColor: UIKit.UIColor
+  public let modalPresentationStyle: UIKit.UIModalPresentationStyle
+  public init(preferredBarTintColor: UIKit.UIColor? = nil, preferredControlTintColor: UIKit.UIColor = .systemBlue, modalPresentationStyle: UIKit.UIModalPresentationStyle = .formSheet)
 }
 public protocol ThemePersistor {
   func retreiveThemeId() -> Swift.String?
@@ -1926,6 +2333,12 @@ public struct BasePickerElement<ElementType> : Elements.PickerElement where Elem
   }
   @objc deinit
 }
+@_hasMissingDesignatedInitializers final public class CardExpiryDateValidator : Elements.Validator {
+  public init()
+  final public func isValid(_ string: Swift.String) -> Swift.Bool
+  final public func maximumLength(for value: Swift.String) -> Swift.Int
+  @objc deinit
+}
 public struct IssuerListPaymentMethod : Elements.PaymentMethod {
   public let type: Swift.String
   public let name: Swift.String
@@ -1936,7 +2349,7 @@ public struct IssuerListPaymentMethod : Elements.PaymentMethod {
     public init(from decoder: Swift.Decoder) throws
   }
   public init(from decoder: Swift.Decoder) throws
-  public func buildComponent(using builder: Elements.PaymentComponentBuilder) -> Elements.PaymentComponent?
+  public func buildElement(using builder: Elements.PaymentElementBuilder) -> Elements.PaymentElement?
 }
 public struct VaultTokens {
   public let elementsToken: Elements.ElementsToken?
@@ -1958,18 +2371,18 @@ public protocol Localizable {
 public protocol Cancellable : AnyObject {
   func didCancel()
 }
-public protocol PresentableComponent : Elements.Component {
+public protocol PresentableElement : Elements.Element {
   var requiresModalPresentation: Swift.Bool { get }
   var viewController: UIKit.UIViewController { get }
 }
-extension PresentableComponent {
+extension PresentableElement {
   public var requiresModalPresentation: Swift.Bool {
     get
   }
 }
-public protocol TrackableComponent : Elements.Component, Elements.PaymentMethodAware, Elements.ViewControllerDelegate {
+public protocol TrackableElement : Elements.Element, Elements.PaymentMethodAware, Elements.ViewControllerDelegate {
 }
-extension TrackableComponent {
+extension TrackableElement {
   public func viewDidLoad(viewController: UIKit.UIViewController)
   public func viewDidAppear(viewController: UIKit.UIViewController)
 }
@@ -1984,7 +2397,7 @@ open class LengthValidator : Elements.Validator {
 public struct RedirectPaymentMethod : Elements.PaymentMethod {
   public let type: Swift.String
   public let name: Swift.String
-  public func buildComponent(using builder: Elements.PaymentComponentBuilder) -> Elements.PaymentComponent?
+  public func buildElement(using builder: Elements.PaymentElementBuilder) -> Elements.PaymentElement?
   public init(type: Swift.String, name: Swift.String)
   public init(from decoder: Swift.Decoder) throws
 }
@@ -1993,7 +2406,7 @@ public struct StoredRedirectPaymentMethod : Elements.StoredPaymentMethod {
   public let name: Swift.String
   public let identifier: Swift.String
   public let supportedShopperInteractions: [Elements.ShopperInteraction]
-  public func buildComponent(using builder: Elements.PaymentComponentBuilder) -> Elements.PaymentComponent?
+  public func buildElement(using builder: Elements.PaymentElementBuilder) -> Elements.PaymentElement?
   public init(from decoder: Swift.Decoder) throws
 }
 @objc @_hasMissingDesignatedInitializers final public class SecuredViewController : UIKit.UIViewController {
@@ -2021,7 +2434,7 @@ public struct StoredPayPalPaymentMethod : Elements.StoredPaymentMethod {
   }
   public func localizedDisplayInformation(using parameters: Elements.LocalizationParameters?) -> Elements.DisplayInformation
   public let emailAddress: Swift.String
-  public func buildComponent(using builder: Elements.PaymentComponentBuilder) -> Elements.PaymentComponent?
+  public func buildElement(using builder: Elements.PaymentElementBuilder) -> Elements.PaymentElement?
   public init(from decoder: Swift.Decoder) throws
 }
 public struct UnknownError : Swift.Error, Foundation.LocalizedError {
@@ -2035,12 +2448,65 @@ public struct ThreeDS2ChallengeAction : Swift.Decodable {
   public init(challengeToken: Swift.String, authorisationToken: Swift.String? = nil, paymentData: Swift.String?)
   public init(from decoder: Swift.Decoder) throws
 }
+public enum CardType : Swift.String, Swift.CaseIterable, Swift.Codable {
+  case accel
+  case alphaBankBonusMasterCard
+  case alphaBankBonusVISA
+  case argencard
+  case americanExpress
+  case bcmc
+  case bijenkorfCard
+  case cabal
+  case carteBancaire
+  case cencosud
+  case chequeDejeneur
+  case chinaUnionPay
+  case codensa
+  case creditUnion24
+  case dankort
+  case dankortVISA
+  case diners
+  case discover
+  case elo
+  case forbrugsforeningen
+  case hiper
+  case hipercard
+  case jcb
+  case karenMillen
+  case kcp
+  case laser
+  case maestro
+  case maestroUK
+  case masterCard
+  case mir
+  case naranja
+  case netplus
+  case nyce
+  case oasis
+  case pulse
+  case shopping
+  case solo
+  case star
+  case troy
+  case uatp
+  case visa
+  case warehouse
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+  public typealias AllCases = [Elements.CardType]
+  public static var allCases: [Elements.CardType] {
+    get
+  }
+}
 public protocol PaymentMethod : Swift.Decodable {
   var type: Swift.String { get }
   var name: Swift.String { get }
   var displayInformation: Elements.DisplayInformation { get }
   func localizedDisplayInformation(using parameters: Elements.LocalizationParameters?) -> Elements.DisplayInformation
-  func buildComponent(using builder: Elements.PaymentComponentBuilder) -> Elements.PaymentComponent?
+  func buildElement(using builder: Elements.PaymentElementBuilder) -> Elements.PaymentElement?
 }
 public struct DisplayInformation {
   public var title: Swift.String
@@ -2059,6 +2525,11 @@ extension PaymentMethod {
 public protocol StoredPaymentMethod : Elements.PaymentMethod {
   var identifier: Swift.String { get }
   var supportedShopperInteractions: [Elements.ShopperInteraction] { get }
+}
+public struct ActionElementData {
+  public let details: Elements.AdditionalDetails
+  public let paymentData: Swift.String?
+  public init(details: Elements.AdditionalDetails, paymentData: Swift.String?)
 }
 @objc @_hasMissingDesignatedInitializers final public class CopyLabelView : UIKit.UIView, Elements.Localizable {
   final public var localizationParameters: Elements.LocalizationParameters?
@@ -2109,7 +2580,7 @@ public struct PaymentsSetupRequest : Elements.Request {
   public var queryParameters: [Foundation.URLQueryItem]
   public var headers: [Swift.String : Swift.String]
   public func encode(to encoder: Swift.Encoder) throws
-  public init(data: Elements.PaymentComponentData, encodedToken: Swift.String?, config: Elements.PaymentSetupModel)
+  public init(data: Elements.PaymentElementData, encodedToken: Swift.String?, config: Elements.PaymentSetupModel)
 }
 public struct BrowserInfo : Swift.Encodable {
   public var userAgent: Swift.String? {
@@ -2125,6 +2596,11 @@ extension ElementsScope where Base : UIKit.UIView {
   public func anchore(inside margines: UIKit.UILayoutGuide, with padding: UIKit.UIEdgeInsets = .zero) -> [UIKit.NSLayoutConstraint]
   public func wrapped(with insets: UIKit.UIEdgeInsets = .zero) -> UIKit.UIView
 }
+@_inheritsConvenienceInitializers final public class CardExpiryDateFormatter : Elements.NumericFormatter {
+  override final public func formattedValue(for value: Swift.String) -> Swift.String
+  override public init()
+  @objc deinit
+}
 public struct Environment : Elements.APIEnvironment {
   public var baseURL: Foundation.URL
   public var headers: [Swift.String : Swift.String] {
@@ -2137,6 +2613,34 @@ public struct Environment : Elements.APIEnvironment {
   public static func production(clientToken: Swift.String) -> Elements.Environment
   public static let unknown: Elements.Environment
   public init(baseURL: Foundation.URL? = nil, clientToken: Swift.String)
+}
+final public class ElementsActionHandler : Elements.ActionElement, Elements.Localizable {
+  weak final public var delegate: Elements.ActionElementDelegate?
+  weak final public var presentationDelegate: Elements.PresentationDelegate?
+  final public var redirectElementStyle: Elements.RedirectElementStyle?
+  final public var awaitElementStyle: Elements.AwaitElementStyle?
+  final public var localizationParameters: Elements.LocalizationParameters?
+  public init()
+  final public func handle(_ action: Elements.Action)
+  @objc deinit
+}
+public struct CardBrand : Swift.Decodable {
+  public let type: Elements.CardType
+  public let isSupported: Swift.Bool
+  public enum CVCPolicy : Swift.String, Swift.Decodable {
+    case required
+    case optional
+    case hidden
+    public typealias RawValue = Swift.String
+    public init?(rawValue: Swift.String)
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public init(from decoder: Swift.Decoder) throws
+}
+extension CardBrand : Swift.Equatable {
+  public static func == (a: Elements.CardBrand, b: Elements.CardBrand) -> Swift.Bool
 }
 public struct SupportedCardData : Swift.Decodable {
   public let brand: Swift.String
@@ -2175,8 +2679,8 @@ extension ElementsScope where Base == Swift.String {
     get
   }
   public func truncate(to length: Swift.Int) -> Swift.String
-  public func components(withLengths lengths: [Swift.Int]) -> [Swift.String]
-  public func components(withLength length: Swift.Int) -> [Swift.String]
+  public func elements(withLengths lengths: [Swift.Int]) -> [Swift.String]
+  public func elements(withLength length: Swift.Int) -> [Swift.String]
   public subscript(position: Swift.Int) -> Swift.String {
     get
   }
@@ -2241,9 +2745,15 @@ public struct StripeVaultToken : Elements.Response {
   public let type: Swift.String
   public init(from decoder: Swift.Decoder) throws
 }
+extension Elements.ApplePayElement.Error : Swift.Equatable {}
+extension Elements.ApplePayElement.Error : Swift.Hashable {}
+extension Elements.RedirectElement.Error : Swift.Equatable {}
+extension Elements.RedirectElement.Error : Swift.Hashable {}
 extension Elements.BillingAddressFields : Swift.Equatable {}
 extension Elements.BillingAddressFields : Swift.Hashable {}
 extension Elements.BillingAddressFields : Swift.RawRepresentable {}
+extension Elements.CardElement.AddressFormType : Swift.Equatable {}
+extension Elements.CardElement.AddressFormType : Swift.Hashable {}
 extension Elements.PhoneNumberPaymentMethod : Swift.Equatable {}
 extension Elements.PhoneNumberPaymentMethod : Swift.Hashable {}
 extension Elements.SupportedPspType : Swift.Equatable {}
@@ -2258,6 +2768,8 @@ extension Elements.CardFundingSource : Swift.RawRepresentable {}
 extension Elements.ThreeDS2Action.ActionType : Swift.Equatable {}
 extension Elements.ThreeDS2Action.ActionType : Swift.Hashable {}
 extension Elements.ThreeDS2Action.ActionType : Swift.RawRepresentable {}
+extension Elements.CardElement.Error : Swift.Equatable {}
+extension Elements.CardElement.Error : Swift.Hashable {}
 extension Elements.ShopperInteraction : Swift.Equatable {}
 extension Elements.ShopperInteraction : Swift.Hashable {}
 extension Elements.ShopperInteraction : Swift.RawRepresentable {}
@@ -2275,8 +2787,8 @@ extension Elements.AwaitPaymentMethod : Swift.Hashable {}
 extension Elements.AwaitPaymentMethod : Swift.RawRepresentable {}
 extension Elements.ThemeType : Swift.Equatable {}
 extension Elements.ThemeType : Swift.Hashable {}
-extension Elements.ComponentError : Swift.Equatable {}
-extension Elements.ComponentError : Swift.Hashable {}
+extension Elements.ElementError : Swift.Equatable {}
+extension Elements.ElementError : Swift.Hashable {}
 extension Elements.Analytics.Flavor : Swift.Equatable {}
 extension Elements.Analytics.Flavor : Swift.Hashable {}
 extension Elements.Analytics.Flavor : Swift.RawRepresentable {}
@@ -2288,6 +2800,12 @@ extension Elements.TokenizationVaultOption : Swift.RawRepresentable {}
 extension Elements.APIErrorType : Swift.Equatable {}
 extension Elements.APIErrorType : Swift.Hashable {}
 extension Elements.APIErrorType : Swift.RawRepresentable {}
+extension Elements.CardType : Swift.Equatable {}
+extension Elements.CardType : Swift.Hashable {}
+extension Elements.CardType : Swift.RawRepresentable {}
+extension Elements.CardBrand.CVCPolicy : Swift.Equatable {}
+extension Elements.CardBrand.CVCPolicy : Swift.Hashable {}
+extension Elements.CardBrand.CVCPolicy : Swift.RawRepresentable {}
 extension Elements.SupportedCardData.CodingKeys : Swift.Equatable {}
 extension Elements.SupportedCardData.CodingKeys : Swift.Hashable {}
 extension Elements.SupportedCardData.CodingKeys : Swift.RawRepresentable {}
