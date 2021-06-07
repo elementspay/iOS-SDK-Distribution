@@ -6,7 +6,7 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		iZ9LYYdZFf4g+Uh+pnELNodFuIg=
+		R7+GPE5Cc5BLTtL8Ju1j8iKHZJM=
 		</data>
 		<key>Headers/Elements-Swift.h</key>
 		<data>
@@ -18,7 +18,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		0h7nnoRsO3BLA1StPD27PHWRHRU=
+		Wj2yS4D5kAH9qt13llHXYyBRym4=
 		</data>
 		<key>Localizable.strings</key>
 		<data>
@@ -34,7 +34,7 @@
 		</data>
 		<key>Modules/Elements.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		/6sZMqFjy3KdmcREOeZTz8Al0do=
+		kHTdUf2IdVTOhZ17lwmZQlTmJho=
 		</data>
 		<key>Modules/Elements.swiftmodule/arm64.swiftdoc</key>
 		<data>
@@ -46,7 +46,7 @@
 		</data>
 		<key>Modules/Elements.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		/6sZMqFjy3KdmcREOeZTz8Al0do=
+		kHTdUf2IdVTOhZ17lwmZQlTmJho=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -59,7 +59,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			w2sueZY20RjXoz/NjqtFByuppyTV2G7rumecgT/+NkM=
+			ffccePjhpQo1efDjJEmGTOLZ+HcO6qAbcyrVYTyqyZU=
 			</data>
 		</dict>
 		<key>Headers/Elements-Swift.h</key>
@@ -101,7 +101,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			5AIdPju31fZpiHttzlbY54Ar61bR70rDCGqvFSkddn8=
+			VBTtHRX7je6w7wsJcZ8r8QUsdhY1ked/xXDb+30BWlA=
 			</data>
 		</dict>
 		<key>Modules/Elements.swiftmodule/arm64.swiftdoc</key>
@@ -122,7 +122,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			5AIdPju31fZpiHttzlbY54Ar61bR70rDCGqvFSkddn8=
+			VBTtHRX7je6w7wsJcZ8r8QUsdhY1ked/xXDb+30BWlA=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
