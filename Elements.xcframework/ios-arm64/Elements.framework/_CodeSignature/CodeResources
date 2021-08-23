@@ -6,47 +6,55 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		xL3dLfCn5e55ICWgFSpU35FgQQA=
+		enDheAePI5+xxwvOPODhLyA5k18=
+		</data>
+		<key>AutoEquatable.stencil</key>
+		<data>
+		d+L1MvRrFnVlq8hLn/Pa25NrBHg=
+		</data>
+		<key>AutoHashable.stencil</key>
+		<data>
+		wWuua+K+AMSE2ZHm/l5iSyXvpJk=
 		</data>
 		<key>Headers/Elements-Swift.h</key>
 		<data>
-		MOUHdD9mXQ4RfKPgQZo8TGThCF4=
+		s54ZnkehV7+SMWhh3Ule8kS5Kzs=
 		</data>
 		<key>Headers/Elements.h</key>
 		<data>
-		2uX9UcDGyaJqivZ/HHacq6V5QSI=
+		KhSOBESY0LtyZj23Gz0qDBp0Pgg=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		2r+vrf/A7TGdibI3Ey4xEUkCQLI=
+		2ohQrkUiHsAfSsLr05kGt9ho19M=
 		</data>
 		<key>Localizable.strings</key>
 		<data>
-		pUI0rog+Cix84uE8Q5eHFL5l2OI=
+		eyES/eLmCggeAZXnBUHnJodcYuc=
 		</data>
 		<key>Modules/Elements.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
-		CCLHdSRguK7n1YKwU+6DpHPp+qQ=
+		XrTQPqMmgX3GKqCMB+hlPOpWvyM=
 		</data>
 		<key>Modules/Elements.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<data>
-		NMrnrxlpg33NEhrtI9o51RO0qBM=
+		0WcSjgvzbGA7ScwkwUmDL0YLrm0=
 		</data>
 		<key>Modules/Elements.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		5jZQ758fAcOuwm9IFV0clsypcVk=
+		/4lXu8Z5gk+/Ds6ArEYmrQ7kPJw=
 		</data>
 		<key>Modules/Elements.swiftmodule/arm64.swiftdoc</key>
 		<data>
-		CCLHdSRguK7n1YKwU+6DpHPp+qQ=
+		XrTQPqMmgX3GKqCMB+hlPOpWvyM=
 		</data>
 		<key>Modules/Elements.swiftmodule/arm64.swiftinterface</key>
 		<data>
-		NMrnrxlpg33NEhrtI9o51RO0qBM=
+		0WcSjgvzbGA7ScwkwUmDL0YLrm0=
 		</data>
 		<key>Modules/Elements.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		5jZQ758fAcOuwm9IFV0clsypcVk=
+		/4lXu8Z5gk+/Ds6ArEYmrQ7kPJw=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -59,70 +67,84 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			ZHnCug6Cd5QX/ml6QGDVeQJgI7YAwAUAiJH8Upf7jqE=
+			Wdrk52AaUZ3ku0RdRzoaJZqTkp6ZcdY8HF7RgT+bZmk=
+			</data>
+		</dict>
+		<key>AutoEquatable.stencil</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			s2h4HyrvuRxFduHJ49AxPcNccNvK+mUmOoZrBTFlhHk=
+			</data>
+		</dict>
+		<key>AutoHashable.stencil</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			lLup6LdXw4dmiPY4RCakzJsSVdZdNcpq48ioZNymbo4=
 			</data>
 		</dict>
 		<key>Headers/Elements-Swift.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			2nDuCXlce88Q3aBccQy3+LWzTn2hNOGPSCDgbrKtQX4=
+			Y6p44N6hrjva1cT6ls66DIgH0qFG3MMumxFUiMYjPuE=
 			</data>
 		</dict>
 		<key>Headers/Elements.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Xl7rMRG8q7K87mZcVaoSaKtLyaamMaU2B2+JkeblGlw=
+			mLUiFzufJLjCAJu5lKBb4diNlwyjFvuE1fLKRBjvZdg=
 			</data>
 		</dict>
 		<key>Localizable.strings</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			hCDxnhM0w6qyY4obolwakKTF1/BrrV4vBf2L5/lpnNA=
+			Pvgou0MmNvkEokqrXRyAdvjXj92P79jL4ITNeDJXpzM=
 			</data>
 		</dict>
 		<key>Modules/Elements.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			A4gPdgFXHMak60WifmvGNde/Im58CkJVjNbI2/P9ECE=
+			MULWCHfTxrxxwbEL22RRbOhNq91AseYE8i+0vz2ABO0=
 			</data>
 		</dict>
 		<key>Modules/Elements.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			8o7HbTrJ4i11CvdwZfuCPf2zWJy5yUe/Klj+KamgwyY=
+			1kpQZljsxr+RkbJ0ikRmZusgLfBkKYmT/TSlP837OYo=
 			</data>
 		</dict>
 		<key>Modules/Elements.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			jestcwUE4AgWbXJSsv257W9jH1vY227JlkBgIfOJs14=
+			ukZB3ykL8FPozbmMoCKBmcXuy67wQ69pckX2BQbMwuQ=
 			</data>
 		</dict>
 		<key>Modules/Elements.swiftmodule/arm64.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			A4gPdgFXHMak60WifmvGNde/Im58CkJVjNbI2/P9ECE=
+			MULWCHfTxrxxwbEL22RRbOhNq91AseYE8i+0vz2ABO0=
 			</data>
 		</dict>
 		<key>Modules/Elements.swiftmodule/arm64.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			8o7HbTrJ4i11CvdwZfuCPf2zWJy5yUe/Klj+KamgwyY=
+			1kpQZljsxr+RkbJ0ikRmZusgLfBkKYmT/TSlP837OYo=
 			</data>
 		</dict>
 		<key>Modules/Elements.swiftmodule/arm64.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			jestcwUE4AgWbXJSsv257W9jH1vY227JlkBgIfOJs14=
+			ukZB3ykL8FPozbmMoCKBmcXuy67wQ69pckX2BQbMwuQ=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

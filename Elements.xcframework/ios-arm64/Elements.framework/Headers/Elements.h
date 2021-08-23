@@ -14,5 +14,3 @@ FOUNDATION_EXPORT double ElementsVersionNumber;
 FOUNDATION_EXPORT const unsigned char ElementsVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <Elements/PublicHeader.h>
-
-

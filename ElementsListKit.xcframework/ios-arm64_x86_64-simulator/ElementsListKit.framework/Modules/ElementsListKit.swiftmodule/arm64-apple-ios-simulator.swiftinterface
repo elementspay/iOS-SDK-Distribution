@@ -1,0 +1,307 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
+// swift-module-flags: -target arm64-apple-ios11.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name ElementsListKit
+@_exported import ElementsListKit
+import Foundation
+import Swift
+import UIKit
+public enum ListCellSize : Swift.Equatable {
+  case autolayout
+  case explicit(size: CoreGraphics.CGSize)
+  case relative
+  public static func == (a: ElementsListKit.ListCellSize, b: ElementsListKit.ListCellSize) -> Swift.Bool
+}
+public protocol ListCellModel {
+  var identifier: Swift.String { get }
+  var cellType: ElementsListKit.ListCollectionViewCell.Type { get }
+  func identical(to model: ElementsListKit.ListCellModel) -> Swift.Bool
+  func size(constrainedTo containerSize: CoreGraphics.CGSize) -> ElementsListKit.ListCellSize
+}
+extension ListCellModel {
+  public var typeDescription: Swift.String {
+    get
+  }
+}
+extension ListCellModel where Self : AnyObject {
+  public var typeIdentifier: Swift.String {
+    get
+  }
+  public var cellTypeFromModelName: ElementsListKit.ListCollectionViewCell.Type {
+    get
+  }
+}
+extension ListCellModel where Self : Swift.Equatable {
+  public func identical(to model: ElementsListKit.ListCellModel) -> Swift.Bool
+}
+public protocol ListReorderableCellModel {
+  var reorderable: Swift.Bool { get }
+}
+public protocol ListSelectableCellModelWrapper {
+  func selected(at indexPath: Foundation.IndexPath)
+}
+public protocol ListSelectableCellModel : ElementsListKit.ListSelectableCellModelWrapper {
+  associatedtype SelectableModelType : ElementsListKit.ListCellModel
+  typealias SelectionAction = (Self.SelectableModelType, Foundation.IndexPath) -> Swift.Void
+  var selectionAction: Self.SelectionAction? { get }
+}
+extension ListSelectableCellModel {
+  public func selected(at indexPath: Foundation.IndexPath)
+}
+public protocol ListHighlightableCellModelWrapper {
+  var highlightEnabled: Swift.Bool { get }
+  var highlightColor: UIKit.UIColor? { get set }
+  func highlighted(at indexPath: Foundation.IndexPath)
+  func unhighlighted(at indexPath: Foundation.IndexPath)
+}
+public protocol ListHighlightableCellModel : ElementsListKit.ListHighlightableCellModelWrapper {
+  associatedtype HighlightableModelType : ElementsListKit.ListCellModel
+  typealias HighlightAction = (Self.HighlightableModelType, Foundation.IndexPath) -> Swift.Void
+  var highlightedAction: Self.HighlightAction? { get }
+  var unhighlightedAction: Self.HighlightAction? { get }
+}
+extension ListHighlightableCellModel {
+  public func highlighted(at indexPath: Foundation.IndexPath)
+  public func unhighlighted(at indexPath: Foundation.IndexPath)
+}
+public protocol ListTypedCellModel : ElementsListKit.ListCellModel {
+  associatedtype CellType : UIKit.UICollectionViewCell, ElementsListKit.ListCell
+  func identical(to model: Self) -> Swift.Bool
+}
+extension ListTypedCellModel {
+  public var cellType: ElementsListKit.ListCollectionViewCell.Type {
+    get
+  }
+  public func identical(to other: ElementsListKit.ListCellModel) -> Swift.Bool
+}
+extension ListTypedCellModel where Self : Swift.Equatable {
+  public func identical(to model: Self) -> Swift.Bool
+}
+public struct ListSizeConstraints : Swift.Hashable {
+  public let containerSize: CoreGraphics.CGSize
+  public let sectionConstraints: ElementsListKit.ListSection.Constraints
+  public init(containerSize: CoreGraphics.CGSize, sectionConstraints: ElementsListKit.ListSection.Constraints)
+  public var adjustedContainerSize: CoreGraphics.CGSize {
+    get
+  }
+  public var inset: UIKit.UIEdgeInsets {
+    get
+  }
+  public var minimumLineSpacing: CoreGraphics.CGFloat {
+    get
+  }
+  public var minimumInteritemSpacing: CoreGraphics.CGFloat {
+    get
+  }
+  public var distribution: ElementsListKit.ListSection.Distribution {
+    get
+  }
+  public var scrollDirection: UIKit.UICollectionView.ScrollDirection {
+    get
+  }
+  public var hashValue: Swift.Int {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: ElementsListKit.ListSizeConstraints, b: ElementsListKit.ListSizeConstraints) -> Swift.Bool
+}
+public protocol ListController : AnyObject {
+  typealias Completion = (Swift.Bool) -> Swift.Void
+  var animationDelegate: ElementsListKit.ListControllerAnimationDelegate? { get set }
+  var reorderDelegate: ElementsListKit.ListControllerReorderDelegate? { get set }
+  var sizeDelegate: ElementsListKit.ListControllerSizeDelegate? { get set }
+  var scrollViewDelegate: UIKit.UIScrollViewDelegate? { get set }
+  var viewController: UIKit.UIViewController? { get set }
+  var collectionView: UIKit.UICollectionView? { get set }
+  var listSections: [ElementsListKit.ListSection] { get }
+  var centerCellModel: ElementsListKit.ListCellModel? { get }
+  func reloadData(completion: Self.Completion?)
+  func update(with listSections: [ElementsListKit.ListSection], animated: Swift.Bool, completion: Self.Completion?)
+  func removeCellModel(at indexPath: Foundation.IndexPath, animated: Swift.Bool, completion: Self.Completion?)
+  func willDisplay()
+  func didEndDisplaying()
+  func invalidateLayout()
+  func indexPath(for cellModel: ElementsListKit.ListCellModel) -> Foundation.IndexPath?
+  func cellModel(at indexPath: Foundation.IndexPath) -> ElementsListKit.ListCellModel?
+  func scrollTo(cellModel: ElementsListKit.ListCellModel, scrollPosition: UIKit.UICollectionView.ScrollPosition, animated: Swift.Bool)
+  func scroll(to scrollPosition: UIKit.UICollectionView.ScrollPosition, animated: Swift.Bool)
+  func size(of listSection: ElementsListKit.ListSection, containerSize: CoreGraphics.CGSize) -> CoreGraphics.CGSize
+  func size(of cellModel: ElementsListKit.ListCellModel, with constraints: ElementsListKit.ListSizeConstraints) -> CoreGraphics.CGSize
+}
+extension ListController {
+  public func reloadData()
+  public func update(with listSections: [ElementsListKit.ListSection], animated: Swift.Bool)
+  public func removeCellModel(at indexPath: Foundation.IndexPath, animated: Swift.Bool)
+}
+public protocol ListControllerAnimationDelegate : AnyObject {
+  func listController(_ listController: ElementsListKit.ListController, initialLayoutAttributes attributes: ElementsListKit.ListViewLayoutAttributes, for section: ElementsListKit.ListSection, at indexPath: Foundation.IndexPath) -> ElementsListKit.ListViewLayoutAttributes?
+  func listController(_ listController: ElementsListKit.ListController, finalLayoutAttributes attributes: ElementsListKit.ListViewLayoutAttributes, for section: ElementsListKit.ListSection, at indexPath: Foundation.IndexPath) -> ElementsListKit.ListViewLayoutAttributes?
+}
+public protocol ListControllerReorderDelegate : AnyObject {
+  func listController(_ listController: ElementsListKit.ListController, moved cellModel: ElementsListKit.ListCellModel, fromIndex: Swift.Int, toIndex: Swift.Int)
+}
+public protocol ListControllerSizeDelegate : AnyObject {
+  func listController(_ listController: ElementsListKit.ListController, sizeFor model: ElementsListKit.ListCellModel, at indexPath: Foundation.IndexPath, constrainedTo sizeConstraints: ElementsListKit.ListSizeConstraints) -> CoreGraphics.CGSize?
+}
+@objc @_inheritsConvenienceInitializers open class ListViewLayout : ElementsListKit.ListCollectionViewLayout {
+  @objc override dynamic public class var layoutAttributesClass: Swift.AnyClass {
+    @objc get
+  }
+  @objc deinit
+  @objc override dynamic public init(stickyHeaders: Swift.Bool, scrollDirection: UIKit.UICollectionView.ScrollDirection, topContentInset: CoreGraphics.CGFloat, stretchToEdge: Swift.Bool)
+  @objc required dynamic public init?(coder: Foundation.NSCoder)
+}
+@objc @_inheritsConvenienceInitializers public class ListViewLayoutAttributes : UIKit.UICollectionViewLayoutAttributes {
+  public var animationGroup: QuartzCore.CAAnimationGroup?
+  @objc override dynamic public func copy(with zone: ObjectiveC.NSZone? = nil) -> Any
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc deinit
+  @objc override dynamic public init()
+}
+extension CGSize : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension UICollectionView.ScrollDirection : Swift.Hashable {
+}
+extension UIEdgeInsets : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers final public class BasicListController : ObjectiveC.NSObject, ElementsListKit.ListController {
+  public typealias Completion = (Swift.Bool) -> Swift.Void
+  weak final public var animationDelegate: ElementsListKit.ListControllerAnimationDelegate?
+  weak final public var reorderDelegate: ElementsListKit.ListControllerReorderDelegate?
+  weak final public var sizeDelegate: ElementsListKit.ListControllerSizeDelegate?
+  weak final public var scrollViewDelegate: UIKit.UIScrollViewDelegate? {
+    get
+    set
+  }
+  weak final public var viewController: UIKit.UIViewController? {
+    get
+    set
+  }
+  final public var collectionView: UIKit.UICollectionView? {
+    get
+    set
+  }
+  final public var listSections: [ElementsListKit.ListSection] {
+    get
+  }
+  @objc override dynamic public init()
+  final public func reloadData(completion: ElementsListKit.BasicListController.Completion?)
+  final public func update(with listSections: [ElementsListKit.ListSection], animated: Swift.Bool, completion: ElementsListKit.BasicListController.Completion?)
+  final public func willDisplay()
+  final public func didEndDisplaying()
+  final public func invalidateLayout()
+  final public func indexPath(for cellModel: ElementsListKit.ListCellModel) -> Foundation.IndexPath?
+  final public var centerCellModel: ElementsListKit.ListCellModel? {
+    get
+  }
+  final public func cellModel(at indexPath: Foundation.IndexPath) -> ElementsListKit.ListCellModel?
+  final public func removeCellModel(at indexPath: Foundation.IndexPath, animated: Swift.Bool, completion: ElementsListKit.BasicListController.Completion?)
+  final public func scrollTo(cellModel: ElementsListKit.ListCellModel, scrollPosition: UIKit.UICollectionView.ScrollPosition, animated: Swift.Bool)
+  final public func scroll(to scrollPosition: UIKit.UICollectionView.ScrollPosition, animated: Swift.Bool)
+  final public func size(of listSection: ElementsListKit.ListSection, containerSize: CoreGraphics.CGSize) -> CoreGraphics.CGSize
+  final public func size(of cellModel: ElementsListKit.ListCellModel, with constraints: ElementsListKit.ListSizeConstraints) -> CoreGraphics.CGSize
+  @objc deinit
+}
+extension BasicListController : ElementsListKit.ListAdapterDataSource {
+  @objc final public func objects(for _: ElementsListKit.ListAdapter) -> [ElementsListKit.ListDiffable]
+  @objc final public func listAdapter(_: ElementsListKit.ListAdapter, sectionControllerFor _: Any) -> ElementsListKit.ListSectionController
+  @objc final public func emptyView(for _: ElementsListKit.ListAdapter) -> UIKit.UIView?
+}
+extension BasicListController : ElementsListKit.ListAdapterMoveDelegate {
+  @objc final public func listAdapter(_: ElementsListKit.ListAdapter, move _: Any, from _: [Any], to objects: [Any])
+}
+public typealias ListCollectionViewCell = UIKit.UICollectionViewCell & ElementsListKit.ListCell
+public protocol ListCell : ElementsListKit.ListBindable {
+  func setup(renderProp: ElementsListKit.ListCellModel, sizing: Swift.Bool)
+}
+public protocol ListDisplayableCell : ElementsListKit.ListCell {
+  func willDisplayCell()
+  func didEndDisplayingCell()
+}
+public protocol ListResizableCellDelegate : AnyObject {
+  func cellDidInvalidateSize(_ cell: ElementsListKit.ListResizableCell)
+}
+public protocol ListResizableCell : UIKit.UICollectionViewCell, ElementsListKit.ListCell {
+  var resizableDelegate: ElementsListKit.ListResizableCellDelegate? { get set }
+}
+public protocol ListTypedCell : ElementsListKit.ListCell {
+  associatedtype ModelType : ElementsListKit.ListCellModel
+  func setup(renderProp: Self.ModelType, sizing: Swift.Bool)
+}
+extension ListTypedCell {
+  public func setup(renderProp: ElementsListKit.ListCellModel, sizing: Swift.Bool)
+  public func setup(_ viewModel: Any)
+}
+@objc final public class ListCellModelWrapper : ObjectiveC.NSObject {
+  final public let model: ElementsListKit.ListCellModel
+  public init(model: ElementsListKit.ListCellModel)
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension ListCellModelWrapper : ElementsListKit.ListDiffable {
+  @objc final public func isEqual(toDiffableObject object: ElementsListKit.ListDiffable?) -> Swift.Bool
+  @objc final public func diffIdentifier() -> ObjectiveC.NSObjectProtocol
+}
+public struct ListSection {
+  public enum Distribution : Swift.Hashable {
+    case entireRow
+    case equally(cellsInRow: Swift.Int)
+    case proportionally
+    case proportionallyWithLastCellFillingWidth(minimumWidth: CoreGraphics.CGFloat)
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+    public static func == (a: ElementsListKit.ListSection.Distribution, b: ElementsListKit.ListSection.Distribution) -> Swift.Bool
+  }
+  public struct Constraints : Swift.Hashable {
+    public var inset: UIKit.UIEdgeInsets
+    public var minimumLineSpacing: CoreGraphics.CGFloat
+    public var minimumInteritemSpacing: CoreGraphics.CGFloat
+    public var distribution: ElementsListKit.ListSection.Distribution
+    public var scrollDirection: UIKit.UICollectionView.ScrollDirection
+    public init(inset: UIKit.UIEdgeInsets = .zero, minimumLineSpacing: CoreGraphics.CGFloat = 0, minimumInteritemSpacing: CoreGraphics.CGFloat = 0, distribution: ElementsListKit.ListSection.Distribution = .entireRow, scrollDirection: UIKit.UICollectionView.ScrollDirection = .vertical)
+    public static func == (a: ElementsListKit.ListSection.Constraints, b: ElementsListKit.ListSection.Constraints) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+  }
+  public let identifier: Swift.String
+  public var constraints: ElementsListKit.ListSection.Constraints
+  public var headerModel: ElementsListKit.ListCellModel?
+  public var footerModel: ElementsListKit.ListCellModel?
+  public var cellModels: [ElementsListKit.ListCellModel]
+  public init(cellModels: [ElementsListKit.ListCellModel], identifier: Swift.String)
+}
+extension ListSection : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+extension ListSection : Swift.Equatable {
+  public static func == (lhs: ElementsListKit.ListSection, rhs: ElementsListKit.ListSection) -> Swift.Bool
+}
+@objc public class ListSectionWrapper : ObjectiveC.NSObject {
+  public var section: ElementsListKit.ListSection
+  public init(section: ElementsListKit.ListSection)
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension ListSectionWrapper : ElementsListKit.ListDiffable {
+  @objc dynamic public func isEqual(toDiffableObject object: ElementsListKit.ListDiffable?) -> Swift.Bool
+  @objc dynamic public func diffIdentifier() -> ObjectiveC.NSObjectProtocol
+}

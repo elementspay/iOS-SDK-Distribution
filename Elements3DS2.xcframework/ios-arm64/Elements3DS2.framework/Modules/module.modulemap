@@ -1,0 +1,6 @@
+framework module Elements3DS2 {
+  umbrella header "Elements3DS2.h"
+
+  export *
+  module * { export * }
+}

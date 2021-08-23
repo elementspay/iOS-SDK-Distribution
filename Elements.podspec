@@ -2,7 +2,7 @@ Pod::Spec.new do |spec|
   framework_filename = "Elements.xcframework"
 
   spec.name = "Elements"
-  spec.version = "1.1.2"
+  spec.version = "1.1.3"
   spec.summary = "Elements iOS SDK"
   spec.description = <<-DESC
     Elements official SDK
@@ -22,6 +22,6 @@ Pod::Spec.new do |spec|
   spec.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
   
   spec.subspec 'Core' do |plugin|
-    plugin.vendored_frameworks = 'Elements.xcframework'
+    plugin.vendored_frameworks = 'Elements.xcframework', 'ElementsListKit.xcframework', 'Elements3DS2.xcframework'
   end
 end

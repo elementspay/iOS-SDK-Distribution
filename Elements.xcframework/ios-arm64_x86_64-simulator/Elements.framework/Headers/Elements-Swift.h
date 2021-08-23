@@ -212,6 +212,30 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 # pragma pop_macro("any")
 #endif
 
+@class UIViewController;
+@class NSBundle;
+@class NSCoder;
+
+SWIFT_CLASS("_TtC8Elements20NavigationController")
+@interface NavigationController : UINavigationController
+- (void)pushViewController:(UIViewController * _Nonnull)viewController animated:(BOOL)animated;
+- (nonnull instancetype)initWithNavigationBarClass:(Class _Nullable)navigationBarClass toolbarClass:(Class _Nullable)toolbarClass OBJC_DESIGNATED_INITIALIZER SWIFT_AVAILABILITY(ios,introduced=5.0);
+- (nonnull instancetype)initWithRootViewController:(UIViewController * _Nonnull)rootViewController OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_CLASS("_TtC8Elements23AppNavigationController")
+@interface AppNavigationController : NavigationController
+- (void)pushViewController:(UIViewController * _Nonnull)viewController animated:(BOOL)animated;
+@property (nonatomic, readonly) UIStatusBarStyle preferredStatusBarStyle;
+- (nonnull instancetype)initWithRootViewController:(UIViewController * _Nonnull)rootViewController SWIFT_UNAVAILABLE;
+- (nonnull instancetype)initWithNavigationBarClass:(Class _Nullable)navigationBarClass toolbarClass:(Class _Nullable)toolbarClass SWIFT_UNAVAILABLE;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder SWIFT_UNAVAILABLE;
+@end
+
 
 /// A element that handles Apple Pay payments.
 SWIFT_CLASS("_TtC8Elements15ApplePayElement")
@@ -232,10 +256,65 @@ SWIFT_CLASS("_TtC8Elements15ApplePayElement")
 @end
 
 
+@class NSNotification;
+
+SWIFT_CLASS("_TtC8Elements18BaseViewController")
+@interface BaseViewController : UIViewController
+@property (nonatomic, readonly) UIStatusBarStyle preferredStatusBarStyle;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder;
+- (void)viewDidLoad;
+- (void)viewWillAppear:(BOOL)animated;
+- (void)viewDidLayoutSubviews;
+- (void)adjustViewWhenKeyboardShowWithNotification:(NSNotification * _Nonnull)notification;
+- (void)adjustViewWhenKeyboardDismissWithNotification:(NSNotification * _Nonnull)notification;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
+@end
+
+
+SWIFT_CLASS("_TtC8Elements22BaseListViewController")
+@interface BaseListViewController : BaseViewController
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)_;
+- (void)viewDidLoad;
+- (void)viewWillAppear:(BOOL)animated;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+@class UITableView;
+@class UIView;
+@class UITableViewCell;
+
+SWIFT_CLASS("_TtC8Elements23BaseTableViewController")
+@interface BaseTableViewController : BaseViewController <UITableViewDataSource, UITableViewDelegate>
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)_;
+- (void)viewDidLoad;
+- (void)viewWillAppear:(BOOL)animated;
+/// :nodoc:
+- (NSInteger)numberOfSectionsInTableView:(UITableView * _Nonnull)_ SWIFT_WARN_UNUSED_RESULT;
+/// :nodoc:
+- (NSInteger)tableView:(UITableView * _Nonnull)_ numberOfRowsInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
+/// :nodoc:
+- (UIView * _Nullable)tableView:(UITableView * _Nonnull)_ viewForHeaderInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
+- (UIView * _Nullable)tableView:(UITableView * _Nonnull)tableView viewForFooterInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
+/// :nodoc:
+- (CGFloat)tableView:(UITableView * _Nonnull)_ heightForHeaderInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
+- (CGFloat)tableView:(UITableView * _Nonnull)tableView heightForFooterInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
+/// :nodoc:
+- (UITableViewCell * _Nonnull)tableView:(UITableView * _Nonnull)tableView cellForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath SWIFT_WARN_UNUSED_RESULT;
+- (CGFloat)tableView:(UITableView * _Nonnull)tableView heightForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath SWIFT_WARN_UNUSED_RESULT;
+/// :nodoc:
+- (void)tableView:(UITableView * _Nonnull)tableView didSelectRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
 
 
 
-@class NSCoder;
+
+
+
+
 
 /// :nodoc:
 SWIFT_CLASS("_TtC8Elements13ContainerView")
@@ -271,7 +350,7 @@ SWIFT_CLASS("_TtC8Elements13DropInElement")
 
 
 
-@class NSBundle;
+
 
 /// :nodoc:
 /// <code>ELEViewController</code> serves as a height-aware <code>UIViewController</code>
@@ -284,10 +363,35 @@ SWIFT_CLASS("_TtC8Elements17ELEViewController")
 @end
 
 
+/// :nodoc:
+SWIFT_CLASS("_TtC8Elements17ElementsAPIClient")
+@interface ElementsAPIClient : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+SWIFT_PROTOCOL("_TtP8Elements29ElementsAuthenticationContext_")
+@protocol ElementsAuthenticationContext
+/// Host controller for 3ds context
+///
+/// returns:
+/// 3ds host view controller
+- (UIViewController * _Nonnull)elementsAuthHostController SWIFT_WARN_UNUSED_RESULT;
+@optional
+/// Will be called when auth context will appear
+- (void)authContextWillAppear;
+/// Will be called when auth context will disappear
+- (void)authContextWillDisappear;
+@end
+
+
 /// Displays a form for the user to enter details.
 /// :nodoc:
-SWIFT_CLASS_NAMED("FormViewController")
-@interface ELEFormViewController : UIViewController
+SWIFT_CLASS("_TtC8Elements18FormViewController")
+@interface FormViewController : UIViewController
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER SWIFT_UNAVAILABLE;
 /// :nodoc:
 @property (nonatomic) CGSize preferredContentSize;
@@ -299,12 +403,38 @@ SWIFT_CLASS_NAMED("FormViewController")
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
+@class SFSafariViewController;
+
+@interface FormViewController (SWIFT_EXTENSION(Elements))
+- (UIViewController * _Nonnull)authenticationPresentingViewController SWIFT_WARN_UNUSED_RESULT;
+- (void)configureSafariViewController:(SFSafariViewController * _Nonnull)viewController;
+- (void)authenticationContextWillDismissViewController:(UIViewController * _Nonnull)viewController;
+@end
+
+
+
+SWIFT_CLASS("_TtC8Elements30FullScreenWalletViewController")
+@interface FullScreenWalletViewController : BaseListViewController
+- (void)viewDidLoad;
+@end
+
+
+
+@class UIGestureRecognizer;
+
+SWIFT_CLASS("_TtC8Elements24InteractivePopRecognizer")
+@interface InteractivePopRecognizer : NSObject <UIGestureRecognizerDelegate>
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer * _Nonnull)gestureRecognizer SWIFT_WARN_UNUSED_RESULT;
+- (BOOL)gestureRecognizer:(UIGestureRecognizer * _Nonnull)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer * _Nonnull)otherGestureRecognizer SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
 
 
 /// A cell in a ListViewController.
 /// :nodoc:
-SWIFT_CLASS("_TtC8Elements8ListCell")
-@interface ListCell : UITableViewCell
+SWIFT_CLASS("_TtC8Elements12ListItemCell")
+@interface ListItemCell : UITableViewCell
 /// :nodoc:
 - (nonnull instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString * _Nullable)reuseIdentifier OBJC_DESIGNATED_INITIALIZER;
 /// :nodoc:
@@ -328,7 +458,7 @@ SWIFT_CLASS("_TtC8Elements12ListItemView")
 - (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
 @end
 
-@class UITableView;
+
 
 /// Displays a list from which items can be selected.
 /// :nodoc:
@@ -357,6 +487,29 @@ SWIFT_CLASS("_TtC8Elements18ListViewController")
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
+@class UIColor;
+@class UITextView;
+
+SWIFT_CLASS("_TtC8Elements14MoneyTextField")
+@interface MoneyTextField : UIControl <UITextViewDelegate>
+@property (nonatomic, strong) UIColor * _Null_unspecified tintColor;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
+- (BOOL)becomeFirstResponder SWIFT_WARN_UNUSED_RESULT;
+- (BOOL)resignFirstResponder SWIFT_WARN_UNUSED_RESULT;
+- (void)layoutSubviews;
+- (CGSize)sizeThatFits:(CGSize)size SWIFT_WARN_UNUSED_RESULT;
+- (BOOL)textView:(UITextView * _Nonnull)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString * _Nonnull)text SWIFT_WARN_UNUSED_RESULT;
+@end
+
+
+
+
+
+
+
+
+
 
 
 
@@ -373,6 +526,253 @@ SWIFT_CLASS("_TtC8Elements16NetworkImageView")
 - (nonnull instancetype)initWithImage:(UIImage * _Nullable)image highlightedImage:(UIImage * _Nullable)highlightedImage OBJC_DESIGNATED_INITIALIZER SWIFT_AVAILABILITY(ios,introduced=3.0);
 - (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+enum STPThreeDSCustomizationButtonType : NSInteger;
+enum STPThreeDSButtonTitleStyle : NSInteger;
+@class UIFont;
+
+/// A customization object to use to configure the UI of a button.
+SWIFT_CLASS("_TtC8Elements29STPThreeDSButtonCustomization")
+@interface STPThreeDSButtonCustomization : NSObject
+/// The default settings for the provided button type.
++ (STPThreeDSButtonCustomization * _Nonnull)defaultSettingsForButtonType:(enum STPThreeDSCustomizationButtonType)type SWIFT_WARN_UNUSED_RESULT;
+/// Initializes an instance of ETDSButtonCustomization with the given backgroundColor and colorRadius.
+- (nonnull instancetype)initWithBackgroundColor:(UIColor * _Nonnull)backgroundColor cornerRadius:(CGFloat)cornerRadius OBJC_DESIGNATED_INITIALIZER;
+/// The background color of the button.
+/// The default for .resend and .cancel is clear.
+/// The default for .submit, .continue, and .next is blue.
+@property (nonatomic, strong) UIColor * _Nonnull backgroundColor;
+/// The corner radius of the button. Defaults to 8.
+@property (nonatomic) CGFloat cornerRadius;
+/// The capitalization style of the button title.
+@property (nonatomic) enum STPThreeDSButtonTitleStyle titleStyle;
+/// The font of the title.
+@property (nonatomic, strong) UIFont * _Nullable font;
+/// The text color of the title.
+@property (nonatomic, strong) UIColor * _Nullable textColor;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+/// An enumeration of the case transformations that can be applied to the button’s title
+typedef SWIFT_ENUM(NSInteger, STPThreeDSButtonTitleStyle, open) {
+/// Default style, doesn’t modify the title
+  STPThreeDSButtonTitleStyleDefault = 0,
+/// Applies localizedUppercaseString to the title
+  STPThreeDSButtonTitleStyleUppercase = 1,
+/// Applies localizedLowercaseString to the title
+  STPThreeDSButtonTitleStyleLowercase = 2,
+/// Applies localizedCapitalizedString to the title
+  STPThreeDSButtonTitleStyleSentenceCapitalized = 3,
+};
+
+/// An enum that defines the different types of buttons that are able to be customized.
+typedef SWIFT_ENUM(NSInteger, STPThreeDSCustomizationButtonType, open) {
+/// The submit button type.
+  STPThreeDSCustomizationButtonTypeSubmit = 0,
+/// The continue button type.
+  STPThreeDSCustomizationButtonTypeContinue = 1,
+/// The next button type.
+  STPThreeDSCustomizationButtonTypeNext = 2,
+/// The cancel button type.
+  STPThreeDSCustomizationButtonTypeCancel = 3,
+/// The resend button type.
+  STPThreeDSCustomizationButtonTypeResend = 4,
+};
+
+@class STPThreeDSUICustomization;
+
+/// <code>STPThreeDSCustomizationSettings</code> provides customization options for 3DS2 authentication flows in your app.
+SWIFT_CLASS("_TtC8Elements31STPThreeDSCustomizationSettings")
+@interface STPThreeDSCustomizationSettings : NSObject
+/// Returns an <code>STPThreeDSCustomizationSettings</code> preconfigured with the default
+/// Stripe UI settings and a 10 minute <code>authenticationTimeout</code>.
+/// @deprecated Use STPThreeDSCustomizationSettings() instead. The default settings are the same.
++ (STPThreeDSCustomizationSettings * _Nonnull)defaultSettings SWIFT_WARN_UNUSED_RESULT SWIFT_DEPRECATED_MSG("Use STPThreeDSCustomizationSettings() instead of STPThreeDSCustomizationSettings.defaultSettings().");
+/// <code>uiCustomization</code> can be used to provide custom UI settings for the authentication
+/// challenge screens presented during a Three Domain Secure authentication. For more information see
+/// our guide on supporting 3DS2 in your iOS application.
+/// Note: It’s important to configure this object appropriately before calling any <code>STPPaymentHandler</code> APIs.
+/// The API makes a copy of the customization settings you provide; it ignores any subsequent changes you
+/// make to your <code>STPThreeDSUICustomization</code> instance.
+/// Defaults to <code>STPThreeDSUICustomization.defaultSettings()</code>.
+@property (nonatomic, strong) STPThreeDSUICustomization * _Nonnull uiCustomization;
+/// <code>authenticationTimeout</code> is the total time allowed for a user to complete a 3DS2 authentication
+/// interaction, in minutes.  This value <em>must</em> be at least 5 minutes.
+/// Defaults to 10 minutes.
+@property (nonatomic) NSInteger authenticationTimeout;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/// The Challenge view displays a footer with additional details that
+/// expand when tapped. This object configures the appearance of that view.
+SWIFT_CLASS("_TtC8Elements29STPThreeDSFooterCustomization")
+@interface STPThreeDSFooterCustomization : NSObject
+/// The default settings.
++ (STPThreeDSFooterCustomization * _Nonnull)defaultSettings SWIFT_WARN_UNUSED_RESULT;
+/// The background color of the footer.
+/// Defaults to gray.
+@property (nonatomic, strong) UIColor * _Nonnull backgroundColor;
+/// The color of the chevron. Defaults to a dark gray.
+@property (nonatomic, strong) UIColor * _Nonnull chevronColor;
+/// The color of the heading text. Defaults to black.
+@property (nonatomic, strong) UIColor * _Nonnull headingTextColor;
+/// The font to use for the heading text.
+@property (nonatomic, strong) UIFont * _Nonnull headingFont;
+/// The font of the text.
+@property (nonatomic, strong) UIFont * _Nullable font;
+/// The color of the text.
+@property (nonatomic, strong) UIColor * _Nullable textColor;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/// A customization object to use to configure the UI of a text label.
+SWIFT_CLASS("_TtC8Elements28STPThreeDSLabelCustomization")
+@interface STPThreeDSLabelCustomization : NSObject
+/// The default settings.
++ (STPThreeDSLabelCustomization * _Nonnull)defaultSettings SWIFT_WARN_UNUSED_RESULT;
+/// The font to use for heading text.
+@property (nonatomic, strong) UIFont * _Nonnull headingFont;
+/// The color of heading text. Defaults to black.
+@property (nonatomic, strong) UIColor * _Nonnull headingTextColor;
+/// The font to use for non-heading text.
+@property (nonatomic, strong) UIFont * _Nullable font;
+/// The color to use for non-heading text. Defaults to black.
+@property (nonatomic, strong) UIColor * _Nullable textColor;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/// A customization object to use to configure a UINavigationBar.
+SWIFT_CLASS("_TtC8Elements36STPThreeDSNavigationBarCustomization")
+@interface STPThreeDSNavigationBarCustomization : NSObject
+/// The default settings.
++ (STPThreeDSNavigationBarCustomization * _Nonnull)defaultSettings SWIFT_WARN_UNUSED_RESULT;
+/// The tint color of the navigation bar background.
+/// Defaults to nil.
+@property (nonatomic, strong) UIColor * _Nullable barTintColor;
+/// The navigation bar style.
+/// Defaults to UIBarStyleDefault.
+/// @note This property controls the <code>UIStatusBarStyle</code>. Set this to <code>UIBarStyleBlack</code>
+/// to change the <code>statusBarStyle</code> to <code>UIStatusBarStyleLightContent</code> - even if you also set
+/// <code>barTintColor</code> to change the actual color of the navigation bar.
+@property (nonatomic) UIBarStyle barStyle;
+/// A Boolean value indicating whether the navigation bar is translucent or not.
+/// Defaults to YES.
+@property (nonatomic) BOOL translucent;
+/// The text to display in the title of the navigation bar.
+/// Defaults to “Secure checkout”.
+@property (nonatomic, copy) NSString * _Nonnull headerText;
+/// The text to display for the button in the navigation bar.
+/// Defaults to “Cancel”.
+@property (nonatomic, copy) NSString * _Nonnull buttonText;
+/// The font to use for the title. Defaults to nil.
+@property (nonatomic, strong) UIFont * _Nullable font;
+/// The color to use for the title. Defaults to nil.
+@property (nonatomic, strong) UIColor * _Nullable textColor;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/// A customization object that configures the appearance of
+/// radio buttons and checkboxes.
+SWIFT_CLASS("_TtC8Elements32STPThreeDSSelectionCustomization")
+@interface STPThreeDSSelectionCustomization : NSObject
+/// The default settings.
++ (STPThreeDSSelectionCustomization * _Nonnull)defaultSettings SWIFT_WARN_UNUSED_RESULT;
+/// The primary color of the selected state.
+/// Defaults to blue.
+@property (nonatomic, strong) UIColor * _Nonnull primarySelectedColor;
+/// The secondary color of the selected state (e.g. the checkmark color).
+/// Defaults to white.
+@property (nonatomic, strong) UIColor * _Nonnull secondarySelectedColor;
+/// The background color displayed in the unselected state.
+/// Defaults to light blue.
+@property (nonatomic, strong) UIColor * _Nonnull unselectedBackgroundColor;
+/// The color of the border drawn around the view in the unselected state.
+/// Defaults to blue.
+@property (nonatomic, strong) UIColor * _Nonnull unselectedBorderColor;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/// A customization object to use to configure the UI of a text field.
+SWIFT_CLASS("_TtC8Elements32STPThreeDSTextFieldCustomization")
+@interface STPThreeDSTextFieldCustomization : NSObject
+/// The default settings.
++ (STPThreeDSTextFieldCustomization * _Nonnull)defaultSettings SWIFT_WARN_UNUSED_RESULT;
+/// The border width of the text field. Defaults to 2.
+@property (nonatomic) CGFloat borderWidth;
+/// The color of the border of the text field. Defaults to clear.
+@property (nonatomic, strong) UIColor * _Nonnull borderColor;
+/// The corner radius of the edges of the text field. Defaults to 8.
+@property (nonatomic) CGFloat cornerRadius;
+/// The appearance of the keyboard. Defaults to UIKeyboardAppearanceDefault.
+@property (nonatomic) UIKeyboardAppearance keyboardAppearance;
+/// The color of the placeholder text. Defaults to light gray.
+@property (nonatomic, strong) UIColor * _Nonnull placeholderTextColor;
+/// The font to use for text.
+@property (nonatomic, strong) UIFont * _Nullable font;
+/// The color to use for the text. Defaults to black.
+@property (nonatomic, strong) UIColor * _Nullable textColor;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/// The <code>STPThreeDSUICustomization</code> provides configuration for UI elements displayed during 3D Secure authentication.
+/// Note: It’s important to configure this object appropriately before calling any <code>STPPaymentHandler</code> APIs.
+/// The API makes a copy of the customization settings you provide; it ignores any subsequent changes you
+/// make to your <code>STPThreeDSUICustomization</code> instance.
+/// seealso:
+/// https://stripe.com/docs/mobile/ios/authentication
+SWIFT_CLASS("_TtC8Elements25STPThreeDSUICustomization")
+@interface STPThreeDSUICustomization : NSObject
+/// The default settings.  See individual properties for their default values.
++ (STPThreeDSUICustomization * _Nonnull)defaultSettings SWIFT_WARN_UNUSED_RESULT;
+/// Provides custom settings for the UINavigationBar of all UIViewControllers displayed during 3D Secure authentication.
+/// The default is <code>STPThreeDSNavigationBarCustomization.defaultSettings()</code>.
+@property (nonatomic, strong) STPThreeDSNavigationBarCustomization * _Nonnull navigationBarCustomization;
+/// Provides custom settings for labels.
+/// The default is <code>STPThreeDSLabelCustomization.defaultSettings()</code>.
+@property (nonatomic, strong) STPThreeDSLabelCustomization * _Nonnull labelCustomization;
+/// Provides custom settings for text fields.
+/// The default is <code>STPThreeDSTextFieldCustomization.defaultSettings()</code>.
+@property (nonatomic, strong) STPThreeDSTextFieldCustomization * _Nonnull textFieldCustomization;
+/// The primary background color of all UIViewControllers displayed during 3D Secure authentication.
+/// Defaults to white.
+@property (nonatomic, strong) UIColor * _Nonnull backgroundColor;
+/// Provides custom settings for the footer the challenge view can display containing additional details.
+/// The default is <code>STPThreeDSFooterCustomization.defaultSettings()</code>.
+@property (nonatomic, strong) STPThreeDSFooterCustomization * _Nonnull footerCustomization;
+/// Sets a given button customization for the specified type.
+/// \param buttonCustomization The buttom customization to use.
+///
+/// \param buttonType The type of button to use the customization for.
+///
+- (void)setButtonCustomization:(STPThreeDSButtonCustomization * _Nonnull)buttonCustomization forType:(enum STPThreeDSCustomizationButtonType)buttonType;
+/// Retrieves a button customization object for the given button type.
+/// seealso:
+/// STPThreeDSButtonCustomization
+/// \param buttonType The button type to retrieve a customization object for.
+///
+///
+/// returns:
+/// A button customization object, or the default if none was set.
+- (STPThreeDSButtonCustomization * _Nonnull)buttonCustomizationForButtonType:(enum STPThreeDSCustomizationButtonType)buttonType SWIFT_WARN_UNUSED_RESULT;
+/// Provides custom settings for radio buttons and checkboxes.
+/// The default is <code>STPThreeDSSelectionCustomization.defaultSettings()</code>.
+@property (nonatomic, strong) STPThreeDSSelectionCustomization * _Nonnull selectionCustomization;
+/// The style of <code>UIActivityIndicatorView</code>s displayed.
+/// This should contrast with <code>backgroundColor</code>.  Defaults to gray.
+@property (nonatomic) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
+/// The style of the <code>UIBlurEffect</code> displayed underneath the <code>UIActivityIndicatorView</code>.
+/// Defaults to <code>UIBlurEffectStyleLight</code>.
+@property (nonatomic) UIBlurEffectStyle blurStyle;
+/// :nodoc:
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
 
@@ -426,51 +826,6 @@ SWIFT_CLASS("_TtC8Elements13StripeAppInfo")
 @end
 
 
-/// Objects conforming to StripeFormEncodable can be automatically converted to a form-encoded string, which can then be used when making requests to the Stripe API.
-SWIFT_PROTOCOL("_TtP8Elements19StripeFormEncodable_")
-@protocol StripeFormEncodable <NSObject>
-/// The root object name to be used when converting this object to a form-encoded string. For example, if this returns “card”, then the form-encoded output will resemble “card[foo]=bar” (where ‘foo’ and ‘bar’ are specified by <code>propertyNamesToFormFieldNamesMapping</code> below.
-+ (NSString * _Nullable)rootObjectName SWIFT_WARN_UNUSED_RESULT;
-/// This maps properties on an object that is being form-encoded into parameter names in the Stripe API. For example, STPCardParams has a field called <code>expMonth</code>, but the Stripe API expects a field called <code>exp_month</code>. This dictionary represents a mapping from the former to the latter (in other words, STPCardParams.propertyNamesToFormFieldNamesMapping()[“expMonth”] == “exp_month”.)
-+ (NSDictionary<NSString *, NSString *> * _Nonnull)propertyNamesToFormFieldNamesMapping SWIFT_WARN_UNUSED_RESULT;
-/// You can use this property to add additional fields to an API request that are not explicitly defined by the object’s interface. This can be useful when using beta features that haven’t been added to the Stripe SDK yet. For example, if the /v1/tokens API began to accept a beta field called “test_field”, you might do the following:
-/// var cardParams = STPCardParams()
-/// // add card values
-/// cardParams.additionalAPIParameters = [“test_field”: “example_value”]
-/// STPAPIClient.shared.createToken(withParameters: cardParams completion:…);
-@property (nonatomic, copy) NSDictionary * _Nonnull additionalAPIParameters;
-@end
-
-
-SWIFT_CLASS("_TtC8Elements15StripeCardParam")
-@interface StripeCardParam : NSObject <StripeFormEncodable>
-@property (nonatomic, copy) NSString * _Nonnull number;
-@property (nonatomic) NSUInteger expMonth;
-@property (nonatomic) NSUInteger expYear;
-@property (nonatomic, copy) NSString * _Nullable cvc;
-@property (nonatomic, copy) NSString * _Nullable name;
-@property (nonatomic, copy) NSString * _Nullable currency;
-@property (nonatomic, copy) NSDictionary * _Nonnull additionalAPIParameters;
-/// The first line of the cardholder’s address
-@property (nonatomic, copy) NSString * _Nullable addressLine1;
-/// The second line of the cardholder’s address
-@property (nonatomic, copy) NSString * _Nullable addressLine2;
-/// The city of the cardholder’s address
-@property (nonatomic, copy) NSString * _Nullable addressCity;
-/// The state of the cardholder’s address
-@property (nonatomic, copy) NSString * _Nullable addressState;
-/// The zip code of the cardholder’s address
-@property (nonatomic, copy) NSString * _Nullable addressZip;
-/// The country of the cardholder’s address
-@property (nonatomic, copy) NSString * _Nullable addressCountry;
-+ (NSString * _Nullable)rootObjectName SWIFT_WARN_UNUSED_RESULT;
-+ (NSDictionary<NSString *, NSString *> * _Nonnull)propertyNamesToFormFieldNamesMapping SWIFT_WARN_UNUSED_RESULT;
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-+ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
-@end
-
-
-
 /// A rounded submit button used to submit details.
 /// :nodoc:
 SWIFT_CLASS("_TtC8Elements12SubmitButton")
@@ -494,6 +849,27 @@ SWIFT_CLASS("_TtC8Elements12SubmitButton")
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+SWIFT_CLASS("_TtC8Elements8UIRouter")
+@interface UIRouter : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@interface UIRouter (SWIFT_EXTENSION(Elements)) <UINavigationControllerDelegate>
+- (void)navigationController:(UINavigationController * _Nonnull)navigationController didShowViewController:(UIViewController * _Nonnull)viewController animated:(BOOL)animated;
+@end
 
 
 
@@ -721,6 +1097,30 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 # pragma pop_macro("any")
 #endif
 
+@class UIViewController;
+@class NSBundle;
+@class NSCoder;
+
+SWIFT_CLASS("_TtC8Elements20NavigationController")
+@interface NavigationController : UINavigationController
+- (void)pushViewController:(UIViewController * _Nonnull)viewController animated:(BOOL)animated;
+- (nonnull instancetype)initWithNavigationBarClass:(Class _Nullable)navigationBarClass toolbarClass:(Class _Nullable)toolbarClass OBJC_DESIGNATED_INITIALIZER SWIFT_AVAILABILITY(ios,introduced=5.0);
+- (nonnull instancetype)initWithRootViewController:(UIViewController * _Nonnull)rootViewController OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_CLASS("_TtC8Elements23AppNavigationController")
+@interface AppNavigationController : NavigationController
+- (void)pushViewController:(UIViewController * _Nonnull)viewController animated:(BOOL)animated;
+@property (nonatomic, readonly) UIStatusBarStyle preferredStatusBarStyle;
+- (nonnull instancetype)initWithRootViewController:(UIViewController * _Nonnull)rootViewController SWIFT_UNAVAILABLE;
+- (nonnull instancetype)initWithNavigationBarClass:(Class _Nullable)navigationBarClass toolbarClass:(Class _Nullable)toolbarClass SWIFT_UNAVAILABLE;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder SWIFT_UNAVAILABLE;
+@end
+
 
 /// A element that handles Apple Pay payments.
 SWIFT_CLASS("_TtC8Elements15ApplePayElement")
@@ -741,10 +1141,65 @@ SWIFT_CLASS("_TtC8Elements15ApplePayElement")
 @end
 
 
+@class NSNotification;
+
+SWIFT_CLASS("_TtC8Elements18BaseViewController")
+@interface BaseViewController : UIViewController
+@property (nonatomic, readonly) UIStatusBarStyle preferredStatusBarStyle;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder;
+- (void)viewDidLoad;
+- (void)viewWillAppear:(BOOL)animated;
+- (void)viewDidLayoutSubviews;
+- (void)adjustViewWhenKeyboardShowWithNotification:(NSNotification * _Nonnull)notification;
+- (void)adjustViewWhenKeyboardDismissWithNotification:(NSNotification * _Nonnull)notification;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
+@end
+
+
+SWIFT_CLASS("_TtC8Elements22BaseListViewController")
+@interface BaseListViewController : BaseViewController
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)_;
+- (void)viewDidLoad;
+- (void)viewWillAppear:(BOOL)animated;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+@class UITableView;
+@class UIView;
+@class UITableViewCell;
+
+SWIFT_CLASS("_TtC8Elements23BaseTableViewController")
+@interface BaseTableViewController : BaseViewController <UITableViewDataSource, UITableViewDelegate>
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)_;
+- (void)viewDidLoad;
+- (void)viewWillAppear:(BOOL)animated;
+/// :nodoc:
+- (NSInteger)numberOfSectionsInTableView:(UITableView * _Nonnull)_ SWIFT_WARN_UNUSED_RESULT;
+/// :nodoc:
+- (NSInteger)tableView:(UITableView * _Nonnull)_ numberOfRowsInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
+/// :nodoc:
+- (UIView * _Nullable)tableView:(UITableView * _Nonnull)_ viewForHeaderInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
+- (UIView * _Nullable)tableView:(UITableView * _Nonnull)tableView viewForFooterInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
+/// :nodoc:
+- (CGFloat)tableView:(UITableView * _Nonnull)_ heightForHeaderInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
+- (CGFloat)tableView:(UITableView * _Nonnull)tableView heightForFooterInSection:(NSInteger)section SWIFT_WARN_UNUSED_RESULT;
+/// :nodoc:
+- (UITableViewCell * _Nonnull)tableView:(UITableView * _Nonnull)tableView cellForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath SWIFT_WARN_UNUSED_RESULT;
+- (CGFloat)tableView:(UITableView * _Nonnull)tableView heightForRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath SWIFT_WARN_UNUSED_RESULT;
+/// :nodoc:
+- (void)tableView:(UITableView * _Nonnull)tableView didSelectRowAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
 
 
 
-@class NSCoder;
+
+
+
+
 
 /// :nodoc:
 SWIFT_CLASS("_TtC8Elements13ContainerView")
@@ -780,7 +1235,7 @@ SWIFT_CLASS("_TtC8Elements13DropInElement")
 
 
 
-@class NSBundle;
+
 
 /// :nodoc:
 /// <code>ELEViewController</code> serves as a height-aware <code>UIViewController</code>
@@ -793,10 +1248,35 @@ SWIFT_CLASS("_TtC8Elements17ELEViewController")
 @end
 
 
+/// :nodoc:
+SWIFT_CLASS("_TtC8Elements17ElementsAPIClient")
+@interface ElementsAPIClient : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+SWIFT_PROTOCOL("_TtP8Elements29ElementsAuthenticationContext_")
+@protocol ElementsAuthenticationContext
+/// Host controller for 3ds context
+///
+/// returns:
+/// 3ds host view controller
+- (UIViewController * _Nonnull)elementsAuthHostController SWIFT_WARN_UNUSED_RESULT;
+@optional
+/// Will be called when auth context will appear
+- (void)authContextWillAppear;
+/// Will be called when auth context will disappear
+- (void)authContextWillDisappear;
+@end
+
+
 /// Displays a form for the user to enter details.
 /// :nodoc:
-SWIFT_CLASS_NAMED("FormViewController")
-@interface ELEFormViewController : UIViewController
+SWIFT_CLASS("_TtC8Elements18FormViewController")
+@interface FormViewController : UIViewController
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER SWIFT_UNAVAILABLE;
 /// :nodoc:
 @property (nonatomic) CGSize preferredContentSize;
@@ -808,12 +1288,38 @@ SWIFT_CLASS_NAMED("FormViewController")
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
+@class SFSafariViewController;
+
+@interface FormViewController (SWIFT_EXTENSION(Elements))
+- (UIViewController * _Nonnull)authenticationPresentingViewController SWIFT_WARN_UNUSED_RESULT;
+- (void)configureSafariViewController:(SFSafariViewController * _Nonnull)viewController;
+- (void)authenticationContextWillDismissViewController:(UIViewController * _Nonnull)viewController;
+@end
+
+
+
+SWIFT_CLASS("_TtC8Elements30FullScreenWalletViewController")
+@interface FullScreenWalletViewController : BaseListViewController
+- (void)viewDidLoad;
+@end
+
+
+
+@class UIGestureRecognizer;
+
+SWIFT_CLASS("_TtC8Elements24InteractivePopRecognizer")
+@interface InteractivePopRecognizer : NSObject <UIGestureRecognizerDelegate>
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer * _Nonnull)gestureRecognizer SWIFT_WARN_UNUSED_RESULT;
+- (BOOL)gestureRecognizer:(UIGestureRecognizer * _Nonnull)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer * _Nonnull)otherGestureRecognizer SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
 
 
 /// A cell in a ListViewController.
 /// :nodoc:
-SWIFT_CLASS("_TtC8Elements8ListCell")
-@interface ListCell : UITableViewCell
+SWIFT_CLASS("_TtC8Elements12ListItemCell")
+@interface ListItemCell : UITableViewCell
 /// :nodoc:
 - (nonnull instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString * _Nullable)reuseIdentifier OBJC_DESIGNATED_INITIALIZER;
 /// :nodoc:
@@ -837,7 +1343,7 @@ SWIFT_CLASS("_TtC8Elements12ListItemView")
 - (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
 @end
 
-@class UITableView;
+
 
 /// Displays a list from which items can be selected.
 /// :nodoc:
@@ -866,6 +1372,29 @@ SWIFT_CLASS("_TtC8Elements18ListViewController")
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
+@class UIColor;
+@class UITextView;
+
+SWIFT_CLASS("_TtC8Elements14MoneyTextField")
+@interface MoneyTextField : UIControl <UITextViewDelegate>
+@property (nonatomic, strong) UIColor * _Null_unspecified tintColor;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
+- (BOOL)becomeFirstResponder SWIFT_WARN_UNUSED_RESULT;
+- (BOOL)resignFirstResponder SWIFT_WARN_UNUSED_RESULT;
+- (void)layoutSubviews;
+- (CGSize)sizeThatFits:(CGSize)size SWIFT_WARN_UNUSED_RESULT;
+- (BOOL)textView:(UITextView * _Nonnull)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString * _Nonnull)text SWIFT_WARN_UNUSED_RESULT;
+@end
+
+
+
+
+
+
+
+
+
 
 
 
@@ -882,6 +1411,253 @@ SWIFT_CLASS("_TtC8Elements16NetworkImageView")
 - (nonnull instancetype)initWithImage:(UIImage * _Nullable)image highlightedImage:(UIImage * _Nullable)highlightedImage OBJC_DESIGNATED_INITIALIZER SWIFT_AVAILABILITY(ios,introduced=3.0);
 - (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+enum STPThreeDSCustomizationButtonType : NSInteger;
+enum STPThreeDSButtonTitleStyle : NSInteger;
+@class UIFont;
+
+/// A customization object to use to configure the UI of a button.
+SWIFT_CLASS("_TtC8Elements29STPThreeDSButtonCustomization")
+@interface STPThreeDSButtonCustomization : NSObject
+/// The default settings for the provided button type.
++ (STPThreeDSButtonCustomization * _Nonnull)defaultSettingsForButtonType:(enum STPThreeDSCustomizationButtonType)type SWIFT_WARN_UNUSED_RESULT;
+/// Initializes an instance of ETDSButtonCustomization with the given backgroundColor and colorRadius.
+- (nonnull instancetype)initWithBackgroundColor:(UIColor * _Nonnull)backgroundColor cornerRadius:(CGFloat)cornerRadius OBJC_DESIGNATED_INITIALIZER;
+/// The background color of the button.
+/// The default for .resend and .cancel is clear.
+/// The default for .submit, .continue, and .next is blue.
+@property (nonatomic, strong) UIColor * _Nonnull backgroundColor;
+/// The corner radius of the button. Defaults to 8.
+@property (nonatomic) CGFloat cornerRadius;
+/// The capitalization style of the button title.
+@property (nonatomic) enum STPThreeDSButtonTitleStyle titleStyle;
+/// The font of the title.
+@property (nonatomic, strong) UIFont * _Nullable font;
+/// The text color of the title.
+@property (nonatomic, strong) UIColor * _Nullable textColor;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+/// An enumeration of the case transformations that can be applied to the button’s title
+typedef SWIFT_ENUM(NSInteger, STPThreeDSButtonTitleStyle, open) {
+/// Default style, doesn’t modify the title
+  STPThreeDSButtonTitleStyleDefault = 0,
+/// Applies localizedUppercaseString to the title
+  STPThreeDSButtonTitleStyleUppercase = 1,
+/// Applies localizedLowercaseString to the title
+  STPThreeDSButtonTitleStyleLowercase = 2,
+/// Applies localizedCapitalizedString to the title
+  STPThreeDSButtonTitleStyleSentenceCapitalized = 3,
+};
+
+/// An enum that defines the different types of buttons that are able to be customized.
+typedef SWIFT_ENUM(NSInteger, STPThreeDSCustomizationButtonType, open) {
+/// The submit button type.
+  STPThreeDSCustomizationButtonTypeSubmit = 0,
+/// The continue button type.
+  STPThreeDSCustomizationButtonTypeContinue = 1,
+/// The next button type.
+  STPThreeDSCustomizationButtonTypeNext = 2,
+/// The cancel button type.
+  STPThreeDSCustomizationButtonTypeCancel = 3,
+/// The resend button type.
+  STPThreeDSCustomizationButtonTypeResend = 4,
+};
+
+@class STPThreeDSUICustomization;
+
+/// <code>STPThreeDSCustomizationSettings</code> provides customization options for 3DS2 authentication flows in your app.
+SWIFT_CLASS("_TtC8Elements31STPThreeDSCustomizationSettings")
+@interface STPThreeDSCustomizationSettings : NSObject
+/// Returns an <code>STPThreeDSCustomizationSettings</code> preconfigured with the default
+/// Stripe UI settings and a 10 minute <code>authenticationTimeout</code>.
+/// @deprecated Use STPThreeDSCustomizationSettings() instead. The default settings are the same.
++ (STPThreeDSCustomizationSettings * _Nonnull)defaultSettings SWIFT_WARN_UNUSED_RESULT SWIFT_DEPRECATED_MSG("Use STPThreeDSCustomizationSettings() instead of STPThreeDSCustomizationSettings.defaultSettings().");
+/// <code>uiCustomization</code> can be used to provide custom UI settings for the authentication
+/// challenge screens presented during a Three Domain Secure authentication. For more information see
+/// our guide on supporting 3DS2 in your iOS application.
+/// Note: It’s important to configure this object appropriately before calling any <code>STPPaymentHandler</code> APIs.
+/// The API makes a copy of the customization settings you provide; it ignores any subsequent changes you
+/// make to your <code>STPThreeDSUICustomization</code> instance.
+/// Defaults to <code>STPThreeDSUICustomization.defaultSettings()</code>.
+@property (nonatomic, strong) STPThreeDSUICustomization * _Nonnull uiCustomization;
+/// <code>authenticationTimeout</code> is the total time allowed for a user to complete a 3DS2 authentication
+/// interaction, in minutes.  This value <em>must</em> be at least 5 minutes.
+/// Defaults to 10 minutes.
+@property (nonatomic) NSInteger authenticationTimeout;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/// The Challenge view displays a footer with additional details that
+/// expand when tapped. This object configures the appearance of that view.
+SWIFT_CLASS("_TtC8Elements29STPThreeDSFooterCustomization")
+@interface STPThreeDSFooterCustomization : NSObject
+/// The default settings.
++ (STPThreeDSFooterCustomization * _Nonnull)defaultSettings SWIFT_WARN_UNUSED_RESULT;
+/// The background color of the footer.
+/// Defaults to gray.
+@property (nonatomic, strong) UIColor * _Nonnull backgroundColor;
+/// The color of the chevron. Defaults to a dark gray.
+@property (nonatomic, strong) UIColor * _Nonnull chevronColor;
+/// The color of the heading text. Defaults to black.
+@property (nonatomic, strong) UIColor * _Nonnull headingTextColor;
+/// The font to use for the heading text.
+@property (nonatomic, strong) UIFont * _Nonnull headingFont;
+/// The font of the text.
+@property (nonatomic, strong) UIFont * _Nullable font;
+/// The color of the text.
+@property (nonatomic, strong) UIColor * _Nullable textColor;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/// A customization object to use to configure the UI of a text label.
+SWIFT_CLASS("_TtC8Elements28STPThreeDSLabelCustomization")
+@interface STPThreeDSLabelCustomization : NSObject
+/// The default settings.
++ (STPThreeDSLabelCustomization * _Nonnull)defaultSettings SWIFT_WARN_UNUSED_RESULT;
+/// The font to use for heading text.
+@property (nonatomic, strong) UIFont * _Nonnull headingFont;
+/// The color of heading text. Defaults to black.
+@property (nonatomic, strong) UIColor * _Nonnull headingTextColor;
+/// The font to use for non-heading text.
+@property (nonatomic, strong) UIFont * _Nullable font;
+/// The color to use for non-heading text. Defaults to black.
+@property (nonatomic, strong) UIColor * _Nullable textColor;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/// A customization object to use to configure a UINavigationBar.
+SWIFT_CLASS("_TtC8Elements36STPThreeDSNavigationBarCustomization")
+@interface STPThreeDSNavigationBarCustomization : NSObject
+/// The default settings.
++ (STPThreeDSNavigationBarCustomization * _Nonnull)defaultSettings SWIFT_WARN_UNUSED_RESULT;
+/// The tint color of the navigation bar background.
+/// Defaults to nil.
+@property (nonatomic, strong) UIColor * _Nullable barTintColor;
+/// The navigation bar style.
+/// Defaults to UIBarStyleDefault.
+/// @note This property controls the <code>UIStatusBarStyle</code>. Set this to <code>UIBarStyleBlack</code>
+/// to change the <code>statusBarStyle</code> to <code>UIStatusBarStyleLightContent</code> - even if you also set
+/// <code>barTintColor</code> to change the actual color of the navigation bar.
+@property (nonatomic) UIBarStyle barStyle;
+/// A Boolean value indicating whether the navigation bar is translucent or not.
+/// Defaults to YES.
+@property (nonatomic) BOOL translucent;
+/// The text to display in the title of the navigation bar.
+/// Defaults to “Secure checkout”.
+@property (nonatomic, copy) NSString * _Nonnull headerText;
+/// The text to display for the button in the navigation bar.
+/// Defaults to “Cancel”.
+@property (nonatomic, copy) NSString * _Nonnull buttonText;
+/// The font to use for the title. Defaults to nil.
+@property (nonatomic, strong) UIFont * _Nullable font;
+/// The color to use for the title. Defaults to nil.
+@property (nonatomic, strong) UIColor * _Nullable textColor;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/// A customization object that configures the appearance of
+/// radio buttons and checkboxes.
+SWIFT_CLASS("_TtC8Elements32STPThreeDSSelectionCustomization")
+@interface STPThreeDSSelectionCustomization : NSObject
+/// The default settings.
++ (STPThreeDSSelectionCustomization * _Nonnull)defaultSettings SWIFT_WARN_UNUSED_RESULT;
+/// The primary color of the selected state.
+/// Defaults to blue.
+@property (nonatomic, strong) UIColor * _Nonnull primarySelectedColor;
+/// The secondary color of the selected state (e.g. the checkmark color).
+/// Defaults to white.
+@property (nonatomic, strong) UIColor * _Nonnull secondarySelectedColor;
+/// The background color displayed in the unselected state.
+/// Defaults to light blue.
+@property (nonatomic, strong) UIColor * _Nonnull unselectedBackgroundColor;
+/// The color of the border drawn around the view in the unselected state.
+/// Defaults to blue.
+@property (nonatomic, strong) UIColor * _Nonnull unselectedBorderColor;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/// A customization object to use to configure the UI of a text field.
+SWIFT_CLASS("_TtC8Elements32STPThreeDSTextFieldCustomization")
+@interface STPThreeDSTextFieldCustomization : NSObject
+/// The default settings.
++ (STPThreeDSTextFieldCustomization * _Nonnull)defaultSettings SWIFT_WARN_UNUSED_RESULT;
+/// The border width of the text field. Defaults to 2.
+@property (nonatomic) CGFloat borderWidth;
+/// The color of the border of the text field. Defaults to clear.
+@property (nonatomic, strong) UIColor * _Nonnull borderColor;
+/// The corner radius of the edges of the text field. Defaults to 8.
+@property (nonatomic) CGFloat cornerRadius;
+/// The appearance of the keyboard. Defaults to UIKeyboardAppearanceDefault.
+@property (nonatomic) UIKeyboardAppearance keyboardAppearance;
+/// The color of the placeholder text. Defaults to light gray.
+@property (nonatomic, strong) UIColor * _Nonnull placeholderTextColor;
+/// The font to use for text.
+@property (nonatomic, strong) UIFont * _Nullable font;
+/// The color to use for the text. Defaults to black.
+@property (nonatomic, strong) UIColor * _Nullable textColor;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/// The <code>STPThreeDSUICustomization</code> provides configuration for UI elements displayed during 3D Secure authentication.
+/// Note: It’s important to configure this object appropriately before calling any <code>STPPaymentHandler</code> APIs.
+/// The API makes a copy of the customization settings you provide; it ignores any subsequent changes you
+/// make to your <code>STPThreeDSUICustomization</code> instance.
+/// seealso:
+/// https://stripe.com/docs/mobile/ios/authentication
+SWIFT_CLASS("_TtC8Elements25STPThreeDSUICustomization")
+@interface STPThreeDSUICustomization : NSObject
+/// The default settings.  See individual properties for their default values.
++ (STPThreeDSUICustomization * _Nonnull)defaultSettings SWIFT_WARN_UNUSED_RESULT;
+/// Provides custom settings for the UINavigationBar of all UIViewControllers displayed during 3D Secure authentication.
+/// The default is <code>STPThreeDSNavigationBarCustomization.defaultSettings()</code>.
+@property (nonatomic, strong) STPThreeDSNavigationBarCustomization * _Nonnull navigationBarCustomization;
+/// Provides custom settings for labels.
+/// The default is <code>STPThreeDSLabelCustomization.defaultSettings()</code>.
+@property (nonatomic, strong) STPThreeDSLabelCustomization * _Nonnull labelCustomization;
+/// Provides custom settings for text fields.
+/// The default is <code>STPThreeDSTextFieldCustomization.defaultSettings()</code>.
+@property (nonatomic, strong) STPThreeDSTextFieldCustomization * _Nonnull textFieldCustomization;
+/// The primary background color of all UIViewControllers displayed during 3D Secure authentication.
+/// Defaults to white.
+@property (nonatomic, strong) UIColor * _Nonnull backgroundColor;
+/// Provides custom settings for the footer the challenge view can display containing additional details.
+/// The default is <code>STPThreeDSFooterCustomization.defaultSettings()</code>.
+@property (nonatomic, strong) STPThreeDSFooterCustomization * _Nonnull footerCustomization;
+/// Sets a given button customization for the specified type.
+/// \param buttonCustomization The buttom customization to use.
+///
+/// \param buttonType The type of button to use the customization for.
+///
+- (void)setButtonCustomization:(STPThreeDSButtonCustomization * _Nonnull)buttonCustomization forType:(enum STPThreeDSCustomizationButtonType)buttonType;
+/// Retrieves a button customization object for the given button type.
+/// seealso:
+/// STPThreeDSButtonCustomization
+/// \param buttonType The button type to retrieve a customization object for.
+///
+///
+/// returns:
+/// A button customization object, or the default if none was set.
+- (STPThreeDSButtonCustomization * _Nonnull)buttonCustomizationForButtonType:(enum STPThreeDSCustomizationButtonType)buttonType SWIFT_WARN_UNUSED_RESULT;
+/// Provides custom settings for radio buttons and checkboxes.
+/// The default is <code>STPThreeDSSelectionCustomization.defaultSettings()</code>.
+@property (nonatomic, strong) STPThreeDSSelectionCustomization * _Nonnull selectionCustomization;
+/// The style of <code>UIActivityIndicatorView</code>s displayed.
+/// This should contrast with <code>backgroundColor</code>.  Defaults to gray.
+@property (nonatomic) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
+/// The style of the <code>UIBlurEffect</code> displayed underneath the <code>UIActivityIndicatorView</code>.
+/// Defaults to <code>UIBlurEffectStyleLight</code>.
+@property (nonatomic) UIBlurEffectStyle blurStyle;
+/// :nodoc:
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
 
@@ -935,51 +1711,6 @@ SWIFT_CLASS("_TtC8Elements13StripeAppInfo")
 @end
 
 
-/// Objects conforming to StripeFormEncodable can be automatically converted to a form-encoded string, which can then be used when making requests to the Stripe API.
-SWIFT_PROTOCOL("_TtP8Elements19StripeFormEncodable_")
-@protocol StripeFormEncodable <NSObject>
-/// The root object name to be used when converting this object to a form-encoded string. For example, if this returns “card”, then the form-encoded output will resemble “card[foo]=bar” (where ‘foo’ and ‘bar’ are specified by <code>propertyNamesToFormFieldNamesMapping</code> below.
-+ (NSString * _Nullable)rootObjectName SWIFT_WARN_UNUSED_RESULT;
-/// This maps properties on an object that is being form-encoded into parameter names in the Stripe API. For example, STPCardParams has a field called <code>expMonth</code>, but the Stripe API expects a field called <code>exp_month</code>. This dictionary represents a mapping from the former to the latter (in other words, STPCardParams.propertyNamesToFormFieldNamesMapping()[“expMonth”] == “exp_month”.)
-+ (NSDictionary<NSString *, NSString *> * _Nonnull)propertyNamesToFormFieldNamesMapping SWIFT_WARN_UNUSED_RESULT;
-/// You can use this property to add additional fields to an API request that are not explicitly defined by the object’s interface. This can be useful when using beta features that haven’t been added to the Stripe SDK yet. For example, if the /v1/tokens API began to accept a beta field called “test_field”, you might do the following:
-/// var cardParams = STPCardParams()
-/// // add card values
-/// cardParams.additionalAPIParameters = [“test_field”: “example_value”]
-/// STPAPIClient.shared.createToken(withParameters: cardParams completion:…);
-@property (nonatomic, copy) NSDictionary * _Nonnull additionalAPIParameters;
-@end
-
-
-SWIFT_CLASS("_TtC8Elements15StripeCardParam")
-@interface StripeCardParam : NSObject <StripeFormEncodable>
-@property (nonatomic, copy) NSString * _Nonnull number;
-@property (nonatomic) NSUInteger expMonth;
-@property (nonatomic) NSUInteger expYear;
-@property (nonatomic, copy) NSString * _Nullable cvc;
-@property (nonatomic, copy) NSString * _Nullable name;
-@property (nonatomic, copy) NSString * _Nullable currency;
-@property (nonatomic, copy) NSDictionary * _Nonnull additionalAPIParameters;
-/// The first line of the cardholder’s address
-@property (nonatomic, copy) NSString * _Nullable addressLine1;
-/// The second line of the cardholder’s address
-@property (nonatomic, copy) NSString * _Nullable addressLine2;
-/// The city of the cardholder’s address
-@property (nonatomic, copy) NSString * _Nullable addressCity;
-/// The state of the cardholder’s address
-@property (nonatomic, copy) NSString * _Nullable addressState;
-/// The zip code of the cardholder’s address
-@property (nonatomic, copy) NSString * _Nullable addressZip;
-/// The country of the cardholder’s address
-@property (nonatomic, copy) NSString * _Nullable addressCountry;
-+ (NSString * _Nullable)rootObjectName SWIFT_WARN_UNUSED_RESULT;
-+ (NSDictionary<NSString *, NSString *> * _Nonnull)propertyNamesToFormFieldNamesMapping SWIFT_WARN_UNUSED_RESULT;
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-+ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
-@end
-
-
-
 /// A rounded submit button used to submit details.
 /// :nodoc:
 SWIFT_CLASS("_TtC8Elements12SubmitButton")
@@ -1003,6 +1734,27 @@ SWIFT_CLASS("_TtC8Elements12SubmitButton")
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+SWIFT_CLASS("_TtC8Elements8UIRouter")
+@interface UIRouter : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@interface UIRouter (SWIFT_EXTENSION(Elements)) <UINavigationControllerDelegate>
+- (void)navigationController:(UINavigationController * _Nonnull)navigationController didShowViewController:(UIViewController * _Nonnull)viewController animated:(BOOL)animated;
+@end
 
 
 
