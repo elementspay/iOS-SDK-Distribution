@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UIView (LayoutSupport)
+@interface UIView (ElementsLayoutSupport)
 
 /**
  Pins the view to its superview's bounds.

@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSLayoutConstraint (LayoutSupport)
+@interface NSLayoutConstraint (ElementsLayoutSupport)
 
 /**
  Provides an NSLayoutConstraint where the `NSLayoutAttributeTop` is equal for both views, with a multiplier of 1, and a constant of 0.

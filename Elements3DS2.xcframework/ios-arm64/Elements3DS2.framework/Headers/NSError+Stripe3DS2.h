@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSError (Stripe3DS2)
+@interface NSError (ElementsStripe3DS2)
 
 
 /// Represents an error where a JSON field value is not valid (e.g. expected 'Y' or 'N' but received something else).

@@ -10,7 +10,7 @@
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Elements3DS2</key>
 		<data>
-		VoOu7sHDorBkO2w1z0SJvIAep3U=
+		tGVJyGgAxi1V5tbeoHJrTWxdYGQ=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Headers/ETDSACSNetworkingManager.h</key>
 		<data>
@@ -346,39 +346,35 @@
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Headers/NSData+JWEHelpers.h</key>
 		<data>
-		yYQVoI7ahRQ8VSnvZ+ViNAkETXo=
+		9sL1Xa+dWpb9ptCYeH68RQyE90w=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Headers/NSDictionary+DecodingHelpers.h</key>
 		<data>
-		uEuMN4STraNoTBGhsUvKFZ2jcGE=
+		weGDdntfGXXQiobegO1/9Xq13n0=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Headers/NSError+Stripe3DS2.h</key>
 		<data>
-		NI/L7zpqH1Aakuh61xf5WZev+cw=
+		o6Ljz31HO6HM77RmOp6DkYCZEi4=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Headers/NSLayoutConstraint+LayoutSupport.h</key>
 		<data>
-		asOvPyWaMCcUE1TfZJxkIpkgjUY=
+		paIdv3RAzrzCTZTcc7epfXQJpsc=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Headers/NSString+EmptyChecking.h</key>
 		<data>
-		IWrDauTx+ITtxuV1fG+/c/UDQyY=
+		30dzwgZQ4yclVwRH1SONBBz6wk4=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Headers/NSString+JWEHelpers.h</key>
 		<data>
-		Q+blAafsm8tWBA2FiFY7xEgW3xw=
-		</data>
-		<key>ios-arm64/Elements3DS2.framework/Headers/Stripe3DS2-Prefix.pch</key>
-		<data>
-		tgHmfulgqLgCY/xvM2Mx+zGeYuw=
+		4Z7s/h2EiGp/wkRADd/tF4HoFzo=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Headers/UIButton+CustomInitialization.h</key>
 		<data>
-		jxv7DRvEUA4p8hl/W4GDGeCFUOQ=
+		SWMrMJE4bLJjzi5gEEWPbI6KtUY=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Headers/UIColor+DefaultColors.h</key>
 		<data>
-		EXfGaogMFO/oh0xldDqiHbsR+lY=
+		xLzlV5jAaMS0p5DZLXAgiwMx3pE=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Headers/UIColor+ThirteenSupport.h</key>
 		<data>
@@ -386,19 +382,19 @@
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Headers/UIFont+DefaultFonts.h</key>
 		<data>
-		9uS3PsbiuqUXxLkOVKChvDpFjdM=
+		6xQ94QAoM19vxx1VKYgySMBTvjs=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Headers/UIView+LayoutSupport.h</key>
 		<data>
-		/FJ2G/alBrrFJbIZwYQ1MT1WgAE=
+		DgrX9wtXuIt3J1ucIvar8SQZ3VY=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Headers/UIViewController+Stripe3DS2.h</key>
 		<data>
-		5xh0yBZseiTtkHP0WWApy8WkjIM=
+		EJZ4OuntsvBN000qvGkjd3XnXyw=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Info.plist</key>
 		<data>
-		CkZHKOyad8NaPVZ7958MgV5moLk=
+		theZAi9MqfgVy0y7o0DLyYlTDYA=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Modules/module.modulemap</key>
 		<data>
@@ -406,7 +402,7 @@
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/_CodeSignature/CodeResources</key>
 		<data>
-		F/75v5GSEOxFlB/blWAjOcvFxwE=
+		o8AaqsbirLi+O3cF0uSWJRyKhto=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/amex-logo@3x.png</key>
 		<data>
@@ -695,7 +691,7 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Elements3DS2</key>
 		<data>
-		l2ctNfqb5wYlTB6wlfetjSUuhA8=
+		lQwx8V/FI/9UBgKnNtXU9D2WUm8=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/ETDSACSNetworkingManager.h</key>
 		<data>
@@ -1031,39 +1027,35 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/NSData+JWEHelpers.h</key>
 		<data>
-		yYQVoI7ahRQ8VSnvZ+ViNAkETXo=
+		9sL1Xa+dWpb9ptCYeH68RQyE90w=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/NSDictionary+DecodingHelpers.h</key>
 		<data>
-		uEuMN4STraNoTBGhsUvKFZ2jcGE=
+		weGDdntfGXXQiobegO1/9Xq13n0=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/NSError+Stripe3DS2.h</key>
 		<data>
-		NI/L7zpqH1Aakuh61xf5WZev+cw=
+		o6Ljz31HO6HM77RmOp6DkYCZEi4=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/NSLayoutConstraint+LayoutSupport.h</key>
 		<data>
-		asOvPyWaMCcUE1TfZJxkIpkgjUY=
+		paIdv3RAzrzCTZTcc7epfXQJpsc=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/NSString+EmptyChecking.h</key>
 		<data>
-		IWrDauTx+ITtxuV1fG+/c/UDQyY=
+		30dzwgZQ4yclVwRH1SONBBz6wk4=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/NSString+JWEHelpers.h</key>
 		<data>
-		Q+blAafsm8tWBA2FiFY7xEgW3xw=
-		</data>
-		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/Stripe3DS2-Prefix.pch</key>
-		<data>
-		tgHmfulgqLgCY/xvM2Mx+zGeYuw=
+		4Z7s/h2EiGp/wkRADd/tF4HoFzo=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/UIButton+CustomInitialization.h</key>
 		<data>
-		jxv7DRvEUA4p8hl/W4GDGeCFUOQ=
+		SWMrMJE4bLJjzi5gEEWPbI6KtUY=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/UIColor+DefaultColors.h</key>
 		<data>
-		EXfGaogMFO/oh0xldDqiHbsR+lY=
+		xLzlV5jAaMS0p5DZLXAgiwMx3pE=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/UIColor+ThirteenSupport.h</key>
 		<data>
@@ -1071,19 +1063,19 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/UIFont+DefaultFonts.h</key>
 		<data>
-		9uS3PsbiuqUXxLkOVKChvDpFjdM=
+		6xQ94QAoM19vxx1VKYgySMBTvjs=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/UIView+LayoutSupport.h</key>
 		<data>
-		/FJ2G/alBrrFJbIZwYQ1MT1WgAE=
+		DgrX9wtXuIt3J1ucIvar8SQZ3VY=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/UIViewController+Stripe3DS2.h</key>
 		<data>
-		5xh0yBZseiTtkHP0WWApy8WkjIM=
+		EJZ4OuntsvBN000qvGkjd3XnXyw=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Info.plist</key>
 		<data>
-		euXyalb+vJpfLBUjRmDde/Iq5Ho=
+		EuKryj16lPNcnbhOaLp9NnhuS2E=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Modules/module.modulemap</key>
 		<data>
@@ -1091,7 +1083,7 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/_CodeSignature/CodeResources</key>
 		<data>
-		Z2TeQP5xE8vVIK1qfm56rg7IzzA=
+		eUUc2nEKFrzKKPAahSGL3BS8WDM=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/amex-logo@3x.png</key>
 		<data>
@@ -1392,11 +1384,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			VoOu7sHDorBkO2w1z0SJvIAep3U=
+			tGVJyGgAxi1V5tbeoHJrTWxdYGQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			dR6H8xE9BFQJX/vsGZb9fLIIIsU0BmkDh1YC+H+ptNk=
+			BM7yix4ReUM4onZV3nWaKv3YRrY+VxYyiIFS/MMW4uU=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/Headers/ETDSACSNetworkingManager.h</key>
@@ -2316,99 +2308,88 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			yYQVoI7ahRQ8VSnvZ+ViNAkETXo=
+			9sL1Xa+dWpb9ptCYeH68RQyE90w=
 			</data>
 			<key>hash2</key>
 			<data>
-			YeUIYQb8RFvZUNfyn/ueS5sLxD9yJO8Sxf8VP/5/YRU=
+			18Ha7OYP4J1sRdDBXYFGm4Nf+ICk3wUcHMRJTrVhjKk=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/Headers/NSDictionary+DecodingHelpers.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			uEuMN4STraNoTBGhsUvKFZ2jcGE=
+			weGDdntfGXXQiobegO1/9Xq13n0=
 			</data>
 			<key>hash2</key>
 			<data>
-			m8x/TEkihjgi7cz+qtpNqCW/0RXWPgrjU3V57wg3pLg=
+			MpnOmdfXQMtShm7iibTSB4VwjEGNhUb58wxPqQm25T0=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/Headers/NSError+Stripe3DS2.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			NI/L7zpqH1Aakuh61xf5WZev+cw=
+			o6Ljz31HO6HM77RmOp6DkYCZEi4=
 			</data>
 			<key>hash2</key>
 			<data>
-			TP0TMS2quG6JUjKWndmXmr67ktYuvQImqWfysMQ+0Jc=
+			5trm/wM59k0fq5+neJVCvKZlcCCXoPSHqLXs66CmUWA=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/Headers/NSLayoutConstraint+LayoutSupport.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			asOvPyWaMCcUE1TfZJxkIpkgjUY=
+			paIdv3RAzrzCTZTcc7epfXQJpsc=
 			</data>
 			<key>hash2</key>
 			<data>
-			RKcu5XKoNMCO6iT9jTO8Y07mzG6PpRf9uNfsTRLYIO0=
+			+rUT9ygXa6SgpgzHGCT82URLwu/B3rgb58WZ/7JTDYo=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/Headers/NSString+EmptyChecking.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			IWrDauTx+ITtxuV1fG+/c/UDQyY=
+			30dzwgZQ4yclVwRH1SONBBz6wk4=
 			</data>
 			<key>hash2</key>
 			<data>
-			M/5sii0jtpvLA6BQxqEwwfFRQBMhx0+zdbA7yqIvbF8=
+			sP4TEWUgn4MFoSRmuBEWRs9upuONJjETD6GYjhKszyg=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/Headers/NSString+JWEHelpers.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			Q+blAafsm8tWBA2FiFY7xEgW3xw=
+			4Z7s/h2EiGp/wkRADd/tF4HoFzo=
 			</data>
 			<key>hash2</key>
 			<data>
-			iBDb4NfSGaKxNT7Rzd6Uvwh5liioIbYyWuBX0OfiTU0=
-			</data>
-		</dict>
-		<key>ios-arm64/Elements3DS2.framework/Headers/Stripe3DS2-Prefix.pch</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			tgHmfulgqLgCY/xvM2Mx+zGeYuw=
-			</data>
-			<key>hash2</key>
-			<data>
-			yu8NjvdKyVjf8mwKgKGeJPGoJw9wbM7xPmROKhINc2o=
+			kQCKvA+oX2ViBAybdlX50ta/aP0XkqW6pfOMkOXUhHU=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/Headers/UIButton+CustomInitialization.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			jxv7DRvEUA4p8hl/W4GDGeCFUOQ=
+			SWMrMJE4bLJjzi5gEEWPbI6KtUY=
 			</data>
 			<key>hash2</key>
 			<data>
-			lWKZqQpMx6+f67E/AY04/ELbRg3Eg8G22fkahSxBl8A=
+			4r3bedXLT4toH2mVHQI6zvV5+4F68nHv0h1Yvvx/LRQ=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/Headers/UIColor+DefaultColors.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			EXfGaogMFO/oh0xldDqiHbsR+lY=
+			xLzlV5jAaMS0p5DZLXAgiwMx3pE=
 			</data>
 			<key>hash2</key>
 			<data>
-			4fUAanQ/V8uCbLRIC/7I7V0XszxZsFWAv0QllqHmsXE=
+			vy0koLBCHhSJyZ1JNbhGUXanY8TVxaRIsSCxjO5hS1s=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/Headers/UIColor+ThirteenSupport.h</key>
@@ -2426,44 +2407,44 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			9uS3PsbiuqUXxLkOVKChvDpFjdM=
+			6xQ94QAoM19vxx1VKYgySMBTvjs=
 			</data>
 			<key>hash2</key>
 			<data>
-			a5CiUqQQpbONQFs0FB1IgHSwM6dsnSWWwSDzYwjEQ1A=
+			8k09D09zXsgoULc5d20JmIicdlRzd7SY6Tm3SZW8RsU=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/Headers/UIView+LayoutSupport.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			/FJ2G/alBrrFJbIZwYQ1MT1WgAE=
+			DgrX9wtXuIt3J1ucIvar8SQZ3VY=
 			</data>
 			<key>hash2</key>
 			<data>
-			JTZeJXsfesLDke36kXMkJPRdeN66FJBSSrzj/cwqWNo=
+			lpBOJVFJazJsic0cljt+vABClvg3whEf6g60S5I3Wd8=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/Headers/UIViewController+Stripe3DS2.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			5xh0yBZseiTtkHP0WWApy8WkjIM=
+			EJZ4OuntsvBN000qvGkjd3XnXyw=
 			</data>
 			<key>hash2</key>
 			<data>
-			6UYq2608j3fgDlQTbcbyznrLuPQoIwM3n37aYR/P0lM=
+			SS7sZ8wA7fergITM0r+BJ28XZDHLC9migC/A9utXmpQ=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/Info.plist</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			CkZHKOyad8NaPVZ7958MgV5moLk=
+			theZAi9MqfgVy0y7o0DLyYlTDYA=
 			</data>
 			<key>hash2</key>
 			<data>
-			er9+i9G3tkpH8HwrWX6UwdxXPj2qbzQqe+1f76Dx+hw=
+			vkY3ms3mDWSAJ9JHjEB4MOTM2CBYiXVvqaL2nkDAtkQ=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/Modules/module.modulemap</key>
@@ -2481,11 +2462,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			F/75v5GSEOxFlB/blWAjOcvFxwE=
+			o8AaqsbirLi+O3cF0uSWJRyKhto=
 			</data>
 			<key>hash2</key>
 			<data>
-			tnApKgPnVx64Xa/lbWTKWuVbRCLepWY8MauaxaRh3Mg=
+			/6LxX9IxXVLy7SG00d8CDQeRZxDKWOx9FCFoB++QB/k=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/amex-logo@3x.png</key>
@@ -2982,11 +2963,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			l2ctNfqb5wYlTB6wlfetjSUuhA8=
+			lQwx8V/FI/9UBgKnNtXU9D2WUm8=
 			</data>
 			<key>hash2</key>
 			<data>
-			mOSRvXKSwQVYi5eWxA2tE/Qe1kpY6SHAC/2uLUMLXrI=
+			zFlnS/AaKHGNTNV2cDG1AkYEnZllwRXBt6XT0rUYxX8=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/ETDSACSNetworkingManager.h</key>
@@ -3906,99 +3887,88 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			yYQVoI7ahRQ8VSnvZ+ViNAkETXo=
+			9sL1Xa+dWpb9ptCYeH68RQyE90w=
 			</data>
 			<key>hash2</key>
 			<data>
-			YeUIYQb8RFvZUNfyn/ueS5sLxD9yJO8Sxf8VP/5/YRU=
+			18Ha7OYP4J1sRdDBXYFGm4Nf+ICk3wUcHMRJTrVhjKk=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/NSDictionary+DecodingHelpers.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			uEuMN4STraNoTBGhsUvKFZ2jcGE=
+			weGDdntfGXXQiobegO1/9Xq13n0=
 			</data>
 			<key>hash2</key>
 			<data>
-			m8x/TEkihjgi7cz+qtpNqCW/0RXWPgrjU3V57wg3pLg=
+			MpnOmdfXQMtShm7iibTSB4VwjEGNhUb58wxPqQm25T0=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/NSError+Stripe3DS2.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			NI/L7zpqH1Aakuh61xf5WZev+cw=
+			o6Ljz31HO6HM77RmOp6DkYCZEi4=
 			</data>
 			<key>hash2</key>
 			<data>
-			TP0TMS2quG6JUjKWndmXmr67ktYuvQImqWfysMQ+0Jc=
+			5trm/wM59k0fq5+neJVCvKZlcCCXoPSHqLXs66CmUWA=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/NSLayoutConstraint+LayoutSupport.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			asOvPyWaMCcUE1TfZJxkIpkgjUY=
+			paIdv3RAzrzCTZTcc7epfXQJpsc=
 			</data>
 			<key>hash2</key>
 			<data>
-			RKcu5XKoNMCO6iT9jTO8Y07mzG6PpRf9uNfsTRLYIO0=
+			+rUT9ygXa6SgpgzHGCT82URLwu/B3rgb58WZ/7JTDYo=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/NSString+EmptyChecking.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			IWrDauTx+ITtxuV1fG+/c/UDQyY=
+			30dzwgZQ4yclVwRH1SONBBz6wk4=
 			</data>
 			<key>hash2</key>
 			<data>
-			M/5sii0jtpvLA6BQxqEwwfFRQBMhx0+zdbA7yqIvbF8=
+			sP4TEWUgn4MFoSRmuBEWRs9upuONJjETD6GYjhKszyg=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/NSString+JWEHelpers.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			Q+blAafsm8tWBA2FiFY7xEgW3xw=
+			4Z7s/h2EiGp/wkRADd/tF4HoFzo=
 			</data>
 			<key>hash2</key>
 			<data>
-			iBDb4NfSGaKxNT7Rzd6Uvwh5liioIbYyWuBX0OfiTU0=
-			</data>
-		</dict>
-		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/Stripe3DS2-Prefix.pch</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			tgHmfulgqLgCY/xvM2Mx+zGeYuw=
-			</data>
-			<key>hash2</key>
-			<data>
-			yu8NjvdKyVjf8mwKgKGeJPGoJw9wbM7xPmROKhINc2o=
+			kQCKvA+oX2ViBAybdlX50ta/aP0XkqW6pfOMkOXUhHU=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/UIButton+CustomInitialization.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			jxv7DRvEUA4p8hl/W4GDGeCFUOQ=
+			SWMrMJE4bLJjzi5gEEWPbI6KtUY=
 			</data>
 			<key>hash2</key>
 			<data>
-			lWKZqQpMx6+f67E/AY04/ELbRg3Eg8G22fkahSxBl8A=
+			4r3bedXLT4toH2mVHQI6zvV5+4F68nHv0h1Yvvx/LRQ=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/UIColor+DefaultColors.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			EXfGaogMFO/oh0xldDqiHbsR+lY=
+			xLzlV5jAaMS0p5DZLXAgiwMx3pE=
 			</data>
 			<key>hash2</key>
 			<data>
-			4fUAanQ/V8uCbLRIC/7I7V0XszxZsFWAv0QllqHmsXE=
+			vy0koLBCHhSJyZ1JNbhGUXanY8TVxaRIsSCxjO5hS1s=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/UIColor+ThirteenSupport.h</key>
@@ -4016,44 +3986,44 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			9uS3PsbiuqUXxLkOVKChvDpFjdM=
+			6xQ94QAoM19vxx1VKYgySMBTvjs=
 			</data>
 			<key>hash2</key>
 			<data>
-			a5CiUqQQpbONQFs0FB1IgHSwM6dsnSWWwSDzYwjEQ1A=
+			8k09D09zXsgoULc5d20JmIicdlRzd7SY6Tm3SZW8RsU=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/UIView+LayoutSupport.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			/FJ2G/alBrrFJbIZwYQ1MT1WgAE=
+			DgrX9wtXuIt3J1ucIvar8SQZ3VY=
 			</data>
 			<key>hash2</key>
 			<data>
-			JTZeJXsfesLDke36kXMkJPRdeN66FJBSSrzj/cwqWNo=
+			lpBOJVFJazJsic0cljt+vABClvg3whEf6g60S5I3Wd8=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/UIViewController+Stripe3DS2.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			5xh0yBZseiTtkHP0WWApy8WkjIM=
+			EJZ4OuntsvBN000qvGkjd3XnXyw=
 			</data>
 			<key>hash2</key>
 			<data>
-			6UYq2608j3fgDlQTbcbyznrLuPQoIwM3n37aYR/P0lM=
+			SS7sZ8wA7fergITM0r+BJ28XZDHLC9migC/A9utXmpQ=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Info.plist</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			euXyalb+vJpfLBUjRmDde/Iq5Ho=
+			EuKryj16lPNcnbhOaLp9NnhuS2E=
 			</data>
 			<key>hash2</key>
 			<data>
-			xe+RI8U7uqoX8v9pgtOT+yhev+/cGeSjMsVQeg/axRE=
+			pcc0O70JkAgtfUfgNU5RVlF2tY7vCmzl/pyApHjLezg=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Modules/module.modulemap</key>
@@ -4071,11 +4041,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Z2TeQP5xE8vVIK1qfm56rg7IzzA=
+			eUUc2nEKFrzKKPAahSGL3BS8WDM=
 			</data>
 			<key>hash2</key>
 			<data>
-			rgzpZETzdSy1lfNmahLBtpYhWhO3dsvAE8oKy0HyGj8=
+			v+uZenrOAYTxlXYyb4pMsS9Zdt06qb2msm/rOrK1ZdE=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/amex-logo@3x.png</key>

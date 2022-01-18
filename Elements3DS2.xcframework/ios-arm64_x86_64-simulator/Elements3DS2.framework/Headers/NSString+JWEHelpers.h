@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSString (JWEHelpers)
+@interface NSString (ElementsJWEHelpers)
 
 - (nullable NSString *)_etds_base64URLEncodedString;
 - (nullable NSString *)_etds_base64URLDecodedString;

@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
  - the value is the wrong type  -> ETDSErrorCodeJSONFieldInvalid
  - validator returns NO         -> ETDSErrorCodeJSONFieldInvalid
  */
-@interface NSDictionary (DecodingHelpers)
+@interface NSDictionary (ElementsDecodingHelpers)
 
 /// Convenience method to extract an NSArray and populate it with instances of arrayElementType.
 /// If isRequired is YES, returns nil without error if the key is not present

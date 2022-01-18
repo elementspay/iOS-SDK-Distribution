@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UIFont (DefaultFonts)
+@interface UIFont (ElementsDefaultFonts)
 
 + (UIFont *)_etds_defaultHeadingTextFont;
 

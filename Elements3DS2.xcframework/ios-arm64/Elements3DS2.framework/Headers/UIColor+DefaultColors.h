@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UIColor (DefaultColors)
+@interface UIColor (ElementsDefaultColors)
 
 /// The challenge view footer background color
 + (UIColor *)_etds_defaultFooterBackgroundColor;

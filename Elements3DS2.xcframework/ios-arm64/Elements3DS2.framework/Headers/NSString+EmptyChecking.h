@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSString (EmptyChecking)
+@interface NSString (ElementsEmptyChecking)
 
 + (BOOL)_etds_isStringEmpty:(NSString *)string;
 

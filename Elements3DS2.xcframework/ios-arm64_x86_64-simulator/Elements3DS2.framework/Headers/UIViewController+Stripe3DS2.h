@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class ETDSUICustomization;
 
-@interface UIViewController (Stripe3DS2)
+@interface UIViewController (Elements3DS2)
 
 - (void)_etds_setupNavigationBarElementsWithCustomization:(ETDSUICustomization *)customization cancelButtonSelector:(SEL)cancelButtonSelector;
 
