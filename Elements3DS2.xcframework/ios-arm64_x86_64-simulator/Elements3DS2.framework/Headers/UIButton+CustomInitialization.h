@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UIButton (CustomInitialization)
+@interface UIButton (ElementsCustomInitialization)
 
 + (UIButton *)_etds_buttonWithTitle:(NSString * _Nullable)title customization:(ETDSButtonCustomization * _Nullable)customization;
 
