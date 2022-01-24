@@ -6,7 +6,7 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		83sipkj/eakuiq7XMHiN8f1TVA0=
+		f99NFeNhes1OgKuKDp5NMDfgYBM=
 		</data>
 		<key>AutoEquatable.stencil</key>
 		<data>
@@ -26,7 +26,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		g+w9NidBSxteqgHj3MHeiOP23RU=
+		aIO41Js06Jsos1h68OwL+CKT0SQ=
 		</data>
 		<key>Localizable.strings</key>
 		<data>
@@ -42,7 +42,7 @@
 		</data>
 		<key>Modules/Elements.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		0NgF6qpZKk8dktGyhj76GXJKg5k=
+		IYRvvtAkIG2jrKgtNUPATcA7wnc=
 		</data>
 		<key>Modules/Elements.swiftmodule/arm64.swiftdoc</key>
 		<data>
@@ -54,7 +54,7 @@
 		</data>
 		<key>Modules/Elements.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		0NgF6qpZKk8dktGyhj76GXJKg5k=
+		IYRvvtAkIG2jrKgtNUPATcA7wnc=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -67,7 +67,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Hrq8ocWhdtO9LM6oLWVA7GhVq/Bp8HdYaKQRdTa89rc=
+			sjk1mD5lF+IMI8y9UmRvTFPUhSdacubW2xjGMFN+j4A=
 			</data>
 		</dict>
 		<key>AutoEquatable.stencil</key>
@@ -123,7 +123,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			njrGL8epeuBob2EfntMO3K4t+PBCazJNZf3BLkT5Udo=
+			gp9s9zxRMECnvkEpAfimqYtxXUOMjkXNUdVeagPk4p4=
 			</data>
 		</dict>
 		<key>Modules/Elements.swiftmodule/arm64.swiftdoc</key>
@@ -144,7 +144,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			njrGL8epeuBob2EfntMO3K4t+PBCazJNZf3BLkT5Udo=
+			gp9s9zxRMECnvkEpAfimqYtxXUOMjkXNUdVeagPk4p4=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
