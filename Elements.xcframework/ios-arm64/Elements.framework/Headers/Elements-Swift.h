@@ -808,17 +808,6 @@ SWIFT_CLASS_NAMED("SessionDelegate")
 @end
 
 
-/// Libraries wrapping the Stripe SDK should use this object to provide information about the library, and set it
-/// in on <code>STPAPIClient</code>.  This information is passed to Stripe so that we can contact you about future issues or critical updates.
-/// seealso:
-/// https://stripe.com/docs/building-plugins#setappinfo
-SWIFT_CLASS("_TtC8Elements13StripeAppInfo")
-@interface StripeAppInfo : NSObject
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-+ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
-@end
-
-
 /// A rounded submit button used to submit details.
 /// :nodoc:
 SWIFT_CLASS("_TtC8Elements12SubmitButton")
@@ -863,6 +852,7 @@ SWIFT_CLASS("_TtC8Elements8UIRouter")
 @interface UIRouter (SWIFT_EXTENSION(Elements)) <UINavigationControllerDelegate>
 - (void)navigationController:(UINavigationController * _Nonnull)navigationController didShowViewController:(UIViewController * _Nonnull)viewController animated:(BOOL)animated;
 @end
+
 
 
 
