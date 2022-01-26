@@ -2,7 +2,7 @@ Pod::Spec.new do |spec|
   framework_filename = "Elements.xcframework"
 
   spec.name = "Elements"
-  spec.version = "1.1.5"
+  spec.version = "1.1.6"
   spec.summary = "Elements iOS SDK"
   spec.description = <<-DESC
     Elements official SDK
@@ -20,7 +20,6 @@ Pod::Spec.new do |spec|
   spec.default_subspecs = 'Core'
   spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64', 'SWIFT_SUPPRESS_WARNINGS' => 'YES' }
   spec.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
-  spec.dependency 'BlocksCore', '1.0.1'
   
   spec.subspec 'Core' do |plugin|
     plugin.vendored_frameworks = 'Elements.xcframework', 'Elements3DS2.xcframework'

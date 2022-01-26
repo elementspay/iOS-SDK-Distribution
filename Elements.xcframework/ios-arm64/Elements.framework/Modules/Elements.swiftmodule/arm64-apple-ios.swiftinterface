@@ -3,10 +3,10 @@
 // swift-module-flags: -target arm64-apple-ios11.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Elements
 import AVKit
 import Accelerate
-import BlocksCore
 import CommonCrypto
 import CoreGraphics
 import CoreImage
+import Darwin/*.fputs*/
 @_exported import Elements
 import Elements3DS2
 import Foundation
@@ -18,7 +18,7 @@ import Swift
 import UIKit
 import WebKit
 import _Concurrency
-public struct PaymentsResponse : BlocksCore.BlocksAPIResponse {
+public struct PaymentsResponse {
   public let action: Elements.Action?
   public let token: Swift.String?
   public init(from decoder: Swift.Decoder) throws
@@ -106,7 +106,7 @@ public protocol LoadingElement {
   func stopLoading()
 }
 public protocol Element : AnyObject {
-  var environment: BlocksCore.Environment { get set }
+  var environment: Elements.Environment { get set }
 }
 extension Elements.Element {
   public func finalizeIfNeeded(with success: Swift.Bool)
@@ -117,7 +117,7 @@ public protocol FinalizableElement : Elements.Element {
   func didFinalize(with success: Swift.Bool)
 }
 extension Elements.Element {
-  public var environment: BlocksCore.Environment {
+  public var environment: Elements.Environment {
     get
     set
   }
@@ -148,7 +148,7 @@ public enum BaseViewControllerStyle {
     get
   }
 }
-@objc @_Concurrency.MainActor(unsafe) open class BlocksBaseViewController : UIKit.UIViewController, BlocksCore.BaseViewControllable {
+@objc @_Concurrency.MainActor(unsafe) open class BlocksBaseViewController : UIKit.UIViewController, Elements.BaseViewControllable {
   @_Concurrency.MainActor(unsafe) public var keyboardState: Elements.KeyboardState
   @_Concurrency.MainActor(unsafe) @objc override dynamic public var preferredStatusBarStyle: UIKit.UIStatusBarStyle {
     @_Concurrency.MainActor(unsafe) @objc get
@@ -165,16 +165,16 @@ public enum BaseViewControllerStyle {
   @_Concurrency.MainActor(unsafe) open func showNetworkSuccess(message: Swift.String?)
   @_Concurrency.MainActor(unsafe) open func hideMessageErrorView()
   @_Concurrency.MainActor(unsafe) open func showLoadingView()
-  @_Concurrency.MainActor(unsafe) open func hideLoadingView(completion: BlocksCore.VoidCompletion?)
+  @_Concurrency.MainActor(unsafe) open func hideLoadingView(completion: Elements.VoidCompletion?)
   @_Concurrency.MainActor(unsafe) open func showInViewLoading()
-  @_Concurrency.MainActor(unsafe) open func hideInViewLoading(completion: BlocksCore.VoidCompletion?)
+  @_Concurrency.MainActor(unsafe) open func hideInViewLoading(completion: Elements.VoidCompletion?)
   @_Concurrency.MainActor(unsafe) public func presentNetworkSuccess(message: Swift.String?)
   @_Concurrency.MainActor(unsafe) public func presentNetworkRequestError(message: Swift.String?)
   @_Concurrency.MainActor(unsafe) public func dismissMessageErrorView()
   @_Concurrency.MainActor(unsafe) public func presentLoadingView()
-  @_Concurrency.MainActor(unsafe) public func dismissLoadingView(completion: BlocksCore.VoidCompletion?)
+  @_Concurrency.MainActor(unsafe) public func dismissLoadingView(completion: Elements.VoidCompletion?)
   @_Concurrency.MainActor(unsafe) public func presentInViewLoading()
-  @_Concurrency.MainActor(unsafe) public func dismissInViewLoading(completion: BlocksCore.VoidCompletion?)
+  @_Concurrency.MainActor(unsafe) public func dismissInViewLoading(completion: Elements.VoidCompletion?)
   @objc deinit
 }
 extension Elements.BlocksBaseViewController {
@@ -243,9 +243,22 @@ public class AddressParams : Swift.Codable {
   public func encode(to encoder: Swift.Encoder) throws
   required public init(from decoder: Swift.Decoder) throws
 }
-public struct CreatePaymentMethodResponse : BlocksCore.BlocksAPIResponse {
+public struct CreatePaymentMethodResponse {
   public let token: Swift.String
   public init(from decoder: Swift.Decoder) throws
+}
+public struct BlocksScope<Base> {
+  public let base: Base
+  public init(base: Base)
+}
+public protocol BlocksCompatible {
+  associatedtype BlocksBase
+  var blocks: Elements.BlocksScope<Self.BlocksBase> { get }
+}
+extension Elements.BlocksCompatible {
+  public var blocks: Elements.BlocksScope<Self> {
+    get
+  }
 }
 @_hasMissingDesignatedInitializers public class FontPlate {
   @objc deinit
@@ -357,15 +370,10 @@ extension Elements.FormTextItemView {
     public static func == (a: Elements.FormTextItemView<ItemType>.AccessoryType, b: Elements.FormTextItemView<ItemType>.AccessoryType) -> Swift.Bool
   }
 }
-public struct StripeTokenizationRequest : BlocksCore.BlocksAPIRequest {
-  public typealias ResponseType = Elements.StripeVaultToken
-  public let path: Swift.String
-  public var counter: Swift.UInt
-  public var method: BlocksCore.HttpMethod
-  public var queryParameters: [Foundation.URLQueryItem]
-  public var headers: [Swift.String : Swift.String]
-  public func encode(to encoder: Swift.Encoder) throws
+public enum BlocksLogging {
+  public static var isEnabled: Swift.Bool
 }
+public func blocksPrint(_ items: Any..., separator: Swift.String = " ", terminator: Swift.String = "\n")
 public struct ListItemsSection {
   public var title: Swift.String?
   public var items: [Elements.ListItem]
@@ -494,12 +502,25 @@ extension Elements.ElementsScope where Base : UIKit.UIView {
   public func snapShot() -> UIKit.UIImage?
   public func hideWithAnimation(_ hidden: Swift.Bool)
 }
+public struct Environment {
+  public var baseURL: Foundation.URL
+  public var headers: [Swift.String : Swift.String] {
+    get
+  }
+  public var queryParameters: [Foundation.URLQueryItem]
+  public let clientToken: Swift.String
+  public static func sandbox(clientToken: Swift.String) -> Elements.Environment
+  public static func portForward(clientToken: Swift.String) -> Elements.Environment
+  public static func production(clientToken: Swift.String) -> Elements.Environment
+  public static let unknown: Elements.Environment
+  public init(baseURL: Foundation.URL? = nil, clientToken: Swift.String)
+}
 public struct EmptyPaymentDetails : Elements.PaymentMethodDetails {
   public let type: Swift.String
   public init(type: Swift.String)
   public func encode(to encoder: Swift.Encoder) throws
 }
-public struct ListPaymentMethodsResponse : BlocksCore.BlocksAPIResponse {
+public struct ListPaymentMethodsResponse {
   public init(from decoder: Swift.Decoder) throws
 }
 final public class FormButtonItem : Elements.FormItem {
@@ -722,6 +743,15 @@ public struct LocalizationKey {
   public static let errorSomethingWentWrong: Elements.LocalizationKey
   public init(key: Swift.String)
 }
+public protocol ViewableRouting : Elements.Routing {
+  var viewControllable: Elements.ViewControllable { get }
+}
+open class ViewableRouter<InteractorType, ViewControllerType> : Elements.Router<InteractorType>, Elements.ViewableRouting {
+  final public let viewController: ViewControllerType
+  final public let viewControllable: Elements.ViewControllable
+  public init(interactor: InteractorType, viewController: ViewControllerType)
+  @objc deinit
+}
 final public class CardNumberValidator : Elements.Validator {
   public init()
   final public func isValid(_ value: Swift.String) -> Swift.Bool
@@ -763,16 +793,21 @@ extension Elements.FormViewController {
   @_Concurrency.MainActor(unsafe) @objc dynamic public func configureSafariViewController(_ viewController: SafariServices.SFSafariViewController)
   @_Concurrency.MainActor(unsafe) @objc dynamic public func authenticationContextWillDismiss(_ viewController: UIKit.UIViewController)
 }
-public struct ApplePayTokenizationRequest : BlocksCore.BlocksAPIRequest {
-  public typealias ResponseType = Elements.ElementsToken
-  public let path: Swift.String
-  public var counter: Swift.UInt
-  public var method: BlocksCore.HttpMethod
-  public var queryParameters: [Foundation.URLQueryItem]
-  public var headers: [Swift.String : Swift.String] {
+open class MultiStageComponentizedBuilder<Component, Router, DynamicBuildDependency> : Elements.Buildable {
+  public var componentForCurrentBuildPass: Component {
     get
   }
-  public func encode(to encoder: Swift.Encoder) throws
+  public init(componentBuilder: @escaping () -> Component)
+  final public func finalStageBuild(withDynamicDependency dynamicDependency: DynamicBuildDependency) -> Router
+  open func finalStageBuild(with component: Component, _ dynamicDependency: DynamicBuildDependency) -> Router
+  @objc deinit
+}
+@_inheritsConvenienceInitializers open class SimpleMultiStageComponentizedBuilder<Component, Router> : Elements.MultiStageComponentizedBuilder<Component, Router, ()> {
+  override public init(componentBuilder: @escaping () -> Component)
+  final override public func finalStageBuild(with component: Component, _ dynamicDependency: ()) -> Router
+  open func finalStageBuild(with component: Component) -> Router
+  final public func finalStageBuild() -> Router
+  @objc deinit
 }
 final public class FullScreenWallet {
   public init(configuration: Elements.Blocks.Configuration)
@@ -819,7 +854,7 @@ public struct RedirectAction : Swift.Decodable {
   @objc override dynamic public init()
   @objc deinit
 }
-public struct ListStoredPaymentMethodsResponse : BlocksCore.BlocksAPIResponse {
+public struct ListStoredPaymentMethodsResponse {
   public init(from decoder: Swift.Decoder) throws
 }
 public typealias URLHandler = (Foundation.URL) -> Swift.Void
@@ -830,10 +865,10 @@ extension Elements.DropInElement {
   final public class PaymentMethodsConfiguration {
     final public var card: Elements.DropInElement.CardConfiguration
     final public var applePay: Elements.DropInElement.ApplePayConfiguration?
-    final public let environment: BlocksCore.Environment
+    final public let environment: Elements.Environment
     final public var localizationParameters: Elements.LocalizationParameters?
     final public var payment: Elements.Payment?
-    public init(environment: BlocksCore.Environment)
+    public init(environment: Elements.Environment)
     @objc deinit
   }
   @_hasMissingDesignatedInitializers final public class CardConfiguration {
@@ -927,7 +962,7 @@ public struct ElementsCardResponse : Swift.Codable {
   public func encode(to encoder: Swift.Encoder) throws
   public init(from decoder: Swift.Decoder) throws
 }
-public struct ElementsToken : BlocksCore.BlocksAPIResponse {
+public struct ElementsToken {
   public let id: Swift.String
   public let card: Elements.ElementsCardResponse?
   public init(id: Swift.String, card: Elements.ElementsCardResponse?)
@@ -957,7 +992,7 @@ public class CardElement : Elements.PaymentElement, Elements.PresentableElement,
     get
     set
   }
-  public var environment: BlocksCore.Environment {
+  public var environment: Elements.Environment {
     get
     set
   }
@@ -1092,6 +1127,34 @@ extension Elements.CardElement {
 extension Elements.CardElement : Elements.TrackableElement {
   public func viewDidLoad(viewController: UIKit.UIViewController)
 }
+public enum RouterLifecycle {
+  case didLoad
+  public static func == (a: Elements.RouterLifecycle, b: Elements.RouterLifecycle) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol RouterScope : AnyObject {
+}
+public protocol Routing : Elements.RouterScope {
+  var interactable: Elements.Interactable { get }
+  var children: [Elements.Routing] { get }
+  func load()
+  func attachChild(_ child: Elements.Routing)
+  func detachChild(_ child: Elements.Routing)
+}
+open class Router<InteractorType> : Elements.Routing {
+  final public let interactor: InteractorType
+  final public let interactable: Elements.Interactable
+  final public var children: [Elements.Routing]
+  public init(interactor: InteractorType)
+  final public func load()
+  open func didLoad()
+  final public func attachChild(_ child: Elements.Routing)
+  final public func detachChild(_ child: Elements.Routing)
+  @objc deinit
+}
 public func localizedString(_ key: Elements.LocalizationKey, _ parameters: Elements.LocalizationParameters?, _ arguments: Swift.CVarArg...) -> Swift.String
 public enum PaymentStyle {
   case needsRedirectToThirdParty(Swift.String)
@@ -1151,6 +1214,27 @@ public class FormLabelItem : Elements.FormItem {
   public var text: Swift.String
   public func build(with _: Elements.FormItemViewBuilder) -> Elements.AnyFormItemView
   @objc deinit
+}
+public struct ElementsAPIError : Swift.Decodable, Swift.Error, Foundation.LocalizedError {
+  public var status: Swift.Int?
+  public let errorCode: Swift.String
+  public let errorMessage: Swift.String
+  public let type: Elements.APIErrorType
+  public var errorDescription: Swift.String? {
+    get
+  }
+  public init(status: Swift.Int?, errorCode: Swift.String, errorMessage: Swift.String, type: Elements.APIErrorType)
+  public init(from decoder: Swift.Decoder) throws
+}
+public enum APIErrorType : Swift.String, Swift.Decodable {
+  case cardError
+  case apiError
+  case authenticationError
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
 }
 @objc public enum STPThreeDSCustomizationButtonType : Swift.Int {
   case submit = 0
@@ -1291,7 +1375,7 @@ public struct Region : Swift.Decodable, Swift.CustomStringConvertible, Swift.Equ
   public init(from decoder: Swift.Decoder) throws
 }
 public class RegionRepository {
-  public init(environment: BlocksCore.Environment)
+  public init(environment: Elements.Environment)
   public func getCountries(locale: Swift.String, callback: @escaping (([Elements.Region]) -> Swift.Void))
   public func getSubRegions(for countryCode: Swift.String, locale: Swift.String, callback: @escaping (([Elements.Region]) -> Swift.Void))
   @objc deinit
@@ -1410,11 +1494,21 @@ final public class DarkThemeAssets : Elements.ImageAssets {
   public init()
   @objc deinit
 }
+open class Component<DependencyType> : Elements.Dependency {
+  final public let dependency: DependencyType
+  public init(dependency: DependencyType)
+  final public func shared<T>(__function: Swift.String = #function, _ factory: () -> T) -> T
+  @objc deinit
+}
+open class EmptyComponent : Elements.EmptyDependency {
+  public init()
+  @objc deinit
+}
 final public class LogoURLProvider {
-  public init(environment: BlocksCore.Environment)
+  public init(environment: Elements.Environment)
   final public func logoURL(for paymentMethod: Elements.PaymentMethod, size: Elements.LogoURLProvider.Size = .small) -> Foundation.URL?
   final public func logoURL(withName name: Swift.String, size: Elements.LogoURLProvider.Size = .small) -> Foundation.URL
-  public static func logoURL(withName name: Swift.String, environment: BlocksCore.Environment, size: Elements.LogoURLProvider.Size = .small) -> Foundation.URL
+  public static func logoURL(withName name: Swift.String, environment: Elements.Environment, size: Elements.LogoURLProvider.Size = .small) -> Foundation.URL
   @objc deinit
 }
 extension Elements.LogoURLProvider {
@@ -1453,6 +1547,9 @@ final public class StoredPaymentMethodElement : Elements.PaymentElement, Element
 public struct StoredPaymentDetails : Elements.PaymentMethodDetails {
   public init(paymentMethod: Elements.StoredPaymentMethod)
   public func encode(to encoder: Swift.Encoder) throws
+}
+@_hasMissingDesignatedInitializers final public class BlocksCoreSDKVersion {
+  @objc deinit
 }
 final public class CardSecurityCodeValidator : Elements.NumericStringValidator, Elements.Observer {
   public init()
@@ -1674,6 +1771,13 @@ extension Elements.SessionDelegate : Foundation.URLSessionDataDelegate {
   @objc dynamic open func urlSession(_ session: Foundation.URLSession, task: Foundation.URLSessionTask, didReceive challenge: Foundation.URLAuthenticationChallenge, completionHandler: @escaping (Foundation.URLSession.AuthChallengeDisposition, Foundation.URLCredential?) -> Swift.Void)
   @objc dynamic open func urlSession(_ session: Foundation.URLSession, task: Foundation.URLSessionTask, willPerformHTTPRedirection response: Foundation.HTTPURLResponse, newRequest request: Foundation.URLRequest, completionHandler: @escaping (Foundation.URLRequest?) -> Swift.Void)
 }
+extension Foundation.URLSession : Elements.BlocksCompatible {
+  public typealias BlocksBase = Foundation.URLSession
+}
+extension Elements.BlocksScope where Base : Foundation.URLSession {
+  public func dataTask(with url: Foundation.URL, completion: @escaping ((Swift.Result<Foundation.Data, Swift.Error>) -> Swift.Void)) -> Foundation.URLSessionDataTask
+  public func dataTask(with urlRequest: Foundation.URLRequest, completion: @escaping ((Swift.Result<Foundation.Data, Swift.Error>) -> Swift.Void)) -> Foundation.URLSessionDataTask
+}
 public struct ContactDetail : Swift.Codable {
   public let emailAdress: Swift.String?
   public let phoneNumber: Swift.String?
@@ -1703,7 +1807,7 @@ extension Elements.PaymentAwareElement {
     set
   }
 }
-public struct ChargeAPIResponse : BlocksCore.BlocksAPIResponse {
+public struct ChargeAPIResponse {
   public init(from decoder: Swift.Decoder) throws
 }
 extension Elements.ElementsScope where Base : UIKit.UIViewController {
@@ -1780,17 +1884,6 @@ final public class PresentableElementWrapper : Elements.PresentableElement, Elem
   final public func didFinalize(with success: Swift.Bool)
   final public func stopLoading()
   @objc deinit
-}
-public struct TokenizationRequest : BlocksCore.BlocksAPIRequest {
-  public typealias ResponseType = Elements.TokenizationResponse
-  public let path: Swift.String
-  public var counter: Swift.UInt
-  public var method: BlocksCore.HttpMethod
-  public var queryParameters: [Foundation.URLQueryItem]
-  public var headers: [Swift.String : Swift.String] {
-    get
-  }
-  public func encode(to encoder: Swift.Encoder) throws
 }
 @objc @_inheritsConvenienceInitializers public class STPThreeDSCustomizationSettings : ObjectiveC.NSObject {
   @available(*, deprecated, message: "Use STPThreeDSCustomizationSettings() instead of STPThreeDSCustomizationSettings.defaultSettings().")
@@ -1899,6 +1992,10 @@ public protocol FormValueItemStyle : Elements.TintableStyle {
   }
   @objc deinit
 }
+public protocol Dependency : AnyObject {
+}
+public protocol EmptyDependency : Elements.Dependency {
+}
 public struct StoredCardConfiguration {
   public var showsSecurityCodeField: Swift.Bool
   public init()
@@ -1946,10 +2043,10 @@ public protocol ElementsActionCompletionDelegate : AnyObject {
 }
 final public class ElementsActionDriver : Elements.Element {
   final public class Configuration {
-    final public let environment: BlocksCore.Environment
+    final public let environment: Elements.Environment
     final public let returnURLScheme: Swift.String
     final public let style: Elements.RedirectElementStyle?
-    public init(environment: BlocksCore.Environment, returnURLScheme: Swift.String, style: Elements.RedirectElementStyle? = nil)
+    public init(environment: Elements.Environment, returnURLScheme: Swift.String, style: Elements.RedirectElementStyle? = nil)
     @objc deinit
   }
   weak final public var presentingDelegate: Elements.ElementsViewControllerPresentingDelegate?
@@ -2102,6 +2199,22 @@ open class AbstractPersonalInformationElement : Elements.PaymentElement, Element
   open func getPhoneExtensions() -> [Elements.PhoneExtension]
   @objc deinit
 }
+public protocol InteractorScope : AnyObject {
+  var isActive: Swift.Bool { get }
+}
+public protocol Interactable : Elements.InteractorScope {
+  func activate()
+  func deactivate()
+}
+open class Interactor : Elements.Interactable {
+  public var isActive: Swift.Bool
+  public init()
+  final public func activate()
+  open func didBecomeActive()
+  final public func deactivate()
+  open func willResignActive()
+  @objc deinit
+}
 public struct CardPaymentMethod : Elements.AnyCardPaymentMethod {
   public let type: Swift.String
   public let name: Swift.String
@@ -2161,7 +2274,7 @@ public enum NavigationBarStyle {
     get
   }
 }
-public protocol NavigationControllerType : UIKit.UINavigationController, BlocksCore.ViewControllable {
+public protocol NavigationControllerType : UIKit.UINavigationController, Elements.ViewControllable {
   var navigationBarStyle: Elements.NavigationBarStyle { get set }
 }
 @objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class NavigationController : UIKit.UINavigationController, Elements.NavigationControllerType {
@@ -2170,7 +2283,7 @@ public protocol NavigationControllerType : UIKit.UINavigationController, BlocksC
     set
   }
   @_Concurrency.MainActor(unsafe) @objc override dynamic open func pushViewController(_ viewController: UIKit.UIViewController, animated: Swift.Bool)
-  @_Concurrency.MainActor(unsafe) public func replaceScreen(viewController: BlocksCore.ViewControllable)
+  @_Concurrency.MainActor(unsafe) public func replaceScreen(viewController: Elements.ViewControllable)
   @available(iOS 5.0, *)
   @_Concurrency.MainActor(unsafe) @objc override dynamic public init(navigationBarClass: Swift.AnyClass?, toolbarClass: Swift.AnyClass?)
   @_Concurrency.MainActor(unsafe) @objc override dynamic public init(rootViewController: UIKit.UIViewController)
@@ -2180,6 +2293,9 @@ public protocol NavigationControllerType : UIKit.UINavigationController, BlocksC
 }
 public protocol DeviceDependant {
   static func isDeviceSupported() -> Swift.Bool
+}
+extension Swift.Array {
+  public mutating func removeElementByReference(_ element: Element)
 }
 final public class Blocks {
   final public let configuration: Elements.Blocks.Configuration
@@ -2207,12 +2323,12 @@ extension Elements.Blocks {
       public init(summaryItems: [PassKit.PKPaymentSummaryItem], merchantIdentifier: Swift.String, requiredBillingContactFields: Swift.Set<PassKit.PKContactField> = [], requiredShippingContactFields: Swift.Set<PassKit.PKContactField> = [])
       @objc deinit
     }
-    final public let environment: BlocksCore.Environment
+    final public let environment: Elements.Environment
     final public var card: Elements.Blocks.Configuration.CardConfiguration
     final public var applePay: Elements.Blocks.Configuration.ApplePayConfiguration?
     final public var localizationParameters: Elements.LocalizationParameters?
     final public var payment: Elements.Payment?
-    public init(environment: BlocksCore.Environment, localizationParameters: Elements.LocalizationParameters? = nil, applePay: Elements.Blocks.Configuration.ApplePayConfiguration? = nil)
+    public init(environment: Elements.Environment, localizationParameters: Elements.LocalizationParameters? = nil, applePay: Elements.Blocks.Configuration.ApplePayConfiguration? = nil)
     @objc deinit
   }
 }
@@ -2268,7 +2384,7 @@ public protocol AnyAPIServiceProvider : Elements.Element {
   func fetchPaymentMethods(completion: @escaping (Swift.Result<Elements.PaymentMethods, Swift.Error>) -> Swift.Void)
 }
 public class APIServiceProvider : Elements.AnyAPIServiceProvider {
-  public init(environment: BlocksCore.Environment)
+  public init(environment: Elements.Environment)
   public func chargeTransaction(data: Elements.ChargeData, completion: @escaping (Swift.Result<Elements.ChargeAPIResponse, Swift.Error>) -> Swift.Void)
   public func handleCreatePayment(data: Elements.PaymentElementData, completion: @escaping (Swift.Result<Elements.CreatePaymentMethodResponse, Swift.Error>) -> Swift.Void)
   public func handleTokenizeCard(data: Elements.PaymentElementData, completion: @escaping (Swift.Result<Elements.VaultTokens, Swift.Error>) -> Swift.Void)
@@ -2421,6 +2537,39 @@ public protocol TintableStyle : Elements.ViewStyle {
   override public init()
   @objc deinit
 }
+public typealias VoidCompletion = (() -> Swift.Void)
+public protocol BasePresenterOutput : AnyObject {
+  func showNetworkRequestError(message: Swift.String?)
+  func showNetworkSuccess(message: Swift.String?)
+  func hideMessageErrorView()
+  func showLoadingView()
+  func hideLoadingView(completion: Elements.VoidCompletion?)
+}
+public protocol Presentable : AnyObject {
+  func presentNetworkRequestError(message: Swift.String?)
+  func presentNetworkSuccess(message: Swift.String?)
+  func dismissMessageErrorView()
+  func presentLoadingView()
+  func dismissLoadingView(completion: Elements.VoidCompletion?)
+}
+public protocol BaseViewControllable : AnyObject {
+  func showNetworkSuccess(message: Swift.String?)
+  func showNetworkRequestError(message: Swift.String?)
+  func hideMessageErrorView()
+  func showLoadingView()
+  func hideLoadingView(completion: Elements.VoidCompletion?)
+}
+open class Presenter<ViewControllerType> : Elements.Presentable {
+  final public let viewController: ViewControllerType
+  final public let viewControllable: Elements.ViewControllable?
+  public init(viewController: ViewControllerType)
+  public func presentNetworkSuccess(message: Swift.String?)
+  public func presentNetworkRequestError(message: Swift.String?)
+  public func dismissMessageErrorView()
+  public func presentLoadingView()
+  public func dismissLoadingView(completion: Elements.VoidCompletion?)
+  @objc deinit
+}
 @objc public protocol ElementsAuthenticationContext {
   @objc func elementsAuthHostController() -> UIKit.UIViewController
   @objc optional func authContextWillAppear()
@@ -2431,9 +2580,9 @@ public protocol ElementsAPIClientType : AnyObject {
   func performPaymentsSetup(data: Elements.PaymentElementData, token: Swift.String?, config: Elements.PaymentSetupModel, completion: @escaping (Swift.Result<Elements.PaymentsResponse, Swift.Error>) -> Swift.Void)
 }
 public class ElementsAPIClientConfiguration {
-  final public let environment: BlocksCore.Environment
+  final public let environment: Elements.Environment
   final public let stripePublishableKey: Swift.String?
-  public init(environment: BlocksCore.Environment, stripePublishableKey: Swift.String? = nil)
+  public init(environment: Elements.Environment, stripePublishableKey: Swift.String? = nil)
   @objc deinit
 }
 @objc public class ElementsAPIClient : ObjectiveC.NSObject, Elements.ElementsAPIClientType {
@@ -2448,6 +2597,13 @@ extension Elements.ElementsScope where Base : UIKit.UIView {
   public func round(corners: UIKit.UIRectCorner, precentage: CoreGraphics.CGFloat)
   public func round(corners: UIKit.UIRectCorner, rounding: Elements.CornerRounding)
   public func round(using rounding: Elements.CornerRounding)
+}
+public protocol Buildable : AnyObject {
+}
+open class Builder<DependencyType> : Elements.Buildable {
+  final public let dependency: DependencyType
+  public init(dependency: DependencyType)
+  @objc deinit
 }
 extension UIKit.UILabel {
   @_Concurrency.MainActor(unsafe) convenience public init(style: Elements.TextStyle)
@@ -2482,6 +2638,20 @@ final public class FormPhoneNumberItem : Elements.FormTextItem {
   }
   public init(selectableValues: [Elements.PhoneExtensionPickerItem], style: Elements.FormTextItemStyle, localizationParameters: Elements.LocalizationParameters? = nil)
   override final public func build(with builder: Elements.FormItemViewBuilder) -> Elements.AnyFormItemView
+  @objc deinit
+}
+open class ComponentizedBuilder<Component, Router, DynamicBuildDependency, DynamicComponentDependency> : Elements.Buildable {
+  public init(componentBuilder: @escaping (DynamicComponentDependency) -> Component)
+  final public func build(withDynamicBuildDependency dynamicBuildDependency: DynamicBuildDependency, dynamicComponentDependency: DynamicComponentDependency) -> Router
+  final public func build(withDynamicBuildDependency dynamicBuildDependency: DynamicBuildDependency, dynamicComponentDependency: DynamicComponentDependency) -> (Component, Router)
+  open func build(with component: Component, _ dynamicBuildDependency: DynamicBuildDependency) -> Router
+  @objc deinit
+}
+open class SimpleComponentizedBuilder<Component, Router> : Elements.ComponentizedBuilder<Component, Router, (), ()> {
+  public init(componentBuilder: @escaping () -> Component)
+  final override public func build(with component: Component, _ dynamicDependency: ()) -> Router
+  open func build(with component: Component) -> Router
+  final public func build() -> Router
   @objc deinit
 }
 public struct Payment {
@@ -2522,6 +2692,11 @@ public struct BasePickerElement<ElementType> : Elements.PickerElement where Elem
     get
     set
   }
+  @objc deinit
+}
+open class PresentableInteractor<PresenterType> : Elements.Interactor {
+  final public let presenter: PresenterType
+  public init(presenter: PresenterType)
   @objc deinit
 }
 @_hasMissingDesignatedInitializers final public class CardExpiryDateValidator : Elements.Validator {
@@ -2592,7 +2767,7 @@ public enum TokenizationStatus : Swift.String, Swift.Codable {
     get
   }
 }
-public struct TokenizationResponse : BlocksCore.BlocksAPIResponse {
+public struct TokenizationResponse {
   public let token: Swift.String
   public let status: Elements.TokenizationStatus
   public let card: Elements.ElementsCardResponse?
@@ -2810,28 +2985,6 @@ public struct ActionElementData {
   @discardableResult
   @_Concurrency.MainActor(unsafe) @objc override final public func becomeFirstResponder() -> Swift.Bool
 }
-final public class StripeAPIClient {
-  public typealias CompletionHandler<T> = (Swift.Result<T, Swift.Error>) -> Swift.Void
-  public init(publishableKey: Swift.String, stripeAccount: Swift.String?)
-  final public func perform<R>(_ request: R, parameters: [Swift.String : Any], completionHandler: @escaping Elements.StripeAPIClient.CompletionHandler<R.ResponseType>) where R : BlocksCore.BlocksAPIRequest
-  @objc deinit
-}
-@objc public class StripeAppInfo : ObjectiveC.NSObject {
-  public init(name: Swift.String, partnerId: Swift.String?, version: Swift.String?, url: Swift.String?)
-  public var name: Swift.String {
-    get
-  }
-  public var partnerId: Swift.String? {
-    get
-  }
-  public var version: Swift.String? {
-    get
-  }
-  public var url: Swift.String? {
-    get
-  }
-  @objc deinit
-}
 public struct PaymentSetupModel : Swift.Codable {
   public let returnURL: Swift.String
   public let cancelURL: Swift.String
@@ -2839,15 +2992,16 @@ public struct PaymentSetupModel : Swift.Codable {
   public func encode(to encoder: Swift.Encoder) throws
   public init(from decoder: Swift.Decoder) throws
 }
-public struct PaymentsSetupRequest : BlocksCore.BlocksAPIRequest {
-  public typealias ResponseType = Elements.PaymentsResponse
-  public let path: Swift.String
-  public var counter: Swift.UInt
-  public var method: BlocksCore.HttpMethod
-  public var queryParameters: [Foundation.URLQueryItem]
-  public var headers: [Swift.String : Swift.String]
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(data: Elements.PaymentElementData, encodedToken: Swift.String?, config: Elements.PaymentSetupModel)
+public protocol RouterPresentable {
+  func toPresentable() -> UIKit.UIViewController
+}
+public protocol ViewControllable : Elements.RouterPresentable {
+  var uiviewController: UIKit.UIViewController { get }
+}
+extension Elements.ViewControllable where Self : UIKit.UIViewController {
+  public var uiviewController: UIKit.UIViewController {
+    get
+  }
 }
 public struct BrowserInfo : Swift.Encodable {
   public var userAgent: Swift.String? {
@@ -3002,17 +3156,17 @@ public struct EventHandlerToken : Swift.Hashable {
     get
   }
 }
-extension UIKit.UIViewController : BlocksCore.RouterPresentable {
+extension UIKit.UIViewController : Elements.RouterPresentable {
   @_Concurrency.MainActor(unsafe) public func toPresentable() -> UIKit.UIViewController
 }
-public protocol UIRoutable : BlocksCore.RouterPresentable {
+public protocol UIRoutable : Elements.RouterPresentable {
   var navigationController: Elements.NavigationControllerType { get }
   var hasRootController: Swift.Bool { get }
-  func present(_ module: BlocksCore.RouterPresentable, animated: Swift.Bool, fullScreen: Swift.Bool)
-  func dismissModule(animated: Swift.Bool, completion: BlocksCore.VoidCompletion?)
-  func push(_ module: BlocksCore.RouterPresentable, animated: Swift.Bool, completion: (() -> Swift.Void)?)
+  func present(_ module: Elements.RouterPresentable, animated: Swift.Bool, fullScreen: Swift.Bool)
+  func dismissModule(animated: Swift.Bool, completion: Elements.VoidCompletion?)
+  func push(_ module: Elements.RouterPresentable, animated: Swift.Bool, completion: (() -> Swift.Void)?)
   func popModule(animated: Swift.Bool)
-  func setRootModule(_ module: BlocksCore.RouterPresentable, hideNavBar: Swift.Bool)
+  func setRootModule(_ module: Elements.RouterPresentable, hideNavBar: Swift.Bool)
   func popToRootModule(animated: Swift.Bool)
 }
 @objc final public class UIRouter : ObjectiveC.NSObject, Elements.UIRoutable {
@@ -3024,12 +3178,12 @@ public protocol UIRoutable : BlocksCore.RouterPresentable {
   }
   final public let navigationController: Elements.NavigationControllerType
   public init(navigationController: Elements.NavigationControllerType = AppNavigationController())
-  final public func present(_ module: BlocksCore.RouterPresentable, animated: Swift.Bool = true, fullScreen: Swift.Bool = true)
+  final public func present(_ module: Elements.RouterPresentable, animated: Swift.Bool = true, fullScreen: Swift.Bool = true)
   final public func dismissModule(animated: Swift.Bool = true, completion: (() -> Swift.Void)? = nil)
-  final public func push(_ module: BlocksCore.RouterPresentable, animated: Swift.Bool = true, completion: (() -> Swift.Void)? = nil)
+  final public func push(_ module: Elements.RouterPresentable, animated: Swift.Bool = true, completion: (() -> Swift.Void)? = nil)
   final public func popModule(animated: Swift.Bool = true)
   final public func setNavigationBarStyle(style: Elements.NavigationBarStyle, preferLargeTitles: Swift.Bool = false)
-  final public func setRootModule(_ module: BlocksCore.RouterPresentable, hideNavBar: Swift.Bool = true)
+  final public func setRootModule(_ module: Elements.RouterPresentable, hideNavBar: Swift.Bool = true)
   final public func popToRootModule(animated: Swift.Bool)
   final public func toPresentable() -> UIKit.UIViewController
   @objc deinit
@@ -3037,11 +3191,12 @@ public protocol UIRoutable : BlocksCore.RouterPresentable {
 extension Elements.UIRouter : UIKit.UINavigationControllerDelegate {
   @_Concurrency.MainActor(unsafe) @objc final public func navigationController(_ navigationController: UIKit.UINavigationController, didShow viewController: UIKit.UIViewController, animated: Swift.Bool)
 }
-public struct StripeVaultToken : BlocksCore.BlocksAPIResponse {
+public struct StripeVaultToken {
   public let id: Swift.String
   public let type: Swift.String
   public init(from decoder: Swift.Decoder) throws
 }
+extension Elements.PaymentsResponse : Swift.Decodable {}
 extension Elements.ApplePayElement.Error : Swift.Equatable {}
 extension Elements.ApplePayElement.Error : Swift.Hashable {}
 extension Elements.KeyboardState : Swift.Equatable {}
@@ -3053,23 +3208,32 @@ extension Elements.RedirectElement.Error : Swift.Hashable {}
 extension Elements.BillingAddressFields : Swift.Equatable {}
 extension Elements.BillingAddressFields : Swift.Hashable {}
 extension Elements.BillingAddressFields : Swift.RawRepresentable {}
+extension Elements.CreatePaymentMethodResponse : Swift.Decodable {}
 extension Elements.CardElement.AddressFormType : Swift.Equatable {}
 extension Elements.CardElement.AddressFormType : Swift.Hashable {}
+extension Elements.ListPaymentMethodsResponse : Swift.Decodable {}
 extension Elements.StoredPaymentMethodType : Swift.Equatable {}
 extension Elements.StoredPaymentMethodType : Swift.Hashable {}
 extension Elements.StoredPaymentMethodType : Swift.RawRepresentable {}
+extension Elements.ListStoredPaymentMethodsResponse : Swift.Decodable {}
 extension Elements.PhoneNumberPaymentMethod : Swift.Equatable {}
 extension Elements.PhoneNumberPaymentMethod : Swift.Hashable {}
+extension Elements.ElementsToken : Swift.Decodable {}
 extension Elements.CardFundingSource : Swift.Equatable {}
 extension Elements.CardFundingSource : Swift.Hashable {}
 extension Elements.CardFundingSource : Swift.RawRepresentable {}
-extension Elements.FullScreenWalletViewController : BlocksCore.Presentable {}
-extension Elements.FullScreenWalletViewController : BlocksCore.ViewControllable {}
+extension Elements.FullScreenWalletViewController : Elements.Presentable {}
+extension Elements.FullScreenWalletViewController : Elements.ViewControllable {}
 extension Elements.CardElement.Error : Swift.Equatable {}
 extension Elements.CardElement.Error : Swift.Hashable {}
+extension Elements.RouterLifecycle : Swift.Equatable {}
+extension Elements.RouterLifecycle : Swift.Hashable {}
 extension Elements.ShopperInteraction : Swift.Equatable {}
 extension Elements.ShopperInteraction : Swift.Hashable {}
 extension Elements.ShopperInteraction : Swift.RawRepresentable {}
+extension Elements.APIErrorType : Swift.Equatable {}
+extension Elements.APIErrorType : Swift.Hashable {}
+extension Elements.APIErrorType : Swift.RawRepresentable {}
 extension Elements.STPThreeDSCustomizationButtonType : Swift.Equatable {}
 extension Elements.STPThreeDSCustomizationButtonType : Swift.Hashable {}
 extension Elements.STPThreeDSCustomizationButtonType : Swift.RawRepresentable {}
@@ -3085,6 +3249,7 @@ extension Elements.ImageResources : Swift.RawRepresentable {}
 extension Elements.LogoURLProvider.Size : Swift.Equatable {}
 extension Elements.LogoURLProvider.Size : Swift.Hashable {}
 extension Elements.LogoURLProvider.Size : Swift.RawRepresentable {}
+extension Elements.ChargeAPIResponse : Swift.Decodable {}
 extension Elements.ThemeType : Swift.Equatable {}
 extension Elements.ThemeType : Swift.Hashable {}
 extension Elements.NavigationBarStyle : Swift.Equatable {}
@@ -3096,6 +3261,7 @@ extension Elements.ToolbarMode : Swift.Hashable {}
 extension Elements.TokenizationStatus : Swift.Equatable {}
 extension Elements.TokenizationStatus : Swift.Hashable {}
 extension Elements.TokenizationStatus : Swift.RawRepresentable {}
+extension Elements.TokenizationResponse : Swift.Decodable {}
 extension Elements.CardType : Swift.Equatable {}
 extension Elements.CardType : Swift.Hashable {}
 extension Elements.CardType : Swift.RawRepresentable {}
@@ -3105,3 +3271,4 @@ extension Elements.CardBrand.CVCPolicy : Swift.RawRepresentable {}
 extension Elements.SupportedCardData.CodingKeys : Swift.Equatable {}
 extension Elements.SupportedCardData.CodingKeys : Swift.Hashable {}
 extension Elements.SupportedCardData.CodingKeys : Swift.RawRepresentable {}
+extension Elements.StripeVaultToken : Swift.Decodable {}
