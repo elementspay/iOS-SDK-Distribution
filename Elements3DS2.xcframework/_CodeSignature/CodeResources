@@ -10,7 +10,7 @@
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Elements3DS2</key>
 		<data>
-		QLw3GAPN1h5nvMrSKXg8cz0dkfY=
+		1qBzHOL2CrlK91SHzmumsXTpffY=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Headers/ETDSACSNetworkingManager.h</key>
 		<data>
@@ -691,7 +691,7 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Elements3DS2</key>
 		<data>
-		gIFfmupxuaCzfz0kJajS9yDQcGI=
+		BKCZ1ekzoGBSt8OmIPbmel7kJCY=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/ETDSACSNetworkingManager.h</key>
 		<data>
@@ -1384,11 +1384,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			QLw3GAPN1h5nvMrSKXg8cz0dkfY=
+			1qBzHOL2CrlK91SHzmumsXTpffY=
 			</data>
 			<key>hash2</key>
 			<data>
-			1bzj/saIIXp8gyWhBmgDDZk3VC873SgD9TDWcDOSxks=
+			t2isjm38MaaW0LGgpNVTOZnp9HVrQUlYgdCru98x0MQ=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/Headers/ETDSACSNetworkingManager.h</key>
@@ -2963,11 +2963,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			gIFfmupxuaCzfz0kJajS9yDQcGI=
+			BKCZ1ekzoGBSt8OmIPbmel7kJCY=
 			</data>
 			<key>hash2</key>
 			<data>
-			1ypHi9ngzudXtdaS+HLtXLSyiY3Z71Gx8nNsr+bS5is=
+			GdjBX9IJjsqnRJbGvZuHxlTe9x7Audn8EFJR4zxL+Vo=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/ETDSACSNetworkingManager.h</key>
