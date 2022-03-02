@@ -2576,7 +2576,7 @@ open class Presenter<ViewControllerType> : Elements.Presentable {
   @objc optional func authContextWillDisappear()
 }
 public protocol ElementsAPIClientType : AnyObject {
-  func tokenizeCard(data: Elements.ElementsCardParams, authContext: Elements.ElementsAuthenticationContext?, idempotencyKey: Swift.String, completion: @escaping (Swift.Result<Elements.VaultTokens, Swift.Error>) -> Swift.Void)
+  func tokenizeCard(data: Elements.ElementsCardParams, paymentGateways: [Swift.String], authContext: Elements.ElementsAuthenticationContext?, idempotencyKey: Swift.String, completion: @escaping (Swift.Result<Elements.VaultTokens, Swift.Error>) -> Swift.Void)
   func performPaymentsSetup(data: Elements.PaymentElementData, token: Swift.String?, config: Elements.PaymentSetupModel, completion: @escaping (Swift.Result<Elements.PaymentsResponse, Swift.Error>) -> Swift.Void)
 }
 public class ElementsAPIClientConfiguration {
@@ -2587,7 +2587,7 @@ public class ElementsAPIClientConfiguration {
 }
 @objc public class ElementsAPIClient : ObjectiveC.NSObject, Elements.ElementsAPIClientType {
   public init(config: Elements.ElementsAPIClientConfiguration)
-  public func tokenizeCard(data: Elements.ElementsCardParams, authContext: Elements.ElementsAuthenticationContext? = nil, idempotencyKey: Swift.String = UUID().uuidString, completion: @escaping (Swift.Result<Elements.VaultTokens, Swift.Error>) -> Swift.Void)
+  public func tokenizeCard(data: Elements.ElementsCardParams, paymentGateways: [Swift.String] = [], authContext: Elements.ElementsAuthenticationContext? = nil, idempotencyKey: Swift.String = UUID().uuidString, completion: @escaping (Swift.Result<Elements.VaultTokens, Swift.Error>) -> Swift.Void)
   public func tokenizeApplePay(applePayToken: Elements.ApplePayDetails, idempotencyKey: Swift.String = UUID().uuidString, completion: @escaping (Swift.Result<Elements.VaultTokens, Swift.Error>) -> Swift.Void)
   public func performPaymentsSetup(data: Elements.PaymentElementData, token: Swift.String?, config: Elements.PaymentSetupModel, completion: @escaping (Swift.Result<Elements.PaymentsResponse, Swift.Error>) -> Swift.Void)
   @objc deinit
