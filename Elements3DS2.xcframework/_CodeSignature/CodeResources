@@ -10,7 +10,7 @@
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Elements3DS2</key>
 		<data>
-		1qBzHOL2CrlK91SHzmumsXTpffY=
+		9rc6MVeI2gnoIV++uzMoQgAcQso=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Headers/ETDSACSNetworkingManager.h</key>
 		<data>
@@ -394,7 +394,7 @@
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Info.plist</key>
 		<data>
-		theZAi9MqfgVy0y7o0DLyYlTDYA=
+		MG9kic1vFG6ZkWR9l6/q0Pvmvr0=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/Modules/module.modulemap</key>
 		<data>
@@ -402,7 +402,7 @@
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/_CodeSignature/CodeResources</key>
 		<data>
-		o8AaqsbirLi+O3cF0uSWJRyKhto=
+		KCihAGkC/yFvJTXZRSBoDvtpvWw=
 		</data>
 		<key>ios-arm64/Elements3DS2.framework/amex-logo@3x.png</key>
 		<data>
@@ -691,7 +691,7 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Elements3DS2</key>
 		<data>
-		BKCZ1ekzoGBSt8OmIPbmel7kJCY=
+		mNmoT6doh3h818H8QrkKh2Go6PQ=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/ETDSACSNetworkingManager.h</key>
 		<data>
@@ -1075,7 +1075,7 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Info.plist</key>
 		<data>
-		EuKryj16lPNcnbhOaLp9NnhuS2E=
+		XOoBuQMpeQ8IaWREGXl6UC774VI=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Modules/module.modulemap</key>
 		<data>
@@ -1083,7 +1083,7 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/_CodeSignature/CodeResources</key>
 		<data>
-		eUUc2nEKFrzKKPAahSGL3BS8WDM=
+		gczlCNOsnn18ciQwcrTVfPFLZ/o=
 		</data>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/amex-logo@3x.png</key>
 		<data>
@@ -1384,11 +1384,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			1qBzHOL2CrlK91SHzmumsXTpffY=
+			9rc6MVeI2gnoIV++uzMoQgAcQso=
 			</data>
 			<key>hash2</key>
 			<data>
-			t2isjm38MaaW0LGgpNVTOZnp9HVrQUlYgdCru98x0MQ=
+			iKhxaZKq9NLq8OEbOdLw4uWo9OmpV5WZxR7jrXrhtq4=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/Headers/ETDSACSNetworkingManager.h</key>
@@ -2440,11 +2440,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			theZAi9MqfgVy0y7o0DLyYlTDYA=
+			MG9kic1vFG6ZkWR9l6/q0Pvmvr0=
 			</data>
 			<key>hash2</key>
 			<data>
-			vkY3ms3mDWSAJ9JHjEB4MOTM2CBYiXVvqaL2nkDAtkQ=
+			Dzvm3fEtDVoQJU+aC+e8ACE1l2oe5fxONmJzTRCmZBM=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/Modules/module.modulemap</key>
@@ -2462,11 +2462,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			o8AaqsbirLi+O3cF0uSWJRyKhto=
+			KCihAGkC/yFvJTXZRSBoDvtpvWw=
 			</data>
 			<key>hash2</key>
 			<data>
-			/6LxX9IxXVLy7SG00d8CDQeRZxDKWOx9FCFoB++QB/k=
+			OsQuSy8/VaO5+1OyAOx+HR01JEfkXJz4DdjnewpWQjU=
 			</data>
 		</dict>
 		<key>ios-arm64/Elements3DS2.framework/amex-logo@3x.png</key>
@@ -2963,11 +2963,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			BKCZ1ekzoGBSt8OmIPbmel7kJCY=
+			mNmoT6doh3h818H8QrkKh2Go6PQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			GdjBX9IJjsqnRJbGvZuHxlTe9x7Audn8EFJR4zxL+Vo=
+			SFW2Q1PmASNgBRb06b9EYupqlUEHY+N0qFd8FD1EwQQ=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Headers/ETDSACSNetworkingManager.h</key>
@@ -4019,11 +4019,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			EuKryj16lPNcnbhOaLp9NnhuS2E=
+			XOoBuQMpeQ8IaWREGXl6UC774VI=
 			</data>
 			<key>hash2</key>
 			<data>
-			pcc0O70JkAgtfUfgNU5RVlF2tY7vCmzl/pyApHjLezg=
+			FBvDF3OwTYep0FAhCODKo4DdYuHgm/46I4AVKYLtPKA=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/Modules/module.modulemap</key>
@@ -4041,11 +4041,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			eUUc2nEKFrzKKPAahSGL3BS8WDM=
+			gczlCNOsnn18ciQwcrTVfPFLZ/o=
 			</data>
 			<key>hash2</key>
 			<data>
-			v+uZenrOAYTxlXYyb4pMsS9Zdt06qb2msm/rOrK1ZdE=
+			iQA72dMt4tP3p1D35FQeE6+phyjPBcAbELAdoj7632M=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/Elements3DS2.framework/amex-logo@3x.png</key>
